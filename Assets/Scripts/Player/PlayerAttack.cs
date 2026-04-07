@@ -1,10 +1,13 @@
 using System;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class PlayerAttack : MonoBehaviour
 {
     [SerializeField] float[] attackDuration;
     [SerializeField] float resetTime = 1f;
+    [SerializeField] ParticleSystem[] attackPartciles;
+    [SerializeField] GameObject attackHitbox;
 
     PlayerController playerController;
     Animator animator;
@@ -37,29 +40,21 @@ public class PlayerAttack : MonoBehaviour
 
     public void StartAttack()
     {
+        attackHitbox.SetActive(false);
         isAttacking = true;
         attackTimer = attackDuration[attackIndex];
         animator.SetBool("IsAttacking", true);
         animator.SetInteger("AttackIndex", attackIndex);
         ProcessAttack(attackIndex);
+
+        attackIndex = (attackIndex + 1) % maxAttackIndex;
     }
 
     public void EndAttack()
     {
         isAttacking = false;
         animator.SetBool("IsAttacking", false);
-
-        if(nextAttackQueued)
-        {
-            nextAttackQueued = false;
-            // 0, 1, 2, 0 순환
-            attackIndex = (attackIndex + 1) % maxAttackIndex;
-            StartAttack();            
-        }
-        else
-        {
-            playerController.ChangeState(PlayerState.Idle);
-        }
+        attackHitbox.SetActive(false);        
     }
 
     public void UpdateAttack()
@@ -69,25 +64,35 @@ public class PlayerAttack : MonoBehaviour
         attackTimer -= Time.deltaTime;
 
         if (attackTimer <= 0)
-        {   
-            EndAttack();
+        {            
+            playerController.OnAttackFinished();
         }
     }
 
     public void QueueNextAttack()
     {
         if (isAttacking)
-        {
             nextAttackQueued = true;
-            Debug.Log("Queued!");
+    }
+
+    public bool ConsumeNextAttackQueued()
+    {
+        if(nextAttackQueued)
+        {
+            nextAttackQueued = false;
+            return true;
         }
-        Debug.Log("Cnat Queued!");
+        return false;
     }
 
     void ProcessAttack(int index)
     {
         // 공격의 순서가 초기화 되는 시간
-        resetTimer = resetTime;        
+        resetTimer = resetTime;
+
+        // 공격 이펙트 소환
+        attackPartciles[index].Play();
+        attackHitbox.SetActive(true);        
     }
 
     void ResetAttackOrder()
