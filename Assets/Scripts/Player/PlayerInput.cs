@@ -9,6 +9,7 @@ public class PlayerInput : MonoBehaviour
     public bool run = false;        
     public bool dash = false;
     public bool attack = false;
+    public bool guard = false;
 
     public void OnMove(InputValue value)
     {
@@ -37,5 +38,10 @@ public class PlayerInput : MonoBehaviour
     public void OnAttack(InputValue value)
     {
         attack = value.isPressed;
+    }
+
+    public void OnGuard(InputValue value)
+    {
+        guard = value.isPressed;        
     }
 }

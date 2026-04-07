@@ -8,26 +8,20 @@ public class PlayerController : MonoBehaviour
     PlayerInput input;
     PlayerMovement movement;    
     PlayerAttack attack;
+    PlayerGuard guard;
     public PlayerState currentState { get; private set; } = PlayerState.Idle;
-
-    bool stateChangedThisFrame = false;
 
     void Awake()
     {
         input = GetComponent<PlayerInput>();
         movement = GetComponent<PlayerMovement>();        
         attack = GetComponent<PlayerAttack>();
+        guard = GetComponent<PlayerGuard>();
     }
 
     void Update()
-    {
-        stateChangedThisFrame = false;
-
+    {        
         HandleState();
-
-        if (stateChangedThisFrame)
-            return;
-
         StateUpdate();        
     }
 
@@ -52,6 +46,7 @@ public class PlayerController : MonoBehaviour
                 break;
 
             case PlayerState.Guard:
+                guard.UpdateGuard(input.guard);
                 break;
 
             default:
@@ -60,18 +55,20 @@ public class PlayerController : MonoBehaviour
     }
 
     void HandleState()
-    {
-        if (currentState == PlayerState.Dash) return;
-
+    {        
         if(input.dash)
         {
             ChangeState(PlayerState.Dash);        
             // 입력 소비
             input.dash = false;
         }
+        else if (input.guard)
+        {
+            ChangeState(PlayerState.Guard);
+        }
         else if (input.attack)
         {
-            if(currentState == PlayerState.Attack)
+            if (currentState == PlayerState.Attack)
                 attack.QueueNextAttack();
             else
                 ChangeState(PlayerState.Attack);
@@ -82,10 +79,6 @@ public class PlayerController : MonoBehaviour
         else if (input.move != Vector2.zero)
         {
             ChangeState(PlayerState.Move);
-        }
-        else
-        {
-            ChangeState(PlayerState.Idle);
         }
     }
 
@@ -103,9 +96,7 @@ public class PlayerController : MonoBehaviour
         currentState = newState;        
 
         // 새로운 상태 진입
-        OnStateEnter(currentState);
-
-        stateChangedThisFrame = true;
+        OnStateEnter(currentState);        
     }
 
     bool CanChangeState(PlayerState newState)
@@ -117,7 +108,13 @@ public class PlayerController : MonoBehaviour
                 return true;
             return false;
         }
-            
+        if (currentState == PlayerState.Attack)
+        {
+            if (newState == PlayerState.Idle)
+                return true;
+            return false;
+        }
+
 
         return true;
     }
@@ -140,6 +137,7 @@ public class PlayerController : MonoBehaviour
                 attack.StartAttack();
                 break;
             case PlayerState.Guard:
+                guard.StartGuard();
                 break;
             default:
                 break;
@@ -163,9 +161,26 @@ public class PlayerController : MonoBehaviour
                 attack.EndAttack();
                 break;
             case PlayerState.Guard:
+                guard.EndGuard();
                 break;
             default:
                 break;
         }
+    }
+
+
+    public void OnAttackFinished()
+    {
+        // 공격 중에 공격 요청이 한번 더 들어온경우 다음 공격 바로 실행
+        if (attack.ConsumeNextAttackQueued())
+        {
+            attack.StartAttack();            
+        }
+            
+        else
+        {
+            ChangeState(PlayerState.Idle);            
+        }
+            
     }
 }

@@ -46,8 +46,7 @@ public class PlayerMovement : MonoBehaviour
         dashTimer -= Time.deltaTime;
 
         if (dashTimer <= 0f)
-        {
-            Debug.Log("Dash End");
+        {            
             playerController.ChangeState(PlayerState.Idle);
         }
     }
@@ -64,7 +63,15 @@ public class PlayerMovement : MonoBehaviour
 
     public void UpdateMove(Vector2 movement, bool isRunning)
     {
-        if(wasRunning != isRunning)
+        // 이동 없으면 State 탈출
+        if (movement == Vector2.zero)
+        {
+            playerController.ChangeState(PlayerState.Idle);
+            animator.SetBool("IsMoving", false);
+        }
+            
+
+        if (wasRunning != isRunning)
         {
             animator.SetBool("IsRunning", isRunning);
             wasRunning = isRunning;
@@ -81,6 +88,6 @@ public class PlayerMovement : MonoBehaviour
         if (move == Vector3.zero) return;
         
         Quaternion targetRotation = Quaternion.LookRotation(move);        
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);        
     }
 }
