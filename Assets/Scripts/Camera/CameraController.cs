@@ -7,11 +7,14 @@ public class CameraController : MonoBehaviour
     [SerializeField] Transform player;
     [Range(0f, 1f)]
     [SerializeField] float maxOffsetAmount = 0.2f;
-    [SerializeField] float smoothSpeed = 5f;    
+    [SerializeField] float smoothSpeed = 5f;
+    [SerializeField] float deadCameraDistanceSpeed = 3f;
+    [SerializeField] float deadCameraRotationSpeed = 2f;
     
     CinemachinePositionComposer positionComposer;
     Camera cam;
     bool isRecovering = false;
+    public bool isDeadSequencePlaying { get; set; } = false;
 
     void Awake()
     {        
@@ -21,7 +24,7 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
-        // Shift key -> 둘러보기
+        // Ctrl key -> 둘러보기
         if(Input.GetKey(KeyCode.LeftControl))
         {
             UpdateCameraToSearch();
@@ -35,6 +38,11 @@ public class CameraController : MonoBehaviour
         if(isRecovering)
         {
             UpdateCameraToNormal();
+        }
+
+        if(isDeadSequencePlaying)
+        {
+            ProcessDeadSequence();
         }
     }
 
@@ -97,4 +105,16 @@ public class CameraController : MonoBehaviour
 
         return player.position;
     }
+
+    void ProcessDeadSequence()
+    {
+        // 카메라 확대
+        positionComposer.CameraDistance -= deadCameraDistanceSpeed * Time.deltaTime;
+
+        // 카메라 기울기 내리기
+        Vector3 currentRotation = transform.eulerAngles;
+        currentRotation.x -= deadCameraRotationSpeed * Time.deltaTime; 
+        transform.eulerAngles = currentRotation;         
+    }
+
 }

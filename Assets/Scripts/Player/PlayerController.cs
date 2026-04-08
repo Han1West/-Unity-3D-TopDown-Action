@@ -5,11 +5,17 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] float dashCoolDown = 1f;
+
     PlayerInput input;
     PlayerMovement movement;    
     PlayerAttack attack;
     PlayerGuard guard;
+    PlayerDead dead;
     public PlayerState currentState { get; private set; } = PlayerState.Idle;
+
+    float dashTimer = 0;
+    bool canDash = true;
 
     void Awake()
     {
@@ -17,12 +23,29 @@ public class PlayerController : MonoBehaviour
         movement = GetComponent<PlayerMovement>();        
         attack = GetComponent<PlayerAttack>();
         guard = GetComponent<PlayerGuard>();
+        dead = GetComponent<PlayerDead>();
     }
 
     void Update()
-    {        
+    {
+        // 현재 Dead State 라면 모든 동작 수행 중지
+        if ((currentState == PlayerState.Dead))
+        {
+            return;
+        }
         HandleState();
         StateUpdate();        
+
+        // 대쉬 사용함
+        if(!canDash)
+        {
+            dashTimer += Time.deltaTime;
+            if(dashTimer > dashCoolDown )
+            {
+                canDash = true;
+                dashTimer = 0f;
+            }
+        }
     }
 
     void StateUpdate()
@@ -47,7 +70,7 @@ public class PlayerController : MonoBehaviour
 
             case PlayerState.Guard:
                 guard.UpdateGuard(input.guard);
-                break;
+                break;            
 
             default:
                 break;
@@ -58,7 +81,11 @@ public class PlayerController : MonoBehaviour
     {        
         if(input.dash)
         {
-            ChangeState(PlayerState.Dash);        
+            if(canDash)
+            {
+                ChangeState(PlayerState.Dash);
+                canDash = false;
+            }            
             // 입력 소비
             input.dash = false;
         }
@@ -139,6 +166,10 @@ public class PlayerController : MonoBehaviour
             case PlayerState.Guard:
                 guard.StartGuard();
                 break;
+            case PlayerState.Dead:
+                dead.StartDead();
+                break;
+
             default:
                 break;
         }
