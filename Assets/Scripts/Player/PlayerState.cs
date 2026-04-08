@@ -7,7 +7,8 @@ using UnityEngine;
         Move,
         Dash,
         Attack,
-        Guard,        
+        Guard,
+        Dead,
     }
 
 

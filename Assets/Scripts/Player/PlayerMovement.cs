@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEditor;
 using UnityEngine;
 
@@ -7,22 +8,35 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float runSpeed = 15f;
     [SerializeField] float dashSpeed = 10f;
     [SerializeField] float dashTime = .15f;
-    [SerializeField] float rotationSpeed = 10f;
-    
+    [SerializeField] float rotationSpeed = 10f;    
+
+    [Header("¿‹ªÛ")]
+    [SerializeField] float interval = 0.05f;
+    [SerializeField] float lifeTime = 0.3f;
+    [SerializeField] Color afterImgaeColor = new Color(0.5f, 0.8f, 1f, 0.6f);
+    [SerializeField] Material afterImageMaterials;
+
+    SkinnedMeshRenderer[] skinnedRenderers;
+    MeshRenderer[] meshRenderers;
+
     PlayerController playerController;
     CharacterController characterController;
     Animator animator;
     float dashTimer;
+    
     bool isDashing = false;
     bool wasRunning = false;
     Vector3 dashDirection;
 
 
-    private void Awake()
+
+    void Awake()
     {
         playerController = GetComponent<PlayerController>();
         characterController = GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
+        skinnedRenderers = GetComponentsInChildren<SkinnedMeshRenderer>();
+        meshRenderers = GetComponentsInChildren<MeshRenderer>();
     }
 
     public void StartDash()
@@ -31,6 +45,7 @@ public class PlayerMovement : MonoBehaviour
         dashTimer = dashTime;
         dashDirection = transform.forward;
         dashDirection.Normalize();
+        StartCoroutine(SpawnAfterImages());
     }
 
     public void EndDash()
@@ -49,6 +64,74 @@ public class PlayerMovement : MonoBehaviour
         {            
             playerController.ChangeState(PlayerState.Idle);
         }
+    }
+
+    IEnumerator SpawnAfterImages()
+    {
+        while(isDashing)
+        {
+            SpawnAfterImage();
+            yield return new WaitForSeconds(interval);
+        }
+    }
+
+    void SpawnAfterImage()
+    {
+        foreach(var renderer in skinnedRenderers)
+        {
+            Mesh bakedMesh = new Mesh();
+            renderer.BakeMesh(bakedMesh);
+            CreateGhost(bakedMesh, renderer.transform);
+        }
+
+        foreach (var renderer in meshRenderers)
+        {
+            MeshFilter mf = renderer.GetComponent<MeshFilter>();
+            if (mf == null || mf.sharedMesh == null)
+                continue;
+
+            CreateGhost(mf.sharedMesh, renderer.transform);
+        }
+    }
+
+    private void CreateGhost(Mesh bakedMesh, Transform originTransform)
+    {
+        GameObject ghost = new GameObject("AfterImage");
+        ghost.transform.position = originTransform.position;
+        ghost.transform.rotation = originTransform.rotation;
+        ghost.transform.localScale = originTransform.localScale;
+
+        MeshFilter mf = ghost.AddComponent<MeshFilter>();
+        MeshRenderer mr = ghost.AddComponent<MeshRenderer>();
+
+        mf.mesh = bakedMesh;
+        mr.material = afterImageMaterials;
+        mr.material.color = afterImgaeColor;
+
+        StartCoroutine(FadeAndDestroy(ghost, lifeTime));
+    }
+
+    IEnumerator FadeAndDestroy(GameObject ghost, float duration)
+    {
+        MeshRenderer mr = ghost.GetComponent<MeshRenderer>();
+        Color startColor = mr.material.color;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float alpha = Mathf.Lerp(startColor.a, 0f, elapsed / duration);
+            Color c = startColor;
+            c.a = alpha;
+            mr.material.color = c;
+            yield return null;                
+        }
+
+        Mesh mesh = ghost.GetComponent<MeshFilter>().mesh;
+        if(mesh != ghost.GetComponent<MeshFilter>().sharedMesh)
+            Destroy(ghost.GetComponent<MeshFilter>().mesh);
+
+        Destroy(ghost);
     }
 
     public void StartMove()

@@ -6,6 +6,7 @@ public class PlayerGuard : MonoBehaviour
     [SerializeField] float parryTime = 0.5f;
     [SerializeField] GameObject perfectGuardVFX;
     [SerializeField] GameObject normalGuardVFX;
+    [SerializeField] ParticleSystem parryVFX;
 
     PlayerController playerController;
     Animator animator;
@@ -60,5 +61,6 @@ public class PlayerGuard : MonoBehaviour
     {
         // 상대 공격 차단
         Debug.Log("Success Parry");
+        parryVFX.Play();
     }
 }
