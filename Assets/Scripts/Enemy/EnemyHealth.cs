@@ -8,6 +8,7 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] float damageDeclineRate = 0.6f;
     [SerializeField] float hitDuration = 0.1f;
     [SerializeField] Material hitMaterial;
+    [SerializeField] GameObject damageTextPrefab;
 
     SkinnedMeshRenderer[] renderers;
     MeshRenderer[] renderers2;
@@ -52,6 +53,9 @@ public class EnemyHealth : MonoBehaviour
         currentHealth -= amount;
 
         StartCoroutine(HitFlash());
+        GameObject damageText = Instantiate(damageTextPrefab, transform.position, Quaternion.identity);
+        damageText.GetComponent<DamageText>().damageText.color = Color.black;
+        damageText.GetComponent<DamageText>().damageText.text = amount.ToString();
         Debug.Log("Current Health :" + currentHealth);
     }
 
