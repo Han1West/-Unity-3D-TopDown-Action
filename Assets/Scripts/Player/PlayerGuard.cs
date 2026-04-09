@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -9,13 +10,17 @@ public class PlayerGuard : MonoBehaviour
     [SerializeField] GameObject normalGuardVFX;
     [SerializeField] ParticleSystem parryVFX;
     [SerializeField] float slowTime = 5f;
+    [SerializeField] int maxParryPoint = 4;
 
     PlayerController playerController;
     Animator animator;
 
     float parryTimer = 0f;
+    int currentParryPoint = 0;
     public bool canParry { get; private set; } = false;
-    public bool isGuarding { get; private set; } = false;    
+    public bool isGuarding { get; private set; } = false;
+
+    public event Action<int, int> OnParryEnergyChanged;
 
     private void Awake()
     {
@@ -62,8 +67,15 @@ public class PlayerGuard : MonoBehaviour
 
     public void SuccessParry(Vector3 hitDirection)
     {
-        // 상대 공격 차단        
+        // 패리 이펙트
         parryVFX.Play();
+
+        // 패리 카운트 추가
+        currentParryPoint++;
+        if (currentParryPoint >= maxParryPoint)
+            currentParryPoint = maxParryPoint;
+
+        OnParryEnergyChanged(currentParryPoint, maxParryPoint);
 
         // 플레이어의 방향을 공격받은 방향으로 회전
         hitDirection.y = 0;

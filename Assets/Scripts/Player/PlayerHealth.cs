@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -20,7 +21,9 @@ public class PlayerHealth : MonoBehaviour
     PlayerGuard guard;
     Animator animator;
     int currentHealth = 0;
-    int upperLayerIndex;    
+    int upperLayerIndex;
+
+    public event Action<int, int> OnHealthChanged;
 
     void Awake()
     {
@@ -88,7 +91,7 @@ public class PlayerHealth : MonoBehaviour
         // 가드 중 
         if(guard.isGuarding)
         {
-            // 체력 감소 비율 감쇠
+            // 체력 감소 비율 감쇄
             takenDamage = Mathf.FloorToInt(amount * (1 - damageDeclineRate));
             currentHealth -= takenDamage;
 
@@ -124,7 +127,10 @@ public class PlayerHealth : MonoBehaviour
         {
             animator.SetTrigger("Hit");
             animator.SetLayerWeight(upperLayerIndex, 1f);
-        }        
+        }
+
+        // 이벤트 발생
+        OnHealthChanged(currentHealth, maxHealth);
     }
 
     public void EndHit()
@@ -176,5 +182,8 @@ public class PlayerHealth : MonoBehaviour
         damageText.GetComponent<DamageText>().damageText.text = amount.ToString();
 
         Debug.Log("Current Health :" + currentHealth);
+
+        // 이벤트 발생
+        OnHealthChanged(currentHealth, maxHealth);
     }
 }
