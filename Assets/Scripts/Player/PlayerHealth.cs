@@ -8,6 +8,8 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] float damageDeclineRate = 0.6f;
     [SerializeField] float hitDuration = 0.1f;
     [SerializeField] Material hitMaterial;
+    [SerializeField] ParticleSystem healVFX;
+    [SerializeField] GameObject damageTextPrefab;
 
     SkinnedMeshRenderer[] renderers;
     MeshRenderer[] renderers2;
@@ -49,41 +51,80 @@ public class PlayerHealth : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        // 데미지
         if (other.CompareTag("EnemyAttack"))
         {
+            Vector3 hitDirection = other.transform.position - transform.position;
+            hitDirection.Normalize();
+
             int damage = other.GetComponent<AttackHitbox>().damage;
 
             // 패리 성공
             if (guard.canParry)
-                guard.SuccessParry();
+                guard.SuccessParry(hitDirection);
             // 실패
             else
-                TakeDamage(damage);
+                TakeDamage(damage, hitDirection);
         }
-        
+
+        // 힐
+        if (other.CompareTag("Heal"))
+        {            
+            int heal = other.GetComponent<HealPickup>().heal;
+
+            // 현재 체력이 최대체력이 아닐때만 상호작용
+            if(currentHealth < maxHealth)
+            {
+                TakeHeal(heal);
+                other.GetComponent<HealPickup>().DestroyThis();
+            }                
+        }        
     }
 
-    void TakeDamage(int amount)
+    void TakeDamage(int amount, Vector3 hitDirection)
     {
+        int takenDamage = amount;
+
         // 가드 중 
         if(guard.isGuarding)
-            currentHealth -= Mathf.FloorToInt(amount * (1 - damageDeclineRate));        
+        {
+            // 체력 감소 비율 감쇠
+            takenDamage = Mathf.FloorToInt(amount * (1 - damageDeclineRate));
+            currentHealth -= takenDamage;
+
+
+            // 플레이어 공격 받은 방향으로 회전
+            hitDirection.y = 0;
+            if (hitDirection != Vector3.zero)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(hitDirection);
+                transform.rotation = targetRotation; 
+            }
+        }            
         else
-            currentHealth -= amount;
+            currentHealth -= takenDamage;
+
+        GameObject damageText = Instantiate(damageTextPrefab, transform.position, Quaternion.identity);
+        damageText.GetComponent<DamageText>().damageText.text = takenDamage.ToString();
    
+        // Hit 판정 피격 표시 
         StartCoroutine(HitFlash());
         
         Debug.Log("Current Health :" + currentHealth);
 
+        // 피가 0 이하면 사망처리
         if(currentHealth <= 0)
         {
             playerController.ChangeState(PlayerState.Dead);
             return;
         }
 
-
-        animator.SetTrigger("Hit");
-        animator.SetLayerWeight(upperLayerIndex, 1f);
+        // 가드중이 아닐 때만 Hit 애니메이션 트리거 발동
+        if(!guard.isGuarding)
+        {
+            animator.SetTrigger("Hit");
+            animator.SetLayerWeight(upperLayerIndex, 1f);
+        }        
     }
 
     public void EndHit()
@@ -121,5 +162,19 @@ public class PlayerHealth : MonoBehaviour
 
         for (int i = 0; i < renderers2.Length; ++i)
             renderers2[i].materials = originMaterials2[i];
+    }
+
+    void TakeHeal(int amount)
+    {
+        healVFX.Play();
+        currentHealth += amount;
+        if (currentHealth > maxHealth)
+            currentHealth = maxHealth;
+
+        GameObject damageText = Instantiate(damageTextPrefab, transform.position, Quaternion.identity);
+        damageText.GetComponent<DamageText>().damageText.color = Color.green;
+        damageText.GetComponent<DamageText>().damageText.text = amount.ToString();
+
+        Debug.Log("Current Health :" + currentHealth);
     }
 }

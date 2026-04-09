@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ public class PlayerGuard : MonoBehaviour
     [SerializeField] GameObject perfectGuardVFX;
     [SerializeField] GameObject normalGuardVFX;
     [SerializeField] ParticleSystem parryVFX;
+    [SerializeField] float slowTime = 5f;
 
     PlayerController playerController;
     Animator animator;
@@ -32,7 +34,8 @@ public class PlayerGuard : MonoBehaviour
 
     public void EndGuard()
     {
-        isGuarding = false;
+        canParry = false;
+        isGuarding = false;        
         animator.SetBool("IsGuarding", false);
         normalGuardVFX.SetActive(false);
         perfectGuardVFX.SetActive(false);
@@ -57,10 +60,31 @@ public class PlayerGuard : MonoBehaviour
             playerController.ChangeState(PlayerState.Idle);
     }
 
-    public void SuccessParry()
+    public void SuccessParry(Vector3 hitDirection)
     {
-        // 상대 공격 차단
-        Debug.Log("Success Parry");
+        // 상대 공격 차단        
         parryVFX.Play();
+
+        // 플레이어의 방향을 공격받은 방향으로 회전
+        hitDirection.y = 0;
+        if (hitDirection != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(hitDirection);
+            transform.rotation = targetRotation;
+        }
+
+        // 슬로우 모션
+        StartCoroutine(SlowMotion());
+    }
+
+    IEnumerator SlowMotion()
+    {
+        Time.timeScale = 0.2f;
+        Time.fixedDeltaTime = 0.02f * Time.timeScale;
+
+        yield return new WaitForSecondsRealtime(slowTime);
+
+        Time.timeScale = 1f;
+        Time.fixedDeltaTime = 0.02f;
     }
 }
