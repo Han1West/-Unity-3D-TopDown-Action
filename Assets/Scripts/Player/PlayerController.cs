@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     PlayerAttack attack;
     PlayerGuard guard;
     PlayerDead dead;
+    PlayerSkill skill;
     public PlayerState currentState { get; private set; } = PlayerState.Idle;
 
     float dashTimer = 0;
@@ -24,6 +25,7 @@ public class PlayerController : MonoBehaviour
         attack = GetComponent<PlayerAttack>();
         guard = GetComponent<PlayerGuard>();
         dead = GetComponent<PlayerDead>();
+        skill = GetComponent<PlayerSkill>();
     }
 
     void Update()
@@ -68,6 +70,9 @@ public class PlayerController : MonoBehaviour
                 attack.UpdateAttack();
                 break;
 
+            case PlayerState.Skill:
+                skill.UpdateSkill();
+                break;
             case PlayerState.Guard:
                 guard.UpdateGuard(input.guard);
                 break;            
@@ -92,6 +97,11 @@ public class PlayerController : MonoBehaviour
         else if (input.guard)
         {
             ChangeState(PlayerState.Guard);
+        }
+        else if (input.skill)
+        {
+            ChangeState(PlayerState.Skill);
+            input.skill = false;
         }
         else if (input.attack)
         {
@@ -141,9 +151,29 @@ public class PlayerController : MonoBehaviour
                 return true;
             return false;
         }
+        if(currentState == PlayerState.Skill)
+        {
+            if (newState == PlayerState.Idle)
+                return true;
+            return false; 
+        }
 
+
+        // 진입 요청 스테이트가 스킬이라면 조건을 확인한다.
+        if(newState == PlayerState.Skill)
+        {
+            return CanUseSkill();
+        }
 
         return true;
+    }
+
+    bool CanUseSkill()
+    {
+        if (guard.currentParryPoint >= skill.needSkillPoint)
+            return true;
+
+        return false;
     }
 
     void OnStateEnter(PlayerState state)
@@ -162,6 +192,10 @@ public class PlayerController : MonoBehaviour
                 break;
             case PlayerState.Attack:
                 attack.StartAttack();
+                break;
+            case PlayerState.Skill:
+                skill.StartSkill();
+                guard.UseParryPoint(skill.needSkillPoint);
                 break;
             case PlayerState.Guard:
                 guard.StartGuard();
@@ -190,6 +224,9 @@ public class PlayerController : MonoBehaviour
                 break;
             case PlayerState.Attack:
                 attack.EndAttack();
+                break;
+            case PlayerState.Skill:
+                skill.EndSkill();
                 break;
             case PlayerState.Guard:
                 guard.EndGuard();

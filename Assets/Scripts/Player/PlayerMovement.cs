@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -16,9 +18,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Color afterImgaeColor = new Color(0.5f, 0.8f, 1f, 0.6f);
     [SerializeField] Material afterImageMaterials;
 
+    [SerializeField] AudioClip[] footstepSFX;
+
     SkinnedMeshRenderer[] skinnedRenderers;
     MeshRenderer[] meshRenderers;
 
+    AudioSource audioSource;
     PlayerController playerController;
     CharacterController characterController;
     Animator animator;
@@ -32,6 +37,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
         playerController = GetComponent<PlayerController>();
         characterController = GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
@@ -172,5 +178,16 @@ public class PlayerMovement : MonoBehaviour
         
         Quaternion targetRotation = Quaternion.LookRotation(move);        
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);        
+    }
+
+    public void PlayFootstep()
+    {
+        PlayRandomFoostepSound();
+    }
+
+    private void PlayRandomFoostepSound()
+    {
+        int i = UnityEngine.Random.Range(0, footstepSFX.Length);        
+        audioSource.PlayOneShot(footstepSFX[i], 0.15f);
     }
 }
