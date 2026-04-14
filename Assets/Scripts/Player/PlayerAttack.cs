@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Audio;
 using static UnityEngine.Rendering.DebugUI;
 
 public class PlayerAttack : MonoBehaviour
@@ -8,9 +9,12 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] float resetTime = 1f;
     [SerializeField] ParticleSystem[] attackPartciles;
     [SerializeField] GameObject attackHitbox;
+    [SerializeField] AudioClip[] attackSFX;
+    
 
     PlayerController playerController;
     Animator animator;
+    AudioSource audioSource;
     int attackIndex = 0;
     int maxAttackIndex = 3;
     float attackTimer = 0f;
@@ -22,6 +26,7 @@ public class PlayerAttack : MonoBehaviour
     {
         playerController = GetComponent<PlayerController>();
         animator = GetComponentInChildren<Animator>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -92,7 +97,8 @@ public class PlayerAttack : MonoBehaviour
 
         // 공격 이펙트 소환
         attackPartciles[index].Play();
-        attackHitbox.SetActive(true);        
+        attackHitbox.SetActive(true);
+        audioSource.PlayOneShot(attackSFX[index], 0.5f);        
     }
 
     void ResetAttackOrder()

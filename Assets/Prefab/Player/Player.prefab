@@ -51,6 +51,8 @@ GameObject:
   - component: {fileID: 7253051500552171613}
   - component: {fileID: 7182370326062417897}
   - component: {fileID: 8711503112827140583}
+  - component: {fileID: 726551430199088317}
+  - component: {fileID: 1566533349006227388}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -171,6 +173,16 @@ MonoBehaviour:
   lifeTime: 0.15
   afterImgaeColor: {r: 0.5019608, g: 0.5717641, b: 1, a: 0.3254902}
   afterImageMaterials: {fileID: 2100000, guid: 37a4391135b5a744d879b514fbbae20a, type: 2}
+  footstepSFX:
+  - {fileID: 8300000, guid: 70ca3819c2f02394d9aa9be4bd740684, type: 3}
+  - {fileID: 8300000, guid: 03aec7bf12700204c9131fa48e5a7f09, type: 3}
+  - {fileID: 8300000, guid: 7791a11f2a10b2c4e83f99adc54eff34, type: 3}
+  - {fileID: 8300000, guid: 883fe30f1b97c9448bf2bf2d8b716a06, type: 3}
+  - {fileID: 8300000, guid: 30938ecbaafcda8409fd85a2def122ca, type: 3}
+  - {fileID: 8300000, guid: 839f4728d6bc17747acf0b38148232ba, type: 3}
+  - {fileID: 8300000, guid: 3b203d10e6574934d89e6b5f01c877ba, type: 3}
+  - {fileID: 8300000, guid: 865698dab80f12f4589acc33cb27730e, type: 3}
+  - {fileID: 8300000, guid: 3666f3c12b66caa4a9a547dbc26e6959, type: 3}
 --- !u!114 &2326318843992807703
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,6 +201,7 @@ MonoBehaviour:
   dash: 0
   attack: 0
   guard: 0
+  skill: 0
 --- !u!114 &5877360298927788820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -211,6 +224,10 @@ MonoBehaviour:
   - {fileID: 8975351405199169040}
   - {fileID: 4257754509983590606}
   attackHitbox: {fileID: 5773833194540537617}
+  attackSFX:
+  - {fileID: 8300000, guid: 22b25773c306aa149a6b5940c099486a, type: 3}
+  - {fileID: 8300000, guid: c85f661dba3788a4b87c7be34be552bd, type: 3}
+  - {fileID: 8300000, guid: 9aec0fe2704543e4eb44c078e9e0f2df, type: 3}
 --- !u!114 &8487504048312291616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227,6 +244,7 @@ MonoBehaviour:
   perfectGuardVFX: {fileID: 785165318010653518}
   normalGuardVFX: {fileID: 4775657327397139230}
   parryVFX: {fileID: 3627649882512125599}
+  parrySFX: {fileID: 8300000, guid: 98fffbc33bdf4864dbe79b2d092ae8d2, type: 3}
   slowTime: 0.4
   maxParryPoint: 4
 --- !u!114 &7253051500552171613
@@ -287,6 +305,118 @@ MonoBehaviour:
   rasieStartTime: 1
   sequenceVFX: {fileID: 6158252674392534015}
   disappearVFX: {fileID: 6867999389852257534}
+--- !u!114 &726551430199088317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1216229342499675051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbfdd661430a33b478de76a7d364d597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerSkill
+  skillObject: {fileID: 2408965650304038288, guid: 0387060a3fb5d894db3055873bfed017, type: 3}
+  skillDelayTime: 1
+  needSkillPoint: 2
+--- !u!82 &1566533349006227388
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1216229342499675051}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &5773833194540537617
 GameObject:
   m_ObjectHideFlags: 0
@@ -353,7 +483,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dddd671085bd2f4abdbe9c4cd4c06e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttackHitbox
-  damage: 10
+  damage: 35
 --- !u!1 &7454435874544410742
 GameObject:
   m_ObjectHideFlags: 0

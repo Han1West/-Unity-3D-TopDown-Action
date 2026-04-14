@@ -6,4 +6,13 @@ public class AnimationEventReceiver : MonoBehaviour
     {
         GetComponentInParent<PlayerHealth>().EndHit();
     }
+    public void EndUseSkill()
+    {
+        GetComponentInParent<PlayerSkill>().EndUseSkill();
+    }
+
+    public void PlayFootstep()
+    {
+        GetComponentInParent<PlayerMovement>().PlayFootstep();
+    }
 }

@@ -9,21 +9,24 @@ public class PlayerGuard : MonoBehaviour
     [SerializeField] GameObject perfectGuardVFX;
     [SerializeField] GameObject normalGuardVFX;
     [SerializeField] ParticleSystem parryVFX;
+    [SerializeField] AudioClip parrySFX;
     [SerializeField] float slowTime = 5f;
     [SerializeField] int maxParryPoint = 4;
 
+    AudioSource audioSource;
     PlayerController playerController;
     Animator animator;
 
     float parryTimer = 0f;
-    int currentParryPoint = 0;
+    public int currentParryPoint { get; private set; } = 0;
     public bool canParry { get; private set; } = false;
     public bool isGuarding { get; private set; } = false;
 
     public event Action<int, int> OnParryEnergyChanged;
 
-    private void Awake()
+    void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
         playerController = GetComponent<PlayerController>();
         animator = GetComponentInChildren<Animator>();
     }
@@ -68,7 +71,8 @@ public class PlayerGuard : MonoBehaviour
     public void SuccessParry(Vector3 hitDirection)
     {
         // 패리 이펙트
-        parryVFX.Play();
+        parryVFX.Play();        
+        audioSource.PlayOneShot(parrySFX, 0.5f);
 
         // 패리 카운트 추가
         currentParryPoint++;
@@ -88,6 +92,16 @@ public class PlayerGuard : MonoBehaviour
         // 슬로우 모션
         StartCoroutine(SlowMotion());
     }
+
+    public void UseParryPoint(int amount)
+    {
+        currentParryPoint -= amount;
+        if (currentParryPoint <= 0)
+            currentParryPoint = 0;
+
+        OnParryEnergyChanged(currentParryPoint, maxParryPoint);
+    }
+
 
     IEnumerator SlowMotion()
     {

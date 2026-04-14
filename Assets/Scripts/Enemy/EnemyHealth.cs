@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class EnemyHealth : MonoBehaviour
 {
@@ -9,16 +11,20 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] float hitDuration = 0.1f;
     [SerializeField] Material hitMaterial;
     [SerializeField] GameObject damageTextPrefab;
+    [SerializeField] GameObject deadParticleVFX;
+    [SerializeField] AudioClip hitSFX;
 
     SkinnedMeshRenderer[] renderers;
     MeshRenderer[] renderers2;
     Material[][] originMaterials;
     Material[][] originMaterials2;
 
+    AudioSource audioSource;
     int currentHealth = 0;
 
     void Awake()
     {
+        audioSource = GetComponent<AudioSource>(); 
         renderers = GetComponentsInChildren<SkinnedMeshRenderer>();
         renderers2 = GetComponentsInChildren<MeshRenderer>();
 
@@ -52,11 +58,27 @@ public class EnemyHealth : MonoBehaviour
     {
         currentHealth -= amount;
 
-        StartCoroutine(HitFlash());
+        // 피격 이펙트
+        StartCoroutine(HitFlash());        
+        audioSource.PlayOneShot(hitSFX);
+
+        // 피격 데미지 출력
         GameObject damageText = Instantiate(damageTextPrefab, transform.position, Quaternion.identity);
         damageText.GetComponent<DamageText>().damageText.color = Color.black;
         damageText.GetComponent<DamageText>().damageText.text = amount.ToString();
         Debug.Log("Current Health :" + currentHealth);
+
+        // 사망 처리 
+        if(currentHealth <= 0)
+        {
+            ProcessDead(); 
+        }
+    }
+
+    void ProcessDead()
+    {
+        Instantiate(deadParticleVFX, transform.position, Quaternion.identity);
+        Destroy(gameObject);
     }
 
     private IEnumerator HitFlash()
