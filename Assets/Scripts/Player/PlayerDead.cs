@@ -1,5 +1,6 @@
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.Rendering;
 
 public class PlayerDead : MonoBehaviour
@@ -9,8 +10,10 @@ public class PlayerDead : MonoBehaviour
     [SerializeField] float rasieStartTime = 1f;
     [SerializeField] ParticleSystem sequenceVFX;
     [SerializeField] ParticleSystem disappearVFX;
-    
+    [SerializeField] AudioClip sequenceSFX;
+    [SerializeField] AudioClip disappearSFX;
 
+    AudioSource audioSource;
     SkinnedMeshRenderer[] skinnedRenderers;
     MeshRenderer[] meshRenderers;
     Animator animator;
@@ -26,6 +29,8 @@ public class PlayerDead : MonoBehaviour
 
     void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
+
         skinnedRenderers = GetComponentsInChildren<SkinnedMeshRenderer>();
         meshRenderers = GetComponentsInChildren<MeshRenderer>();
 
@@ -38,7 +43,7 @@ public class PlayerDead : MonoBehaviour
     }
 
     public void StartDead()
-    {
+    {        
         animator.SetTrigger("Dead");
 
         // 충돌 처리 모두 끄기
@@ -74,6 +79,7 @@ public class PlayerDead : MonoBehaviour
         {
             if(!isSequenceVFXPlay)
             {
+                audioSource.PlayOneShot(sequenceSFX);
                 sequenceVFX.Play();
                 isSequenceVFXPlay = true;
             }
@@ -97,6 +103,7 @@ public class PlayerDead : MonoBehaviour
     {
         // 이펙트 실행
         disappearVFX.Play();
+        audioSource.PlayOneShot(disappearSFX);
 
         // 모든 렌더러를 꺼준다 (플레이어 숨기기)
         foreach (var renderer in skinnedRenderers)

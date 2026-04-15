@@ -15,4 +15,9 @@ public class AnimationEventReceiver : MonoBehaviour
     {
         GetComponentInParent<PlayerMovement>().PlayFootstep();
     }
+
+    public void EndClose()
+    {
+        GetComponentInParent<EnemySpawnPortal>().EndClose();
+    }
 }
