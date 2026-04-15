@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -12,11 +13,14 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] ParticleSystem healVFX;
     [SerializeField] GameObject damageTextPrefab;
 
+    [SerializeField] AudioClip healingSFX;
+
     SkinnedMeshRenderer[] renderers;
     MeshRenderer[] renderers2;
     Material[][] originMaterials;
     Material[][] originMaterials2;
 
+    AudioSource audioSource;
     PlayerController playerController;
     PlayerGuard guard;
     Animator animator;
@@ -27,6 +31,7 @@ public class PlayerHealth : MonoBehaviour
 
     void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
         playerController = GetComponent<PlayerController>();
         guard = GetComponent<PlayerGuard>();
         animator = GetComponentInChildren<Animator>();
@@ -173,6 +178,8 @@ public class PlayerHealth : MonoBehaviour
     void TakeHeal(int amount)
     {
         healVFX.Play();
+        audioSource.PlayOneShot(healingSFX);
+
         currentHealth += amount;
         if (currentHealth > maxHealth)
             currentHealth = maxHealth;

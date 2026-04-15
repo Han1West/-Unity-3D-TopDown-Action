@@ -12,7 +12,7 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] Material hitMaterial;
     [SerializeField] GameObject damageTextPrefab;
     [SerializeField] GameObject deadParticleVFX;
-    [SerializeField] AudioClip hitSFX;
+    [SerializeField] AudioClip hitSFX;    
 
     SkinnedMeshRenderer[] renderers;
     MeshRenderer[] renderers2;
@@ -21,6 +21,7 @@ public class EnemyHealth : MonoBehaviour
 
     AudioSource audioSource;
     int currentHealth = 0;
+    public Action OnDamaged;
 
     void Awake()
     {
@@ -68,8 +69,10 @@ public class EnemyHealth : MonoBehaviour
         damageText.GetComponent<DamageText>().damageText.text = amount.ToString();
         Debug.Log("Current Health :" + currentHealth);
 
+        OnDamaged?.Invoke();
+
         // »ç¸Á Ã³¸® 
-        if(currentHealth <= 0)
+        if (currentHealth <= 0)
         {
             ProcessDead(); 
         }

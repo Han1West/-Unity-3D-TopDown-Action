@@ -265,6 +265,7 @@ MonoBehaviour:
   hitMaterial: {fileID: 2100000, guid: 97d087e0ca1747141b9e2870dd6782c0, type: 2}
   healVFX: {fileID: 5102622782596263249}
   damageTextPrefab: {fileID: 3411061218343408644, guid: ad3abcc8b600a3f48b8941957148cb21, type: 3}
+  healingSFX: {fileID: 8300000, guid: f78cfe230542fec41806f151524b2f73, type: 3}
 --- !u!136 &7182370326062417897
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -305,6 +306,8 @@ MonoBehaviour:
   rasieStartTime: 1
   sequenceVFX: {fileID: 6158252674392534015}
   disappearVFX: {fileID: 6867999389852257534}
+  sequenceSFX: {fileID: 8300000, guid: a21f51662332c9640b7bcab5c26e8815, type: 3}
+  disappearSFX: {fileID: 8300000, guid: ed10843b86f6d0043a0228de2660e12e, type: 3}
 --- !u!114 &726551430199088317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -319,6 +322,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSkill
   skillObject: {fileID: 2408965650304038288, guid: 0387060a3fb5d894db3055873bfed017, type: 3}
   skillDelayTime: 1
+  chargeSFX: {fileID: 8300000, guid: 8652d0f90b8e44b41abb2a8dcc94bd96, type: 3}
+  fireSFX: {fileID: 8300000, guid: abb2ccc91e952784a9626e7b0a8802de, type: 3}
   needSkillPoint: 2
 --- !u!82 &1566533349006227388
 AudioSource:
