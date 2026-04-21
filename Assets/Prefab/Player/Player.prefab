@@ -49,7 +49,6 @@ GameObject:
   - component: {fileID: 5877360298927788820}
   - component: {fileID: 8487504048312291616}
   - component: {fileID: 7253051500552171613}
-  - component: {fileID: 7182370326062417897}
   - component: {fileID: 8711503112827140583}
   - component: {fileID: 726551430199088317}
   - component: {fileID: 1566533349006227388}
@@ -148,7 +147,7 @@ CharacterController:
   m_Height: 2
   m_Radius: 0.5
   m_SlopeLimit: 45
-  m_StepOffset: 0.3
+  m_StepOffset: 0.1
   m_SkinWidth: 0.0001
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.85, z: 0}
@@ -223,7 +222,7 @@ MonoBehaviour:
   - {fileID: 6393123117414928320}
   - {fileID: 8975351405199169040}
   - {fileID: 4257754509983590606}
-  attackHitbox: {fileID: 5773833194540537617}
+  attackHitbox: {fileID: 9071584348749358932}
   attackSFX:
   - {fileID: 8300000, guid: 22b25773c306aa149a6b5940c099486a, type: 3}
   - {fileID: 8300000, guid: c85f661dba3788a4b87c7be34be552bd, type: 3}
@@ -266,29 +265,6 @@ MonoBehaviour:
   healVFX: {fileID: 5102622782596263249}
   damageTextPrefab: {fileID: 3411061218343408644, guid: ad3abcc8b600a3f48b8941957148cb21, type: 3}
   healingSFX: {fileID: 8300000, guid: f78cfe230542fec41806f151524b2f73, type: 3}
---- !u!136 &7182370326062417897
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1216229342499675051}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.85, z: 0}
 --- !u!114 &8711503112827140583
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -439,7 +415,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7429534401151099759
 Transform:
   m_ObjectHideFlags: 0
@@ -472,7 +448,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 2.9542437, y: 0.4670874, z: 1.5293427}
   m_Center: {x: 0.080329895, y: 0.15691036, z: 0.26467133}

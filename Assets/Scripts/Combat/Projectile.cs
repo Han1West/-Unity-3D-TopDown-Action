@@ -16,8 +16,9 @@ public class Projectile : MonoBehaviour
         rb.linearVelocity = transform.forward * speed;
     }
 
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider other)
     {
         Destroy(this.gameObject);
     }
+
 }

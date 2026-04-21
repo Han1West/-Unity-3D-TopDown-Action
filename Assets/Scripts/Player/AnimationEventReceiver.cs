@@ -20,4 +20,19 @@ public class AnimationEventReceiver : MonoBehaviour
     {
         GetComponentInParent<EnemySpawnPortal>().EndClose();
     }
+
+    public void ActivateTurtleAttack()
+    {
+        GetComponentInParent<EnemyTurtle>().ActivateTurtleAttack();
+    }
+
+    public void DeactivateTurtleAttack()
+    {
+        GetComponentInParent<EnemyTurtle>().DeactivateTurtleAttack();
+    }
+
+    public void ActivateSlimeAttack()
+    {
+        GetComponentInParent<EnemySlime>().ActivateSlimeAttack();
+    }
 }

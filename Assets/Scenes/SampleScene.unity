@@ -288,8 +288,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -416,6 +416,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Turtle Spawn Portal Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 7969781657264440998, guid: 49ba898d8bdf90e4fb09e308eb7ab7fb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -514,7 +518,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0.5, y: 0, z: 0, w: 0.8660254}
-  m_LocalPosition: {x: 7.6584573, y: 9.167072, z: -26.082603}
+  m_LocalPosition: {x: 7.6583266, y: 9.167072, z: -26.082603}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2823,6 +2827,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1545681449
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1924568415}
+    m_Modifications:
+    - target: {fileID: 4346896521610552367, guid: c7c5f7e0310095442a3c793694c4a512, type: 3}
+      propertyPath: m_Name
+      value: Enemy Slime
+      objectReference: {fileID: 0}
+    - target: {fileID: 5036975839595617103, guid: c7c5f7e0310095442a3c793694c4a512, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -3.1924188
+      objectReference: {fileID: 0}
+    - target: {fileID: 5036975839595617103, guid: c7c5f7e0310095442a3c793694c4a512, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5036975839595617103, guid: c7c5f7e0310095442a3c793694c4a512, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -15.441623
+      objectReference: {fileID: 0}
+    - target: {fileID: 5036975839595617103, guid: c7c5f7e0310095442a3c793694c4a512, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5036975839595617103, guid: c7c5f7e0310095442a3c793694c4a512, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5036975839595617103, guid: c7c5f7e0310095442a3c793694c4a512, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5036975839595617103, guid: c7c5f7e0310095442a3c793694c4a512, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5036975839595617103, guid: c7c5f7e0310095442a3c793694c4a512, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5036975839595617103, guid: c7c5f7e0310095442a3c793694c4a512, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5036975839595617103, guid: c7c5f7e0310095442a3c793694c4a512, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c7c5f7e0310095442a3c793694c4a512, type: 3}
 --- !u!1 &1575599665
 GameObject:
   m_ObjectHideFlags: 0
@@ -3050,7 +3111,7 @@ Transform:
   m_GameObject: {fileID: 1640317514}
   serializedVersion: 2
   m_LocalRotation: {x: 0.5, y: 0, z: 0, w: 0.8660254}
-  m_LocalPosition: {x: 7.6584573, y: 9.167072, z: -26.082603}
+  m_LocalPosition: {x: 7.6583266, y: 9.167072, z: -26.082603}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3104,6 +3165,11 @@ MonoBehaviour:
     Time: 0
     Smoothing: 0
     IgnoreY: 0
+--- !u!4 &1869689022 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5036975839595617103, guid: c7c5f7e0310095442a3c793694c4a512, type: 3}
+  m_PrefabInstance: {fileID: 1545681449}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1903880926
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3192,6 +3258,7 @@ Transform:
   m_Children:
   - {fileID: 250523215}
   - {fileID: 1033379904}
+  - {fileID: 1869689022}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1939482689
@@ -3535,6 +3602,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 726551430199088317, guid: b91fee3c0636da64eb8e706c5847e74d, type: 3}
+      propertyPath: skillVoiceSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: b25720ab6214cc84488f2cc49dca2791, type: 3}
     - target: {fileID: 1216229342499675051, guid: b91fee3c0636da64eb8e706c5847e74d, type: 3}
       propertyPath: m_Name
       value: Player
@@ -3579,6 +3650,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5877360298927788820, guid: b91fee3c0636da64eb8e706c5847e74d, type: 3}
+      propertyPath: attackVoiceSFX.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5877360298927788820, guid: b91fee3c0636da64eb8e706c5847e74d, type: 3}
+      propertyPath: 'attackVoiceSFX.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 6625f49c0c168c849a3fc0da4f1a55e1, type: 3}
+    - target: {fileID: 5877360298927788820, guid: b91fee3c0636da64eb8e706c5847e74d, type: 3}
+      propertyPath: 'attackVoiceSFX.Array.data[1]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 8c09ffdd9bac6b34187e7b4e276f192e, type: 3}
+    - target: {fileID: 5877360298927788820, guid: b91fee3c0636da64eb8e706c5847e74d, type: 3}
+      propertyPath: 'attackVoiceSFX.Array.data[2]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 58142413a922c8e46a891c984fca74e6, type: 3}
+    - target: {fileID: 7253051500552171613, guid: b91fee3c0636da64eb8e706c5847e74d, type: 3}
+      propertyPath: hitVoiceSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 0abd4ac29b8c91949a5acdc1965d6741, type: 3}
+    - target: {fileID: 7253051500552171613, guid: b91fee3c0636da64eb8e706c5847e74d, type: 3}
+      propertyPath: hitwithGuardSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 46a216badcf566a4e874172a8634c95b, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3651,7 +3746,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2518345393667701712, guid: 0540dc8a9400cc74aab6d375f7ccfb0b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.222578
+      value: 3.16
       objectReference: {fileID: 0}
     - target: {fileID: 2518345393667701712, guid: 0540dc8a9400cc74aab6d375f7ccfb0b, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3659,7 +3754,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2518345393667701712, guid: 0540dc8a9400cc74aab6d375f7ccfb0b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4.0446215
+      value: 4.04
       objectReference: {fileID: 0}
     - target: {fileID: 2518345393667701712, guid: 0540dc8a9400cc74aab6d375f7ccfb0b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3693,6 +3788,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy Cannon
       objectReference: {fileID: 0}
+    - target: {fileID: 7833904808732425175, guid: 0540dc8a9400cc74aab6d375f7ccfb0b, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8130525029488354866, guid: 0540dc8a9400cc74aab6d375f7ccfb0b, type: 3}
+      propertyPath: fireSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 2f10976dc8895834fb0b8f6a850b364f, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

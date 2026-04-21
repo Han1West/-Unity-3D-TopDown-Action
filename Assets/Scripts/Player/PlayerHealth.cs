@@ -14,6 +14,8 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] GameObject damageTextPrefab;
 
     [SerializeField] AudioClip healingSFX;
+    [SerializeField] AudioClip hitVoiceSFX;
+    [SerializeField] AudioClip hitwithGuardSFX;
 
     SkinnedMeshRenderer[] renderers;
     MeshRenderer[] renderers2;
@@ -59,9 +61,25 @@ public class PlayerHealth : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        Debug.Log(other);
         // 데미지
         if (other.CompareTag("EnemyAttack"))
-        {
+        {            
+            Vector3 hitDirection = other.attachedRigidbody.transform.position - transform.position;
+            hitDirection.Normalize();
+
+            int damage = other.GetComponent<AttackHitbox>().damage;
+
+            // 패리 성공
+            if (guard.canParry)
+                guard.SuccessParry(hitDirection);
+            // 실패
+            else
+                TakeDamage(damage, hitDirection);
+        }
+
+        if(other.CompareTag("EnemyProjectile"))
+        {            
             Vector3 hitDirection = other.transform.position - transform.position;
             hitDirection.Normalize();
 
@@ -96,6 +114,7 @@ public class PlayerHealth : MonoBehaviour
         // 가드 중 
         if(guard.isGuarding)
         {
+            audioSource.PlayOneShot(hitwithGuardSFX, 0.5f);
             // 체력 감소 비율 감쇄
             takenDamage = Mathf.FloorToInt(amount * (1 - damageDeclineRate));
             currentHealth -= takenDamage;
@@ -110,7 +129,11 @@ public class PlayerHealth : MonoBehaviour
             }
         }            
         else
+        {
+            audioSource.PlayOneShot(hitVoiceSFX, 0.5f);
             currentHealth -= takenDamage;
+        }
+            
 
         GameObject damageText = Instantiate(damageTextPrefab, transform.position, Quaternion.identity);
         damageText.GetComponent<DamageText>().damageText.text = takenDamage.ToString();
@@ -119,9 +142,11 @@ public class PlayerHealth : MonoBehaviour
         StartCoroutine(HitFlash());
         
         Debug.Log("Current Health :" + currentHealth);
+        // 이벤트 발생
+        OnHealthChanged(currentHealth, maxHealth);
 
         // 피가 0 이하면 사망처리
-        if(currentHealth <= 0)
+        if (currentHealth <= 0)
         {
             playerController.ChangeState(PlayerState.Dead);
             return;
@@ -132,10 +157,7 @@ public class PlayerHealth : MonoBehaviour
         {
             animator.SetTrigger("Hit");
             animator.SetLayerWeight(upperLayerIndex, 1f);
-        }
-
-        // 이벤트 발생
-        OnHealthChanged(currentHealth, maxHealth);
+        }        
     }
 
     public void EndHit()

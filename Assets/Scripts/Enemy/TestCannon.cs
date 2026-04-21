@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TestCannon : MonoBehaviour
+public class EnemyCannon : MonoBehaviour
 {
     [SerializeField] GameObject projectilePrefab;
     [SerializeField] Transform projectileSpawnPosition;
