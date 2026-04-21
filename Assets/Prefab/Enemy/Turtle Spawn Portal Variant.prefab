@@ -121,7 +121,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1281832650720232818, guid: 30d7a6bfc62732349b5449c249422f67, type: 3}
       propertyPath: lifeTime
-      value: 5
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 1281832650720232818, guid: 30d7a6bfc62732349b5449c249422f67, type: 3}
       propertyPath: spawnEnemy

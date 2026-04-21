@@ -16,8 +16,7 @@ public class PlayerDead : MonoBehaviour
     AudioSource audioSource;
     SkinnedMeshRenderer[] skinnedRenderers;
     MeshRenderer[] meshRenderers;
-    Animator animator;
-    CapsuleCollider hitCollider;
+    Animator animator;    
     CharacterController characterController;
 
     CinemachineCamera cinemachineCamera;
@@ -34,8 +33,7 @@ public class PlayerDead : MonoBehaviour
         skinnedRenderers = GetComponentsInChildren<SkinnedMeshRenderer>();
         meshRenderers = GetComponentsInChildren<MeshRenderer>();
 
-        animator = GetComponentInChildren<Animator>();
-        hitCollider = GetComponent<CapsuleCollider>();
+        animator = GetComponentInChildren<Animator>();        
         characterController = GetComponent<CharacterController>();
 
         cinemachineCamera = FindFirstObjectByType<CinemachineCamera>();
@@ -46,8 +44,7 @@ public class PlayerDead : MonoBehaviour
     {        
         animator.SetTrigger("Dead");
 
-        // 충돌 처리 모두 끄기
-        hitCollider.enabled = false;
+        // 충돌 처리 모두 끄기        
         characterController.enabled = false;
         isDeadSequencePlaying = true;
 
@@ -79,7 +76,7 @@ public class PlayerDead : MonoBehaviour
         {
             if(!isSequenceVFXPlay)
             {
-                audioSource.PlayOneShot(sequenceSFX);
+                audioSource.PlayOneShot(sequenceSFX, 0.5f);
                 sequenceVFX.Play();
                 isSequenceVFXPlay = true;
             }
@@ -103,7 +100,7 @@ public class PlayerDead : MonoBehaviour
     {
         // 이펙트 실행
         disappearVFX.Play();
-        audioSource.PlayOneShot(disappearSFX);
+        audioSource.PlayOneShot(disappearSFX, 0.5f);
 
         // 모든 렌더러를 꺼준다 (플레이어 숨기기)
         foreach (var renderer in skinnedRenderers)

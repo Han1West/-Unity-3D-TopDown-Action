@@ -47,8 +47,7 @@ public class EnemyHealth : MonoBehaviour
     }
 
     void OnTriggerEnter(Collider other)
-    {
-        Debug.Log(other.tag);
+    {        
         if (other.CompareTag("PlayerAttack"))
         {
             int damage = other.GetComponent<AttackHitbox>().damage;
@@ -80,7 +79,12 @@ public class EnemyHealth : MonoBehaviour
 
     void ProcessDead()
     {
+        // 죽음 파티클 재생
         Instantiate(deadParticleVFX, transform.position, Quaternion.identity);
+
+        // 죽음 사운드 재생
+        GetComponent<EnemyDeathSound>()?.Play();
+
         Destroy(gameObject);
     }
 

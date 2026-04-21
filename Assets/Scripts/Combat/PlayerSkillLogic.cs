@@ -16,6 +16,11 @@ public class PlayerSkillLogic : MonoBehaviour
 
         if(lifeTimer > 1f)
         {
+            if(!skillHitboxes.enabled)
+            {
+                skillHitboxes.enabled = true;
+            }
+
             skillHitboxes.radius += speed * Time.deltaTime;
             if(skillHitboxes.radius > maxRadius)
                  skillHitboxes.radius = maxRadius;

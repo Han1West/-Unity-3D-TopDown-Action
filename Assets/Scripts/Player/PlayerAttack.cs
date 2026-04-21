@@ -8,8 +8,9 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] float[] attackDuration;
     [SerializeField] float resetTime = 1f;
     [SerializeField] ParticleSystem[] attackPartciles;
-    [SerializeField] GameObject attackHitbox;
+    [SerializeField] BoxCollider attackHitbox;
     [SerializeField] AudioClip[] attackSFX;
+    [SerializeField] AudioClip[] attackVoiceSFX;
     
 
     PlayerController playerController;
@@ -45,7 +46,8 @@ public class PlayerAttack : MonoBehaviour
 
     public void StartAttack()
     {
-        attackHitbox.SetActive(false);
+        attackHitbox.enabled = false;
+        //attackHitbox.SetActive(false);
         isAttacking = true;
         attackTimer = attackDuration[attackIndex];
         animator.SetBool("IsAttacking", true);
@@ -59,7 +61,8 @@ public class PlayerAttack : MonoBehaviour
     {
         isAttacking = false;
         animator.SetBool("IsAttacking", false);
-        attackHitbox.SetActive(false);        
+        attackHitbox.enabled = false;
+        //attackHitbox.SetActive(false);        
     }
 
     public void UpdateAttack()
@@ -96,8 +99,11 @@ public class PlayerAttack : MonoBehaviour
         resetTimer = resetTime;
 
         // 공격 이펙트 소환
-        attackPartciles[index].Play();
-        attackHitbox.SetActive(true);
+        attackPartciles[index].Play();        
+        attackHitbox.enabled = true;
+
+        // 소리 재생
+        audioSource.PlayOneShot(attackVoiceSFX[index], 0.5f);
         audioSource.PlayOneShot(attackSFX[index], 0.5f);        
     }
 

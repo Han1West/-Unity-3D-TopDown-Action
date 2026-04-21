@@ -19,7 +19,7 @@ public class NavMonsterBase : MonoBehaviour
     protected float lastAttackTime = 0f;
     MonsterState currentState = MonsterState.Idle;
 
-    void Awake()
+    protected virtual void Awake()
     {
         audioSource = GetComponent<AudioSource>();
         animator = GetComponentInChildren<Animator>();
@@ -52,6 +52,7 @@ public class NavMonsterBase : MonoBehaviour
 
             case MonsterState.Chase:
                 // 추적                
+                agent.updateRotation = true;
                 agent.SetDestination(player.transform.position);
 
                 // 공격 사거리 이내 -> 공격
@@ -66,7 +67,8 @@ public class NavMonsterBase : MonoBehaviour
             case MonsterState.Attack:
                 // 추적 멈춤
                 agent.ResetPath();
-
+                // 플레이를 지속적으로 쳐다봄
+                LookAtPlayer();
                 // 거리 멀어짐 -> 추적
                 if (distToPlayer > attackRange)
                     ChangeState(MonsterState.Chase);
@@ -78,9 +80,22 @@ public class NavMonsterBase : MonoBehaviour
         }        
     }
 
-    void DoAttack()
+    private void LookAtPlayer()
     {
-        UnityEngine.Debug.Log("DoAttack");
+        agent.updateRotation = false;        
+
+        Vector3 dirToPlayer = (player.transform.position - transform.position).normalized;
+        dirToPlayer.y = -0f;
+
+        if (dirToPlayer != Vector3.zero)
+        {
+            Quaternion targerRotation = Quaternion.LookRotation(dirToPlayer);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targerRotation, Time.deltaTime * 10f);
+        }
+    }
+
+    void DoAttack()
+    {        
         animator.SetTrigger("Attack");
         lastAttackTime = Time.time;
         // 자식 클래스에서 공격 로직 수행
