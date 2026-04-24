@@ -40,11 +40,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2518345393667701712}
-  - component: {fileID: 5307974770659060926}
   - component: {fileID: 7833904808732425175}
   - component: {fileID: 8130525029488354866}
   - component: {fileID: 3018649494986376683}
   - component: {fileID: 652533548203805890}
+  - component: {fileID: 3856924696199311338}
   m_Layer: 6
   m_Name: Enemy Cannon
   m_TagString: Untagged
@@ -69,25 +69,6 @@ Transform:
   - {fileID: 5686010467007975084}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -93.809, z: 0}
---- !u!114 &5307974770659060926
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4048839259002842177}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e8d540a28f39fb40bcbad4ca68f86e7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
-  maxHealth: 100
-  damageDeclineRate: 0.6
-  hitDuration: 0.1
-  hitMaterial: {fileID: 2100000, guid: 97d087e0ca1747141b9e2870dd6782c0, type: 2}
-  damageTextPrefab: {fileID: 3411061218343408644, guid: ad3abcc8b600a3f48b8941957148cb21, type: 3}
-  deadParticleVFX: {fileID: 464484824330775846, guid: 51e4770ec44023e42acc5689633e29bb, type: 3}
-  hitSFX: {fileID: 8300000, guid: 5259e1f327d93c34a9d57a191182086d, type: 3}
 --- !u!65 &7833904808732425175
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -125,6 +106,7 @@ MonoBehaviour:
   projectileSpawnPosition: {fileID: 5686010467007975084}
   fireSpeed: 0
   fireDelayTime: 2
+  fireSFX: {fileID: 8300000, guid: 2f10976dc8895834fb0b8f6a850b364f, type: 3}
 --- !u!54 &3018649494986376683
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -249,6 +231,25 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &3856924696199311338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4048839259002842177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d42248e56400314a94480a773c18dc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CommonEnemyHealth
+  maxHealth: 100
+  damageDeclineRate: 0.6
+  hitDuration: 0.1
+  hitMaterial: {fileID: 2100000, guid: 97d087e0ca1747141b9e2870dd6782c0, type: 2}
+  damageTextPrefab: {fileID: 3411061218343408644, guid: ad3abcc8b600a3f48b8941957148cb21, type: 3}
+  hitSFX: {fileID: 8300000, guid: 5259e1f327d93c34a9d57a191182086d, type: 3}
+  deadParticleVFX: {fileID: 464484824330775846, guid: 51e4770ec44023e42acc5689633e29bb, type: 3}
 --- !u!1 &5070418638478521125
 GameObject:
   m_ObjectHideFlags: 0

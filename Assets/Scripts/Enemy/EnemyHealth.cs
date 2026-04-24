@@ -10,8 +10,7 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] float damageDeclineRate = 0.6f;
     [SerializeField] float hitDuration = 0.1f;
     [SerializeField] Material hitMaterial;
-    [SerializeField] GameObject damageTextPrefab;
-    [SerializeField] GameObject deadParticleVFX;
+    [SerializeField] GameObject damageTextPrefab;    
     [SerializeField] AudioClip hitSFX;    
 
     SkinnedMeshRenderer[] renderers;
@@ -77,16 +76,7 @@ public class EnemyHealth : MonoBehaviour
         }
     }
 
-    void ProcessDead()
-    {
-        // 죽음 파티클 재생
-        Instantiate(deadParticleVFX, transform.position, Quaternion.identity);
-
-        // 죽음 사운드 재생
-        GetComponent<EnemyDeathSound>()?.Play();
-
-        Destroy(gameObject);
-    }
+    protected virtual void ProcessDead() { }
 
     private IEnumerator HitFlash()
     {
@@ -118,5 +108,10 @@ public class EnemyHealth : MonoBehaviour
 
         for (int i = 0; i < renderers2.Length; ++i)
             renderers2[i].materials = originMaterials2[i];
+    }
+
+    public float GetCurrentHpPercent()
+    {
+        return currentHealth / maxHealth;
     }
 }

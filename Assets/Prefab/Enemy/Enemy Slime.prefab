@@ -237,7 +237,8 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4671522769939536705, guid: 0ac691b700e643c4998cd48a05cde5cc, type: 3}
     m_RemovedGameObjects:
     - {fileID: 4074685577401142823, guid: 0ac691b700e643c4998cd48a05cde5cc, type: 3}
     m_AddedGameObjects:
@@ -257,6 +258,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7276483840890442055, guid: 0ac691b700e643c4998cd48a05cde5cc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1409782718348556432}
+    - targetCorrespondingSourceObject: {fileID: 7276483840890442055, guid: 0ac691b700e643c4998cd48a05cde5cc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1215221718877401477}
   m_SourcePrefab: {fileID: 100100000, guid: 0ac691b700e643c4998cd48a05cde5cc, type: 3}
 --- !u!4 &600334697376303036 stripped
 Transform:
@@ -321,6 +325,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyDeathSound
   deathSFX: {fileID: 8300000, guid: d753541d7e893e343bdea4168424341b, type: 3}
+--- !u!114 &1215221718877401477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4346896521610552367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d42248e56400314a94480a773c18dc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CommonEnemyHealth
+  maxHealth: 100
+  damageDeclineRate: 0.6
+  hitDuration: 0.1
+  hitMaterial: {fileID: 2100000, guid: 97d087e0ca1747141b9e2870dd6782c0, type: 2}
+  damageTextPrefab: {fileID: 3411061218343408644, guid: ad3abcc8b600a3f48b8941957148cb21, type: 3}
+  hitSFX: {fileID: 8300000, guid: 5259e1f327d93c34a9d57a191182086d, type: 3}
+  deadParticleVFX: {fileID: 464484824330775846, guid: 51e4770ec44023e42acc5689633e29bb, type: 3}
 --- !u!4 &5036975839595617103 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2111882621109480999, guid: 0ac691b700e643c4998cd48a05cde5cc, type: 3}

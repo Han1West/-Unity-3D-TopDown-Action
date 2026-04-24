@@ -9,6 +9,8 @@ TagManager:
   - Heal
   - ClickBlock
   - EnemyProjectile
+  - EnemySpecialAttack
+  - EnemyDoTAttack
   layers:
   - Default
   - TransparentFX

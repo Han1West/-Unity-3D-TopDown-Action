@@ -5,17 +5,10 @@ public class EnemyTurtle : NavMonsterBase
     [SerializeField] BoxCollider attackHitbox;
     [SerializeField] AudioClip attackSFX;
 
-    AudioSource audioSource;
-
-    protected override void Awake()
-    {
-        base.Awake();
-        audioSource = GetComponent<AudioSource>();
-    }
 
     protected override void Attack()
     {
-        
+        animator.SetTrigger("Attack");
     }
 
     public void ActivateTurtleAttack()
