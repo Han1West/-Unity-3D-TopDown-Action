@@ -11,8 +11,9 @@ public class NavMonsterBase : MonoBehaviour
     [SerializeField] float attackCooldown = 1.5f;
     [SerializeField] float stunDuration = 0.5f;
 
-    AudioSource audioSource;
-    Animator animator;
+    protected AudioSource audioSource;
+    protected Animator animator;
+
     PlayerController player;
     NavMeshAgent agent;
     protected bool isStunned = false;
@@ -96,7 +97,6 @@ public class NavMonsterBase : MonoBehaviour
 
     void DoAttack()
     {        
-        animator.SetTrigger("Attack");
         lastAttackTime = Time.time;
         // 자식 클래스에서 공격 로직 수행
         Attack();

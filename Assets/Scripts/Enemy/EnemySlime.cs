@@ -6,16 +6,9 @@ public class EnemySlime : NavMonsterBase
     [SerializeField] Transform projectileSpawnPoint;
     [SerializeField] AudioClip attackSFX;
 
-    AudioSource audioSource;
-
-    protected override void Awake()
-    {
-        base.Awake();
-        audioSource = GetComponent<AudioSource>();
-    }
-
     protected override void Attack()
     {
+        animator.SetTrigger("Attack");
         audioSource.PlayOneShot(attackSFX, 0.3f);
     }
 

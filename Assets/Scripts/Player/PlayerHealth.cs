@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -11,7 +12,7 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] float hitDuration = 0.1f;
     [SerializeField] Material hitMaterial;
     [SerializeField] ParticleSystem healVFX;
-    [SerializeField] GameObject damageTextPrefab;
+    [SerializeField] GameObject damageTextPrefab;    
 
     [SerializeField] AudioClip healingSFX;
     [SerializeField] AudioClip hitVoiceSFX;
@@ -28,6 +29,10 @@ public class PlayerHealth : MonoBehaviour
     Animator animator;
     int currentHealth = 0;
     int upperLayerIndex;
+
+    Dictionary<Collider, AttackHitbox> hitboxCache;
+    Dictionary<Collider, float> lastHitTime;
+    
 
     public event Action<int, int> OnHealthChanged;
 
@@ -52,6 +57,9 @@ public class PlayerHealth : MonoBehaviour
         {
             originMaterials2[i] = renderers2[i].materials;
         }
+
+        hitboxCache = new Dictionary<Collider, AttackHitbox>();
+        lastHitTime = new Dictionary<Collider, float>();
     }
     void Start()
     {
@@ -60,8 +68,7 @@ public class PlayerHealth : MonoBehaviour
     }
 
     void OnTriggerEnter(Collider other)
-    {
-        Debug.Log(other);
+    {        
         // 데미지
         if (other.CompareTag("EnemyAttack"))
         {            
@@ -69,7 +76,7 @@ public class PlayerHealth : MonoBehaviour
             hitDirection.Normalize();
 
             int damage = other.GetComponent<AttackHitbox>().damage;
-
+            
             // 패리 성공
             if (guard.canParry)
                 guard.SuccessParry(hitDirection);
@@ -93,6 +100,37 @@ public class PlayerHealth : MonoBehaviour
                 TakeDamage(damage, hitDirection);
         }
 
+        if(other.CompareTag("EnemySpecialAttack"))
+        {
+            Vector3 hitDirection = other.attachedRigidbody.transform.position - transform.position;
+            hitDirection.Normalize();
+
+            int damage = other.GetComponent<AttackHitbox>().damage;
+
+            // 패리 성공
+            if (guard.canParry)
+            {
+                guard.SuccessParry(hitDirection);
+                // 대상에게 스턴 부여
+                other.GetComponentInParent<BossDragon>().GetStunned();
+            }                
+            // 실패
+            else
+                TakeDamage(damage, hitDirection, true);
+        }
+
+        // 도트 데미지
+        if(other.CompareTag("EnemyDoTAttack"))
+        {
+            // 현재 들어온 도트공격 딕셔너리에 추가
+            var hitbox = other.GetComponent<AttackHitbox>();            
+
+            if(hitbox != null)
+            {                
+                hitboxCache[other] = hitbox;
+            }            
+        }
+
         // 힐
         if (other.CompareTag("Heal"))
         {            
@@ -107,12 +145,50 @@ public class PlayerHealth : MonoBehaviour
         }        
     }
 
-    void TakeDamage(int amount, Vector3 hitDirection)
+    void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("EnemyDoTAttack"))
+        {
+            if (!hitboxCache.TryGetValue(other, out var hitbox))
+                return;
+
+            float lastTime = 0f;
+            lastHitTime.TryGetValue(other, out lastTime);
+            
+            // 데미지 적용 시간 안지났으면 무시
+            if (Time.time - lastTime < hitbox.reapplyTime)
+                return;
+
+            // 갱신
+            lastHitTime[other] = Time.time;
+
+            Vector3 hitDirection = other.transform.position - transform.position;
+            hitDirection.Normalize();
+
+            // 패리 성공
+            if (guard.canParry)
+                guard.SuccessParry(hitDirection);
+            // 실패
+            else
+                TakeDamage(hitbox.damage, hitDirection);
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if(other.CompareTag("EnemyDoTAttack"))
+        {
+            hitboxCache.Remove(other);
+            lastHitTime.Remove(other);
+        }
+    }
+
+    void TakeDamage(int amount, Vector3 hitDirection, bool isSpecial = false)
     {
         int takenDamage = amount;
 
-        // 가드 중 
-        if(guard.isGuarding)
+        // 가드 중 & 스페셜 어택은 가드 불가
+        if(guard.isGuarding && !isSpecial)
         {
             audioSource.PlayOneShot(hitwithGuardSFX, 0.5f);
             // 체력 감소 비율 감쇄
