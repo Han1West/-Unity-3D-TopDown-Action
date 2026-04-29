@@ -11,6 +11,7 @@ TagManager:
   - EnemyProjectile
   - EnemySpecialAttack
   - EnemyDoTAttack
+  - EnemyCCAttack
   layers:
   - Default
   - TransparentFX

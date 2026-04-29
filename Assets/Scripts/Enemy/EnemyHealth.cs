@@ -5,13 +5,14 @@ using UnityEngine.Audio;
 
 public class EnemyHealth : MonoBehaviour
 {
-    [SerializeField] int maxHealth = 100;
+    [SerializeField] public int maxHealth = 100;
     [Range(0f, 1f)]
     [SerializeField] float damageDeclineRate = 0.6f;
     [SerializeField] float hitDuration = 0.1f;
     [SerializeField] Material hitMaterial;
     [SerializeField] GameObject damageTextPrefab;    
-    [SerializeField] AudioClip hitSFX;    
+    [SerializeField] AudioClip hitSFX;
+    public string enemyUIName;
 
     SkinnedMeshRenderer[] renderers;
     MeshRenderer[] renderers2;
@@ -22,7 +23,9 @@ public class EnemyHealth : MonoBehaviour
     int currentHealth = 0;
     public Action OnDamaged;
 
-    void Awake()
+    public event Action<int, int> OnHealthChanged;
+
+    protected virtual void Awake()
     {
         audioSource = GetComponent<AudioSource>(); 
         renderers = GetComponentsInChildren<SkinnedMeshRenderer>();
@@ -53,7 +56,7 @@ public class EnemyHealth : MonoBehaviour
             TakeDamage(damage);
         }
     }
-    void TakeDamage(int amount)
+    protected virtual void TakeDamage(int amount)
     {
         currentHealth -= amount;
 
@@ -68,6 +71,8 @@ public class EnemyHealth : MonoBehaviour
         Debug.Log("Current Health :" + currentHealth);
 
         OnDamaged?.Invoke();
+        // 이벤트 발생
+        OnHealthChanged(currentHealth, maxHealth);
 
         // 사망 처리 
         if (currentHealth <= 0)

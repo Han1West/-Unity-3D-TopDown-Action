@@ -65,7 +65,7 @@ PrefabInstance:
       addedObject: {fileID: 5507284503639954364}
     - targetCorrespondingSourceObject: {fileID: 5607819269926399345, guid: 45e0f06c750176947862c10346226439, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1477863321117027331}
+      addedObject: {fileID: 4469556779888258653}
   m_SourcePrefab: {fileID: 100100000, guid: 45e0f06c750176947862c10346226439, type: 3}
 --- !u!4 &2660180245793078498 stripped
 Transform:
@@ -99,7 +99,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &1477863321117027331
+--- !u!114 &4469556779888258653
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -108,9 +108,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2717537741004500311}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 204c22069365820438e09c229501df51, type: 3}
+  m_Script: {fileID: 11500000, guid: 20c8ef503bd8e68488cb66537c78e288, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AnimationEventReceiver
+  m_EditorClassIdentifier: Assembly-CSharp::PortalAnimationEventReceiver
 --- !u!1001 &9017528871012912957
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -67,6 +67,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttackHitbox
   damage: 10
+  reapplyTime: 0.2
+  ccType: 0
 --- !u!1001 &1019780361884063280
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -253,14 +255,14 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1524411113276028, guid: e2aafa8770d34a9591b41bedf4e318ba, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6091129775302125916}
+      addedObject: {fileID: 7146508883525085873}
   m_SourcePrefab: {fileID: 100100000, guid: e2aafa8770d34a9591b41bedf4e318ba, type: 3}
 --- !u!1 &1018823587234239564 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1524411113276028, guid: e2aafa8770d34a9591b41bedf4e318ba, type: 3}
   m_PrefabInstance: {fileID: 1019780361884063280}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6091129775302125916
+--- !u!114 &7146508883525085873
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -269,9 +271,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1018823587234239564}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 204c22069365820438e09c229501df51, type: 3}
+  m_Script: {fileID: 11500000, guid: 3d0202d65e6bafb4ca2eb2b81f6fcb78, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AnimationEventReceiver
+  m_EditorClassIdentifier: Assembly-CSharp::NormalMonsterAnimationEventReceiver
 --- !u!4 &1024243629390979978 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4544219117696442, guid: e2aafa8770d34a9591b41bedf4e318ba, type: 3}

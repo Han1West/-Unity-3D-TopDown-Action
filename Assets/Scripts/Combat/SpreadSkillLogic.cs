@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class PlayerSkillLogic : MonoBehaviour
+public class SpreadSkillLogic : MonoBehaviour
 {
     [SerializeField] SphereCollider skillHitboxes;
     [SerializeField] float speed = 30f;

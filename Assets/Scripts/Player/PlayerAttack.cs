@@ -46,8 +46,7 @@ public class PlayerAttack : MonoBehaviour
 
     public void StartAttack()
     {
-        attackHitbox.enabled = false;
-        //attackHitbox.SetActive(false);
+        attackHitbox.enabled = false;        
         isAttacking = true;
         attackTimer = attackDuration[attackIndex];
         animator.SetBool("IsAttacking", true);
@@ -61,8 +60,7 @@ public class PlayerAttack : MonoBehaviour
     {
         isAttacking = false;
         animator.SetBool("IsAttacking", false);
-        attackHitbox.enabled = false;
-        //attackHitbox.SetActive(false);        
+        attackHitbox.enabled = false;        
     }
 
     public void UpdateAttack()

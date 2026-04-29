@@ -1,10 +1,11 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEditor.MPE;
 using UnityEngine;
 using UnityEngine.AI;
 
-enum BossState
+public enum BossState
 { 
     Idle,
     Chase,
@@ -16,37 +17,43 @@ enum BossState
 
 public class BossMonsterBase : MonoBehaviour
 {
+    [Header("Range")]
     [SerializeField] float attackRange = 10f;
     [SerializeField] float chaseRange = 50f;
-    [SerializeField] float patternDecisionCooldown = 4.5f;
-    [SerializeField] float stunDuration = 2.5f;
+
+    [Header("Cooldown")]    
     [SerializeField] float attackCooldown = 1.5f;
-    [SerializeField] float specialPatternTime = 4f;
+    [SerializeField] float patternCheckCooldown = 4.5f;
+
+    [Header("Pattern")]    
+    [SerializeField] float patternDuration = 4f;
+    [SerializeField] float basePatternChance = 30f;
+    [SerializeField] float failBonus = 5f;
+    [SerializeField] float successPenalty = 15f;
+    [SerializeField] float minChance = 10f;
+    [SerializeField] float maxChance = 80f;
+
+    [Header("Stun")]
+    [SerializeField] float stunDuration = 2.5f;
     [SerializeField] ParticleSystem stunnedVFX;
 
     protected AudioSource audioSource;
     protected Animator animator;
+    protected NavMeshAgent agent;
+    protected PlayerController player;
+    protected BossState currentState = BossState.Idle;
 
     EnemyHealth health;
-    PlayerController player;
-    NavMeshAgent agent;
- 
+
+    public bool isBusy = false;
     protected bool isStunned = false;
-    float lastPaternTime = 0f;
+
     float lastAttackTime = 0f;
-    float specialPatternTimer = 0f;
+    float lastPaternTime = 0f;    
+    float patternTimer = 0f;    
+    float currentPatternChance;    
 
-    float basePatternChance = 30f;
-    float currentPatternChance;
-
-    float failBonus = 5f;
-    float successPenalty = 15f;
-    float minChance = 10f;
-    float maxChance = 80f;
-
-    BossState currentState = BossState.Idle;
-    
-
+    #region Unity
     void Awake()
     {
         audioSource = GetComponent<AudioSource>();
@@ -59,32 +66,158 @@ public class BossMonsterBase : MonoBehaviour
     {
         player = FindFirstObjectByType<PlayerController>();
         currentPatternChance = basePatternChance;
+        ChangeState(BossState.Idle);
     }
 
     void Update()
     {
         // 스턴 상태라면 모든 로직 막음
-        if (isStunned) return;
+        if (player == null ||isStunned) return;
         
         TryStartPattern();
 
         switch (currentState)
         {
-            case BossState.Pattern:
-                ProcessPatternState();
+            case BossState.Idle:
+                UpdateIdle();
                 break;
-            default:
-                ProcessCurrentState();
+
+            case BossState.Chase:
+                UpdateChase();
+                break;
+
+            case BossState.Attack:
+                UpdateAttack();
+                break;
+
+            case BossState.Pattern:
+                UpdatePattern();
                 break;
         }  
     }
 
+    void OnDisable()
+    {
+        if (agent != null && agent.enabled)
+            agent.enabled = false;
+    }
+
+    #endregion
+
+    #region State
+
+    protected void ChangeState(BossState newState)
+    {
+        ExitState(currentState);
+        currentState = newState;
+        EnterState(newState);
+        //animator.SetBool("IsWalking", newState == BossState.Chase);
+    }
+
+    void EnterState(BossState state)
+    {
+        switch (state)
+        {
+            case BossState.Idle:
+                animator.SetBool("IsWalking", false);
+                StopMove();
+                break;
+
+            case BossState.Chase:
+                animator.SetBool("IsWalking", true);
+                agent.updateRotation = true;
+                ResumeMove();
+                break;
+
+            case BossState.Attack:
+                animator.SetBool("IsWalking", false);
+                agent.updateRotation = false;
+                StopMove();
+                break;
+
+            case BossState.Pattern:
+                animator.SetBool("IsWalking", false);
+                StopMove();
+                patternTimer = 0f;
+                isBusy = true;
+                StartPattern();
+                break;
+
+            case BossState.Stunned:
+                animator.SetBool("IsWalking", false);
+                StopMove();
+                break;
+        }
+    }
+
+    void ExitState(BossState State)
+    {
+        if (State == BossState.Pattern)
+            EndPattern();
+    }
+    #endregion
+
+    #region Idle
+
+    void UpdateIdle()
+    {
+        if (DistanceToPlayer() <= chaseRange)
+            ChangeState(BossState.Chase);
+    }
+    #endregion
+
+    #region Chase
+
+    void UpdateChase()
+    {        
+        agent.SetDestination(player.transform.position);
+
+        if (DistanceToPlayer() <= attackRange)
+            ChangeState(BossState.Attack);
+    }
+    #endregion
+
+    #region Attack
+
+    void UpdateAttack()
+    {
+        // 항상 플레이어 바라봄
+        LookAtPlayer();
+
+        if (isBusy)
+            return;        
+
+        if(DistanceToPlayer() > attackRange)
+        {
+            ChangeState(BossState.Chase);
+            return;
+        }
+
+        if(Time.time - lastAttackTime >= attackCooldown)
+        {
+            lastAttackTime = Time.time;
+            isBusy = true;
+            Attack();
+        }
+    }
+
+    protected void EndAttack()
+    {
+        isBusy = false;
+        ChangeState(BossState.Idle);
+    }
+    #endregion
+
+    #region Pattern
+
     private void TryStartPattern()
     {
-        if (currentState == BossState.Pattern)
+        if (currentState == BossState.Pattern ||
+            currentState == BossState.Stunned ||
+            isBusy)
             return;
 
-        if (Time.time - lastPaternTime < patternDecisionCooldown)
+        if (Time.time - lastPaternTime < patternCheckCooldown)
             return;
 
         lastPaternTime = Time.time;
@@ -95,7 +228,7 @@ public class BossMonsterBase : MonoBehaviour
         if(rand < currentPatternChance)
         {
             ChangeState(BossState.Pattern);
-            specialPatternTimer = 0f;
+            patternTimer = 0f;
 
             // 성공하면 기본 확률 - 페널티 확률 로 돌아감
             if(currentPatternChance > basePatternChance)
@@ -117,69 +250,75 @@ public class BossMonsterBase : MonoBehaviour
         currentPatternChance = Mathf.Clamp(currentPatternChance, minChance, maxChance);
     }
 
-    void ProcessPatternState()
-    {        
-        specialPatternTimer += Time.deltaTime;
-        
-        DoPattern();
-
-        // 패턴 종료
-        if(specialPatternTimer > specialPatternTime)
-        {            
-            FinishPattern();
-            ChangeState(BossState.Idle);            
-        }
-    }
-
-
-    private void ProcessCurrentState()
-    {        
-        float distToPlayer = Vector3.Distance(transform.position, player.transform.position);
-
-        switch (currentState)
-        {
-            case BossState.Idle:
-                // 거리 이내에 적 -> 추적
-                if (distToPlayer <= chaseRange)
-                    ChangeState(BossState.Chase);
-                break;
-
-            case BossState.Chase:
-                // 추적                
-                agent.updateRotation = true;
-                agent.SetDestination(player.transform.position);
-
-                // 공격 사거리 이내 -> 공격
-                if (distToPlayer <= attackRange)
-                    ChangeState(BossState.Attack);
-
-                // 거리 멀어짐 -> Idle
-                else if (distToPlayer > chaseRange)
-                    ChangeState(BossState.Idle);
-                break;
-
-            case BossState.Attack:
-                // 추적 멈춤
-                agent.ResetPath();
-                // 플레이를 지속적으로 쳐다봄
-                LookAtPlayer();
-                // 거리 멀어짐 -> 추적
-                if (distToPlayer > attackRange)
-                    ChangeState(BossState.Chase);
-                // 공격 시간 돌아오면 공격 수행
-                else if (Time.time - lastAttackTime >= attackCooldown)
-                    DoAttack();
-                break;
-
-        }
-    }
-
-    private void LookAtPlayer()
+    void UpdatePattern()
     {
-        agent.updateRotation = false;
+        patternTimer += Time.deltaTime;
+
+        PatternUpdate();
+
+        if (patternTimer > patternDuration && CanEndPattern())
+        {
+            isBusy = false;
+            ChangeState(BossState.Idle);
+        }
+    }
+
+    protected virtual bool CanEndPattern()
+    {
+        return true;
+    }
+
+    #endregion
+
+    #region Stun
+    public void GetStunned()
+    {
+        if (isStunned)
+            return;
+
+        StopAllCoroutines();
+
+        isStunned = true;
+        isBusy = true;
+        ChangeState(BossState.Stunned);       
+        animator.SetTrigger("Stunned");
+
+        if(stunnedVFX != null)
+            stunnedVFX.Play();
+
+        OnStunned();
+        
+        StartCoroutine(RecoverFromStun());
+    }
+
+    IEnumerator RecoverFromStun()
+    {
+        yield return new WaitForSeconds(stunDuration);
+
+        if(stunnedVFX != null)
+            stunnedVFX.Stop();        
+        animator.SetTrigger("StunEnd");
+
+        isStunned = false;
+        isBusy = false;
+
+        ChangeState(BossState.Idle);
+    }
+    #endregion
+
+    #region Utility
+
+    protected float DistanceToPlayer()
+    {
+        return Vector3.Distance(transform.position, player.transform.position);
+    }
+
+    void LookAtPlayer()
+    {
+        Debug.Log("Look At Player");
 
         Vector3 dirToPlayer = (player.transform.position - transform.position).normalized;
-        dirToPlayer.y = -0f;
+        dirToPlayer.y = 0f;
 
         if (dirToPlayer != Vector3.zero)
         {
@@ -188,53 +327,28 @@ public class BossMonsterBase : MonoBehaviour
         }
     }
 
-    void DoAttack()
+    void StopMove()
     {
-        lastAttackTime = Time.time;
-        // 자식 클래스에서 공격 로직 수행
-        Attack();
+        if (!agent.enabled) return;
+
+        agent.isStopped = true;
+        agent.ResetPath();
+        agent.velocity = Vector3.zero;
     }
 
-    void DoPattern()
+    void ResumeMove()
     {
-        SpecialPattern();
+        if(!agent.enabled) return;
+
+        agent.isStopped = false;
     }
+    #endregion
 
-    void ChangeState(BossState newState)
-    {
-        currentState = newState;        
-        animator.SetBool("IsWalking", newState == BossState.Chase);
-    }
-
-
-    public void GetStunned()
-    {
-        currentState = BossState.Stunned;
-        isStunned = true;
-        animator.SetTrigger("Stunned");
-        Stunned();
-        stunnedVFX.Play();
-        StartCoroutine(RecoverFromStun());
-    }
-
-    IEnumerator RecoverFromStun()
-    {
-        yield return new WaitForSeconds(stunDuration);
-        isStunned = false;
-        animator.SetTrigger("StunEnd");
-        stunnedVFX.Stop();
-        currentState = BossState.Idle;        
-    }
-    
-
+    #region Virtual    
     protected virtual void Attack() { }
-    protected virtual void SpecialPattern() { } 
-    protected virtual void FinishPattern() { }
-    protected virtual void Stunned() { }
-
-    void OnDisable()
-    {
-        agent.enabled = false;
-    }
-
+    protected virtual void StartPattern() { } 
+    protected virtual void PatternUpdate() { }
+    protected virtual void EndPattern() { }
+    protected virtual void OnStunned() { }
+    #endregion
 }
