@@ -227,6 +227,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 22b25773c306aa149a6b5940c099486a, type: 3}
   - {fileID: 8300000, guid: c85f661dba3788a4b87c7be34be552bd, type: 3}
   - {fileID: 8300000, guid: 9aec0fe2704543e4eb44c078e9e0f2df, type: 3}
+  attackVoiceSFX:
+  - {fileID: 8300000, guid: 6625f49c0c168c849a3fc0da4f1a55e1, type: 3}
+  - {fileID: 8300000, guid: 8c09ffdd9bac6b34187e7b4e276f192e, type: 3}
+  - {fileID: 8300000, guid: 58142413a922c8e46a891c984fca74e6, type: 3}
 --- !u!114 &8487504048312291616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -265,6 +269,8 @@ MonoBehaviour:
   healVFX: {fileID: 5102622782596263249}
   damageTextPrefab: {fileID: 3411061218343408644, guid: ad3abcc8b600a3f48b8941957148cb21, type: 3}
   healingSFX: {fileID: 8300000, guid: f78cfe230542fec41806f151524b2f73, type: 3}
+  hitVoiceSFX: {fileID: 8300000, guid: 0abd4ac29b8c91949a5acdc1965d6741, type: 3}
+  hitwithGuardSFX: {fileID: 8300000, guid: 46a216badcf566a4e874172a8634c95b, type: 3}
 --- !u!114 &8711503112827140583
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -300,6 +306,7 @@ MonoBehaviour:
   skillDelayTime: 1
   chargeSFX: {fileID: 8300000, guid: 8652d0f90b8e44b41abb2a8dcc94bd96, type: 3}
   fireSFX: {fileID: 8300000, guid: abb2ccc91e952784a9626e7b0a8802de, type: 3}
+  skillVoiceSFX: {fileID: 8300000, guid: b25720ab6214cc84488f2cc49dca2791, type: 3}
   needSkillPoint: 2
 --- !u!82 &1566533349006227388
 AudioSource:
@@ -465,6 +472,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttackHitbox
   damage: 35
+  reapplyTime: 0.2
+  ccType: 0
 --- !u!1 &7454435874544410742
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,10 +13,16 @@ public class PlayerController : MonoBehaviour
     PlayerGuard guard;
     PlayerDead dead;
     PlayerSkill skill;
-    public PlayerState currentState { get; private set; } = PlayerState.Idle;
+    PlayerUnderCC underCC;
+
+
+    public PlayerState CurrentState { get; private set; } = PlayerState.Idle;
+    Animator animator;
 
     float dashTimer = 0;
     bool canDash = true;
+    bool canControl = true;
+
 
     void Awake()
     {
@@ -26,15 +32,22 @@ public class PlayerController : MonoBehaviour
         guard = GetComponent<PlayerGuard>();
         dead = GetComponent<PlayerDead>();
         skill = GetComponent<PlayerSkill>();
+        underCC = GetComponent<PlayerUnderCC>();
+
+        animator = GetComponentInChildren<Animator>();
     }
 
     void Update()
     {
+
         // 현재 Dead State 라면 모든 동작 수행 중지
-        if ((currentState == PlayerState.Dead))
-        {
+        if (CurrentState == PlayerState.Dead)        
             return;
-        }
+        
+
+        if (!canControl)                   
+            return;
+        
         HandleState();
         StateUpdate();        
 
@@ -53,7 +66,7 @@ public class PlayerController : MonoBehaviour
     void StateUpdate()
     {        
         // 상태에 따라 동작
-        switch (currentState)
+        switch (CurrentState)
         {
             case PlayerState.Idle:
                 break;
@@ -105,7 +118,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (input.attack)
         {
-            if (currentState == PlayerState.Attack)
+            if (CurrentState == PlayerState.Attack)
                 attack.QueueNextAttack();
             else
                 ChangeState(PlayerState.Attack);
@@ -122,36 +135,36 @@ public class PlayerController : MonoBehaviour
     public void ChangeState(PlayerState newState)
     {        
         if (newState == PlayerState.None) return;
-        if (currentState == newState) return;
+        if (CurrentState == newState) return;
         if (!CanChangeState(newState)) return;
 
 
         // 현재 상태 탈출
-        OnStateExit(currentState);
+        OnStateExit(CurrentState);
 
         // 상태 갱신
-        currentState = newState;        
+        CurrentState = newState;        
 
         // 새로운 상태 진입
-        OnStateEnter(currentState);        
+        OnStateEnter(CurrentState);        
     }
 
     bool CanChangeState(PlayerState newState)
     {
         // 현재 상태가 대쉬면 상태 전이를 막는다 (대쉬중에는 다른 동작 불가능)
-        if(currentState == PlayerState.Dash)
+        if(CurrentState == PlayerState.Dash)
         {
             if (newState == PlayerState.Idle)
                 return true;
             return false;
         }
-        if (currentState == PlayerState.Attack)
+        if (CurrentState == PlayerState.Attack)
         {
             if (newState == PlayerState.Idle)
                 return true;
             return false;
         }
-        if(currentState == PlayerState.Skill)
+        if(CurrentState == PlayerState.Skill)
         {
             if (newState == PlayerState.Idle)
                 return true;
@@ -248,7 +261,27 @@ public class PlayerController : MonoBehaviour
         else
         {
             ChangeState(PlayerState.Idle);            
+        }            
+    }
+
+    public void ApplyCCToPlayer(CCType type)
+    {
+        switch (type)
+        {
+            case CCType.None:
+                break;
+            case CCType.Falldown:
+                canControl = false;                
+                underCC.PlayCCSequence(type);
+                break;
+            default:
+                break;
         }
-            
+    }
+
+    public void EndCC()
+    {
+        canControl = true;
+        animator.SetBool("CanControl", true);
     }
 }

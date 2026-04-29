@@ -24,11 +24,8 @@ public class PlayerInput : MonoBehaviour
 
     public void OnDash(InputValue value)
     {
-        if (value.isPressed && !dash)
-        {            
-            dash = true;
-            Debug.Log("Pressed Dash");
-        }
+        if (value.isPressed && !dash)                   
+            dash = true;                    
     }
     
     public void OnLook(InputValue value)

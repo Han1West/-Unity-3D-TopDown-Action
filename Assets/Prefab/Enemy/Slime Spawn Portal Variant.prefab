@@ -61,7 +61,7 @@ PrefabInstance:
       addedObject: {fileID: 2720516019441664436}
     - targetCorrespondingSourceObject: {fileID: 4617036660772024948, guid: 52c7d057cba585641bb68312c10d7791, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3447435483639382044}
+      addedObject: {fileID: 2449301710045675785}
   m_SourcePrefab: {fileID: 100100000, guid: 52c7d057cba585641bb68312c10d7791, type: 3}
 --- !u!4 &311622763910947805 stripped
 Transform:
@@ -95,7 +95,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &3447435483639382044
+--- !u!114 &2449301710045675785
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -104,9 +104,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 364618650333606504}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 204c22069365820438e09c229501df51, type: 3}
+  m_Script: {fileID: 11500000, guid: 20c8ef503bd8e68488cb66537c78e288, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AnimationEventReceiver
+  m_EditorClassIdentifier: Assembly-CSharp::PortalAnimationEventReceiver
 --- !u!1001 &8841186611463689287
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -125,7 +125,7 @@ PrefabInstance:
       objectReference: {fileID: 2359117883153826474}
     - target: {fileID: 1422830212741466523, guid: 30d7a6bfc62732349b5449c249422f67, type: 3}
       propertyPath: m_Name
-      value: Base Enemy Spawn Portal Variant
+      value: Slime Spawn Portal Variant
       objectReference: {fileID: 0}
     - target: {fileID: 4031845065692330208, guid: 30d7a6bfc62732349b5449c249422f67, type: 3}
       propertyPath: m_LocalPosition.y

@@ -6,7 +6,7 @@ using UnityEngine.Audio;
 
 public class PlayerHealth : MonoBehaviour
 {
-    [SerializeField] int maxHealth = 100;    
+    [SerializeField] public int maxHealth = 100;    
     [Range(0f, 1f)]
     [SerializeField] float damageDeclineRate = 0.6f;
     [SerializeField] float hitDuration = 0.1f;
@@ -83,6 +83,8 @@ public class PlayerHealth : MonoBehaviour
             // 실패
             else
                 TakeDamage(damage, hitDirection);
+
+            other.enabled = false;
         }
 
         if(other.CompareTag("EnemyProjectile"))
@@ -98,6 +100,8 @@ public class PlayerHealth : MonoBehaviour
             // 실패
             else
                 TakeDamage(damage, hitDirection);
+
+            other.enabled = false;
         }
 
         if(other.CompareTag("EnemySpecialAttack"))
@@ -117,6 +121,8 @@ public class PlayerHealth : MonoBehaviour
             // 실패
             else
                 TakeDamage(damage, hitDirection, true);
+
+            other.enabled = false;
         }
 
         // 도트 데미지
@@ -131,6 +137,27 @@ public class PlayerHealth : MonoBehaviour
             }            
         }
 
+        // CC 공격
+        if(other.CompareTag("EnemyCCAttack"))
+        {            
+            Vector3 hitDirection = other.transform.position - transform.position;
+            hitDirection.Normalize();
+
+            int damage = other.GetComponent<AttackHitbox>().damage;
+            CCType ccType = other.GetComponent<AttackHitbox>().ccType;
+
+            // 패리 성공
+            if (guard.canParry)
+            {
+                guard.SuccessParry(hitDirection);                
+            }
+            // 실패
+            else
+            {
+                TakeDamage(damage, hitDirection, true, true, ccType);
+            }            
+        }
+
         // 힐
         if (other.CompareTag("Heal"))
         {            
@@ -142,7 +169,7 @@ public class PlayerHealth : MonoBehaviour
                 TakeHeal(heal);
                 other.GetComponent<HealPickup>().DestroyThis();
             }                
-        }        
+        }
     }
 
     void OnTriggerStay(Collider other)
@@ -183,7 +210,7 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    void TakeDamage(int amount, Vector3 hitDirection, bool isSpecial = false)
+    void TakeDamage(int amount, Vector3 hitDirection, bool isSpecial = false, bool hasCC = false, CCType ccType = CCType.None)
     {
         int takenDamage = amount;
 
@@ -194,30 +221,27 @@ public class PlayerHealth : MonoBehaviour
             // 체력 감소 비율 감쇄
             takenDamage = Mathf.FloorToInt(amount * (1 - damageDeclineRate));
             currentHealth -= takenDamage;
-
-
-            // 플레이어 공격 받은 방향으로 회전
-            hitDirection.y = 0;
-            if (hitDirection != Vector3.zero)
-            {
-                Quaternion targetRotation = Quaternion.LookRotation(hitDirection);
-                transform.rotation = targetRotation; 
-            }
         }            
         else
         {
             audioSource.PlayOneShot(hitVoiceSFX, 0.5f);
             currentHealth -= takenDamage;
         }
-            
+
+        // 플레이어 공격 받은 방향으로 회전
+        hitDirection.y = 0;
+        if (hitDirection != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(hitDirection);
+            transform.rotation = targetRotation;
+        }
 
         GameObject damageText = Instantiate(damageTextPrefab, transform.position, Quaternion.identity);
         damageText.GetComponent<DamageText>().damageText.text = takenDamage.ToString();
    
         // Hit 판정 피격 표시 
         StartCoroutine(HitFlash());
-        
-        Debug.Log("Current Health :" + currentHealth);
+                
         // 이벤트 발생
         OnHealthChanged(currentHealth, maxHealth);
 
@@ -227,9 +251,14 @@ public class PlayerHealth : MonoBehaviour
             playerController.ChangeState(PlayerState.Dead);
             return;
         }
+        // 사망이 아니고 CC가 있으면
+        else if(hasCC)
+        {
+            playerController.ApplyCCToPlayer(ccType);
+        }
 
         // 가드중이 아닐 때만 Hit 애니메이션 트리거 발동
-        if(!guard.isGuarding)
+        if (!guard.isGuarding && !hasCC)
         {
             animator.SetTrigger("Hit");
             animator.SetLayerWeight(upperLayerIndex, 1f);
