@@ -116,7 +116,7 @@ public class EnemyHealth : MonoBehaviour
     }
 
     public float GetCurrentHpPercent()
-    {
-        return currentHealth / maxHealth;
+    {        
+        return ((float)currentHealth / maxHealth) * 100f;
     }
 }

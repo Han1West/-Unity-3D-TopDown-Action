@@ -22,6 +22,12 @@ public class BossEnemyHelath : EnemyHealth
         }            
         else
             base.TakeDamage(amount);
+
+        // 체력이 50퍼 이하
+        if(GetCurrentHpPercent() <= 50f)
+        {
+            boss.RequsetRage();
+        }
     }
 
     protected override void ProcessDead()
