@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.Cinemachine;
 using Unity.VisualScripting;
 using UnityEditor.MPE;
 using UnityEngine;
@@ -11,6 +12,7 @@ public enum BossState
     Chase,
     Pattern,
     Attack,
+    Event,
     Stunned,
 }
 
@@ -22,8 +24,8 @@ public class BossMonsterBase : MonoBehaviour
     [SerializeField] float chaseRange = 50f;
 
     [Header("Cooldown")]    
-    [SerializeField] float attackCooldown = 1.5f;
-    [SerializeField] float patternCheckCooldown = 4.5f;
+    [SerializeField] protected float attackCooldown = 1.5f;
+    [SerializeField] protected float patternCheckCooldown = 4.5f;
 
     [Header("Pattern")]    
     [SerializeField] float patternDuration = 4f;
@@ -37,6 +39,7 @@ public class BossMonsterBase : MonoBehaviour
     [SerializeField] float stunDuration = 2.5f;
     [SerializeField] ParticleSystem stunnedVFX;
 
+    protected CinemachineImpulseSource rageImpulseSource;
     protected AudioSource audioSource;
     protected Animator animator;
     protected NavMeshAgent agent;
@@ -45,9 +48,11 @@ public class BossMonsterBase : MonoBehaviour
 
     EnemyHealth health;
 
-    public bool isBusy = false;
+    public bool isBusy = false;    
+    protected bool isRage = false;
+    protected bool pendingRage = false;
     protected bool isStunned = false;
-
+    
     float lastAttackTime = 0f;
     float lastPaternTime = 0f;    
     float patternTimer = 0f;    
@@ -56,10 +61,11 @@ public class BossMonsterBase : MonoBehaviour
     #region Unity
     void Awake()
     {
-        audioSource = GetComponent<AudioSource>();
         animator = GetComponentInChildren<Animator>();
+        audioSource = GetComponent<AudioSource>();        
         agent = GetComponent<NavMeshAgent>();
         health = GetComponent<EnemyHealth>();
+        rageImpulseSource = GetComponent<CinemachineImpulseSource>();
     }
 
     void Start()
@@ -93,7 +99,13 @@ public class BossMonsterBase : MonoBehaviour
             case BossState.Pattern:
                 UpdatePattern();
                 break;
-        }  
+
+            case BossState.Event:
+                UpdateEvent();
+                break;
+        }
+
+        TryStartpendingRage();
     }
 
     void OnDisable()
@@ -110,8 +122,7 @@ public class BossMonsterBase : MonoBehaviour
     {
         ExitState(currentState);
         currentState = newState;
-        EnterState(newState);
-        //animator.SetBool("IsWalking", newState == BossState.Chase);
+        EnterState(newState);        
     }
 
     void EnterState(BossState state)
@@ -143,6 +154,13 @@ public class BossMonsterBase : MonoBehaviour
                 StartPattern();
                 break;
 
+            case BossState.Event:
+                animator.SetBool("IsWalking", false);
+                StopMove();
+                isBusy = true;
+                StartEvent();
+                break;
+
             case BossState.Stunned:
                 animator.SetBool("IsWalking", false);
                 StopMove();
@@ -154,6 +172,8 @@ public class BossMonsterBase : MonoBehaviour
     {
         if (State == BossState.Pattern)
             EndPattern();
+        if (State == BossState.Event)
+            EndEvent();
     }
     #endregion
 
@@ -210,7 +230,7 @@ public class BossMonsterBase : MonoBehaviour
 
     #region Pattern
 
-    private void TryStartPattern()
+    void TryStartPattern()
     {
         if (currentState == BossState.Pattern ||
             currentState == BossState.Stunned ||
@@ -270,6 +290,35 @@ public class BossMonsterBase : MonoBehaviour
 
     #endregion
 
+    #region Event
+
+    void UpdateEvent()
+    {
+        EventUpdate();
+    }
+
+    void TryStartpendingRage()
+    {
+        if (!pendingRage || isRage)
+            return;
+
+        if (isBusy) 
+            return;
+
+        if (currentState == BossState.Pattern || currentState == BossState.Attack
+            || currentState == BossState.Event)
+            return;
+
+        pendingRage = false;
+        EnterRageMode();
+    }
+
+    public void RequsetRage()
+    {
+        pendingRage = true;
+    }
+
+    #endregion
     #region Stun
     public void GetStunned()
     {
@@ -314,9 +363,7 @@ public class BossMonsterBase : MonoBehaviour
     }
 
     void LookAtPlayer()
-    {
-        Debug.Log("Look At Player");
-
+    {        
         Vector3 dirToPlayer = (player.transform.position - transform.position).normalized;
         dirToPlayer.y = 0f;
 
@@ -341,7 +388,7 @@ public class BossMonsterBase : MonoBehaviour
         if(!agent.enabled) return;
 
         agent.isStopped = false;
-    }
+    }    
     #endregion
 
     #region Virtual    
@@ -349,6 +396,14 @@ public class BossMonsterBase : MonoBehaviour
     protected virtual void StartPattern() { } 
     protected virtual void PatternUpdate() { }
     protected virtual void EndPattern() { }
+    protected virtual void StartEvent() { }
+    protected virtual void EventUpdate() { }
+    protected virtual void EndEvent() { }
     protected virtual void OnStunned() { }
+
+    protected virtual void EnterRageMode() 
+    {
+        isRage = true;        
+    }
     #endregion
 }

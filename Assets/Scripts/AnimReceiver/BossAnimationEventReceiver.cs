@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AdaptivePerformance;
 
 public class BossAnimationEventReceiver : MonoBehaviour
 {
@@ -52,5 +53,20 @@ public class BossAnimationEventReceiver : MonoBehaviour
     public void ReflectionEnd()
     {
         boss.CounterAnimationEnd();
+    }
+
+    public void StartRageRoar()
+    {        
+        boss.isRoaring = true;
+    }
+
+    public void EndRageRoar()
+    {
+        boss.isRoaring = false;
+    }
+
+    public void EndLand()
+    {
+        boss.EndLand();
     }
 }

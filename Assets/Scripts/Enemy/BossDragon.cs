@@ -2,6 +2,7 @@ using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -13,15 +14,30 @@ public enum PatternType
     FlameRain
 }
 
+public enum EventType
+{ 
+    None,
+    Rage,
+    Dead
+}
+
+
 public class BossDragon : BossMonsterBase
 {
-    [Header("Hitbox")]
+    [Header("MyHitBox")]
+    [SerializeField] BoxCollider hitBox;
+
+    [Header("AttackHitbox")]
     [SerializeField] BoxCollider normalAttackHitbox;
     [SerializeField] BoxCollider clawAttackHitbox;    
     [SerializeField] BoxCollider fireBreathHitbox;
 
     [Header("Effect")]
     [SerializeField] ParticleSystem fireBreathEffect;
+    [SerializeField] ParticleSystem blockShieldEffect;
+    [SerializeField] ParticleSystem rageEffect;
+    [SerializeField] ParticleSystem rageEventEffect;
+    [SerializeField] GameObject rageEventFallingObject;    
 
     [Header("Prefab")]
     [SerializeField] GameObject counterAttackObject;
@@ -31,12 +47,13 @@ public class BossDragon : BossMonsterBase
     [SerializeField] BoxCollider spawnArea;
     [SerializeField] float spawnCooldown = 4f;
     [SerializeField] float minDistance = 2f;
-    [SerializeField] int maxTryCount = 30;    
-
+    [SerializeField] int maxTryCount = 30;
     
     PatternType currentPattern = PatternType.None;
+    EventType currentEvent = EventType.None;
 
     public bool isBlocking = false;
+    public bool isRoaring = false;
     bool isCountering = false;
 
     #region Override
@@ -78,10 +95,10 @@ public class BossDragon : BossMonsterBase
     protected override void EndPattern()
     {
         if(isBlocking)
-        {
-            Debug.Log("End Pattern");
+        {            
             animator.SetBool("IsBlock", false);
-            isBlocking = false;
+            isBlocking = false;        
+            blockShieldEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         }
 
         currentPattern = PatternType.None;
@@ -90,6 +107,53 @@ public class BossDragon : BossMonsterBase
     protected override bool CanEndPattern()
     {
         return !isCountering;
+    }
+
+    protected override void StartEvent()
+    {
+        switch (currentEvent)
+        {
+            case EventType.None:
+                break;
+            case EventType.Rage:
+                StartRageEvent();
+                break;
+            case EventType.Dead:
+                break;
+            default:
+                break;
+        }
+    }
+
+    protected override void EventUpdate()
+    {
+        switch (currentEvent)
+        {
+            case EventType.None:
+                break;
+            case EventType.Rage:
+                break;
+            case EventType.Dead:
+                break;
+            default:
+                break;
+        }
+    }
+
+    protected override void EndEvent()
+    {
+        switch (currentEvent)
+        {
+            case EventType.None:
+                break;
+            case EventType.Rage:
+                EndRageEvent();
+                break;
+            case EventType.Dead:
+                break;
+            default:
+                break;
+        }        
     }
 
     protected override void OnStunned()
@@ -104,6 +168,15 @@ public class BossDragon : BossMonsterBase
         DisableAllHitbox();
         ResetAttackTriggers();        
     }
+
+    protected override void EnterRageMode()
+    {
+        currentEvent = EventType.Rage;
+        ChangeState(BossState.Event);
+        
+        base.EnterRageMode();        
+    }
+
     #endregion
 
     #region Normal Attack
@@ -127,8 +200,8 @@ public class BossDragon : BossMonsterBase
 
     void StartBlockPattern()
     {
-        currentPattern = PatternType.Block;        
-
+        currentPattern = PatternType.Block;
+        blockShieldEffect.Play();
         animator.SetBool("IsBlock", true);
     }
     
@@ -139,9 +212,7 @@ public class BossDragon : BossMonsterBase
     public void CounterAttack()
     {
         if (!isBlocking || isCountering)
-            return;
-
-        Debug.Log("Do Counter Attack");
+            return;        
 
         StopAllCoroutines();
 
@@ -149,12 +220,12 @@ public class BossDragon : BossMonsterBase
         isCountering = true;
 
         currentPattern = PatternType.Counter;
+        blockShieldEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
 
-        
         ResetAttackTriggers();
         
         animator.SetTrigger("Counter");
-        animator.SetBool("IsBlock", false);
+        animator.SetBool("IsBlock", false);        
 
         StartCoroutine(CounterDamageRoutine());
     }
@@ -173,6 +244,53 @@ public class BossDragon : BossMonsterBase
 
         EndAttack();
     }
+    #endregion
+
+    #region Event
+    void StartRageEvent()
+    {
+        // 스탯 변화
+        attackCooldown -= 1f;
+        patternCheckCooldown -= 1f;
+        agent.speed = 10f;
+        agent.angularSpeed = 180f;
+        agent.acceleration = 15f;
+
+
+        // 이벤트 동안 히트 박스 비활성화
+        if (hitBox.enabled)
+            hitBox.enabled = false;
+
+
+
+        rageEventEffect.Play();
+
+
+        animator.SetTrigger("EnterRageMode");
+        StartCoroutine(SpawnFallingRockCoroutine());
+    }
+
+    void EndRageEvent()
+    {
+        Debug.Log("End Rage Event");
+        currentEvent = EventType.None;
+        rageEventEffect.Stop();
+        rageEffect.Play();
+
+        if(!hitBox.enabled)
+            hitBox.enabled = true;
+    }
+
+    public void EndLand()
+    {
+        if (currentState == BossState.Event && currentEvent == EventType.Rage)
+        {
+            Debug.Log("End Pattern");
+            isBusy = false;            
+            ChangeState(BossState.Idle);
+        }
+    }
+
     #endregion
 
     #region Hitbox Event
@@ -217,6 +335,47 @@ public class BossDragon : BossMonsterBase
     }
     #endregion
 
+
+    IEnumerator SpawnFallingRockCoroutine()
+    {
+        float waitTime = 10f;
+        float timer = 0f;
+
+        while (!isRoaring && timer < waitTime)
+        {
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        while (isRoaring)
+        {
+            rageImpulseSource.GenerateImpulse(0.2f);
+
+            int spawnCount = Random.Range(3, 7);
+            List<Vector3> spawnedPositions = new List<Vector3>();            
+
+            for (int i = 0; i < spawnCount; ++i)
+            {
+                bool found = false;
+
+                for (int tryCount = 0; tryCount < maxTryCount; tryCount++)
+                {
+                    Vector3 newSpawnPoint = GetRandomPointInArea();
+                    newSpawnPoint.y = 20f;
+
+                    if (IsValidSpawnPoint(newSpawnPoint, spawnedPositions))
+                    {
+                        
+                        Instantiate(rageEventFallingObject, newSpawnPoint, Quaternion.identity);
+                        spawnedPositions.Add(newSpawnPoint);
+                        found = true;
+                        break;
+                    }
+                }
+            }
+            yield return new WaitForSeconds(0.2f);
+        }
+    }
 
     IEnumerator SpawnPillarOfFireCoroutine()
     {
