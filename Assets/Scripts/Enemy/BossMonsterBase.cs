@@ -14,6 +14,7 @@ public enum BossState
     Attack,
     Event,
     Stunned,
+    Dead
 }
 
 
@@ -23,11 +24,11 @@ public class BossMonsterBase : MonoBehaviour
     [SerializeField] float attackRange = 10f;
     [SerializeField] float chaseRange = 50f;
 
-    [Header("Cooldown")]    
+    [Header("Cooldown")]
     [SerializeField] protected float attackCooldown = 1.5f;
     [SerializeField] protected float patternCheckCooldown = 4.5f;
 
-    [Header("Pattern")]    
+    [Header("Pattern")]
     [SerializeField] float patternDuration = 4f;
     [SerializeField] float basePatternChance = 30f;
     [SerializeField] float failBonus = 5f;
@@ -37,7 +38,7 @@ public class BossMonsterBase : MonoBehaviour
 
     [Header("Stun")]
     [SerializeField] float stunDuration = 2.5f;
-    [SerializeField] ParticleSystem stunnedVFX;
+    [SerializeField] protected ParticleSystem stunnedVFX;
 
     protected CinemachineImpulseSource rageImpulseSource;
     protected AudioSource audioSource;
@@ -48,21 +49,21 @@ public class BossMonsterBase : MonoBehaviour
 
     EnemyHealth health;
 
-    public bool isBusy = false;    
+    public bool isBusy = false;
     protected bool isRage = false;
     protected bool pendingRage = false;
     protected bool isStunned = false;
-    
+
     float lastAttackTime = 0f;
-    float lastPaternTime = 0f;    
-    float patternTimer = 0f;    
-    float currentPatternChance;    
+    float lastPaternTime = 0f;
+    float patternTimer = 0f;
+    float currentPatternChance;
 
     #region Unity
     void Awake()
     {
         animator = GetComponentInChildren<Animator>();
-        audioSource = GetComponent<AudioSource>();        
+        audioSource = GetComponent<AudioSource>();
         agent = GetComponent<NavMeshAgent>();
         health = GetComponent<EnemyHealth>();
         rageImpulseSource = GetComponent<CinemachineImpulseSource>();
@@ -78,7 +79,7 @@ public class BossMonsterBase : MonoBehaviour
     void Update()
     {
         // 스턴 상태라면 모든 로직 막음
-        if (player == null ||isStunned) return;
+        if (player == null || isStunned || currentState == BossState.Dead) return;
         
         TryStartPattern();
 
@@ -106,7 +107,11 @@ public class BossMonsterBase : MonoBehaviour
         }
 
         TryStartpendingRage();
+
+        if (isRage)
+            UpdateRageLogic();
     }
+
 
     void OnDisable()
     {
@@ -162,6 +167,11 @@ public class BossMonsterBase : MonoBehaviour
                 break;
 
             case BossState.Stunned:
+                animator.SetBool("IsWalking", false);
+                StopMove();
+                break;
+
+            case BossState.Dead:
                 animator.SetBool("IsWalking", false);
                 StopMove();
                 break;
@@ -314,8 +324,13 @@ public class BossMonsterBase : MonoBehaviour
     }
 
     public void RequsetRage()
-    {
+    {        
         pendingRage = true;
+    }
+
+    public void RequestDead()
+    {           
+        EnterDeadEvent();
     }
 
     #endregion
@@ -323,10 +338,8 @@ public class BossMonsterBase : MonoBehaviour
     public void GetStunned()
     {
         if (isStunned)
-            return;
-
-        StopAllCoroutines();
-
+            return;        
+        
         isStunned = true;
         isBusy = true;
         ChangeState(BossState.Stunned);       
@@ -335,6 +348,7 @@ public class BossMonsterBase : MonoBehaviour
         if(stunnedVFX != null)
             stunnedVFX.Play();
 
+        // StopAllCoroutine 아래 함수 내부에 실행
         OnStunned();
         
         StartCoroutine(RecoverFromStun());
@@ -399,11 +413,16 @@ public class BossMonsterBase : MonoBehaviour
     protected virtual void StartEvent() { }
     protected virtual void EventUpdate() { }
     protected virtual void EndEvent() { }
-    protected virtual void OnStunned() { }
-
-    protected virtual void EnterRageMode() 
+    protected virtual void OnStunned() 
     {
-        isRage = true;        
+        StopAllCoroutines();
     }
+    protected virtual void UpdateRageLogic() { }
+    
+
+    protected virtual void EnterRageMode() { }
+
+    protected virtual void EnterDeadEvent() { }
+    
     #endregion
 }

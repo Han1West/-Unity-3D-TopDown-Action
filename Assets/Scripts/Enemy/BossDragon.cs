@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -37,7 +38,8 @@ public class BossDragon : BossMonsterBase
     [SerializeField] ParticleSystem blockShieldEffect;
     [SerializeField] ParticleSystem rageEffect;
     [SerializeField] ParticleSystem rageEventEffect;
-    [SerializeField] GameObject rageEventFallingObject;    
+    [SerializeField] GameObject rageEventFallingObject;
+    [SerializeField] GameObject disaapearEffect;
 
     [Header("Prefab")]
     [SerializeField] GameObject counterAttackObject;
@@ -55,6 +57,8 @@ public class BossDragon : BossMonsterBase
     public bool isBlocking = false;
     public bool isRoaring = false;
     bool isCountering = false;
+    bool isSpawningPillar;
+    float nextTime = 0f;
 
     #region Override
     protected override void Attack() 
@@ -113,12 +117,13 @@ public class BossDragon : BossMonsterBase
     {
         switch (currentEvent)
         {
-            case EventType.None:
+            case EventType.None:                
                 break;
             case EventType.Rage:
                 StartRageEvent();
                 break;
             case EventType.Dead:
+                StartDeadEvent();
                 break;
             default:
                 break;
@@ -134,6 +139,7 @@ public class BossDragon : BossMonsterBase
             case EventType.Rage:
                 break;
             case EventType.Dead:
+                UpdateDeadEvent();
                 break;
             default:
                 break;
@@ -150,6 +156,7 @@ public class BossDragon : BossMonsterBase
                 EndRageEvent();
                 break;
             case EventType.Dead:
+                EndDeadEvent(); 
                 break;
             default:
                 break;
@@ -158,8 +165,9 @@ public class BossDragon : BossMonsterBase
 
     protected override void OnStunned()
     {
-        StopAllCoroutines();
-
+        base.OnStunned();
+        
+        isSpawningPillar = false;
         isBlocking = false;
         isCountering = false;
 
@@ -172,9 +180,19 @@ public class BossDragon : BossMonsterBase
     protected override void EnterRageMode()
     {
         currentEvent = EventType.Rage;
+        ChangeState(BossState.Event);               
+    }
+
+    protected override void UpdateRageLogic()
+    {
+        if (!isSpawningPillar)
+            StartCoroutine(SpawnPillarOfFireCoroutine());
+    }
+
+    protected override void EnterDeadEvent()
+    {
+        currentEvent = EventType.Dead;
         ChangeState(BossState.Event);
-        
-        base.EnterRageMode();        
     }
 
     #endregion
@@ -216,6 +234,7 @@ public class BossDragon : BossMonsterBase
 
         StopAllCoroutines();
 
+        isSpawningPillar = false;
         isBlocking = false;
         isCountering = true;
 
@@ -261,33 +280,67 @@ public class BossDragon : BossMonsterBase
         if (hitBox.enabled)
             hitBox.enabled = false;
 
-
-
         rageEventEffect.Play();
-
 
         animator.SetTrigger("EnterRageMode");
         StartCoroutine(SpawnFallingRockCoroutine());
     }
 
     void EndRageEvent()
-    {
-        Debug.Log("End Rage Event");
+    {        
         currentEvent = EventType.None;
         rageEventEffect.Stop();
         rageEffect.Play();
 
-        if(!hitBox.enabled)
+        isRage = true;
+
+        if (!hitBox.enabled)
             hitBox.enabled = true;
     }
 
     public void EndLand()
     {
         if (currentState == BossState.Event && currentEvent == EventType.Rage)
-        {
-            Debug.Log("End Pattern");
+        {            
             isBusy = false;            
             ChangeState(BossState.Idle);
+        }
+    }
+
+    void StartDeadEvent()
+    {
+        if (hitBox.enabled)
+            hitBox.enabled = false;
+
+        StopAllCoroutines();
+        DisableAllHitbox();
+        DeactviatedAllEffect();
+         
+        animator.SetTrigger("Dead");
+    }
+
+    void UpdateDeadEvent()
+    {
+        if(Time.time >= nextTime)
+        {
+            rageImpulseSource.GenerateImpulse(0.2f);
+            nextTime = Time.time + 2f;
+        }
+        
+    }
+
+    void EndDeadEvent()
+    {
+        currentEvent = EventType.None;
+        StartCoroutine(DestroyBossCoroutine());
+    }
+
+    public void EndDie()
+    {
+        if (currentState == BossState.Event && currentEvent == EventType.Dead)
+        {
+            isBusy = false;
+            ChangeState(BossState.Dead);
         }
     }
 
@@ -332,6 +385,14 @@ public class BossDragon : BossMonsterBase
         normalAttackHitbox.enabled = false;
         clawAttackHitbox.enabled = false;
         fireBreathHitbox.enabled = false;
+    }
+
+    void DeactviatedAllEffect()
+    {
+        fireBreathEffect.Stop();        
+        blockShieldEffect.Stop();
+        rageEffect.Stop();
+        stunnedVFX.Stop();
     }
     #endregion
 
@@ -379,30 +440,27 @@ public class BossDragon : BossMonsterBase
 
     IEnumerator SpawnPillarOfFireCoroutine()
     {
-        while(false)
+        isSpawningPillar = true;
+        
+        while(isRage)
         {
-            int spawnCount = Random.Range(4, 7);            
-            List<Vector3> spawnedPositions = new List<Vector3>();
+            Debug.Log("Spawn Pillar");
 
-            for(int i = 0; i < spawnCount; ++i)
-            {
-                bool found = false;
+            // 플레이어 위치에 일정 시간 마다 불기둥 소환
+            Vector3 spawnPoint = player.transform.position;
 
-                for(int tryCount = 0; tryCount < maxTryCount; tryCount++)
-                {
-                    Vector3 newSpawnPoint = GetRandomPointInArea();
-
-                    if (IsValidSpawnPoint(newSpawnPoint, spawnedPositions))
-                    {
-                        Instantiate(pillarOfFireObject, newSpawnPoint, Quaternion.identity);
-                        spawnedPositions.Add(newSpawnPoint);
-                        found = true;
-                        break;
-                    }
-                }
-            }            
+            Instantiate(pillarOfFireObject, spawnPoint, Quaternion.identity);
+    
             yield return new WaitForSeconds(spawnCooldown);
         }        
+    }
+
+    IEnumerator DestroyBossCoroutine()
+    {
+        yield return new WaitForSeconds(3f);
+
+        Instantiate(disaapearEffect, transform.position, Quaternion.identity);
+        Destroy(gameObject);
     }
 
     Vector3 GetRandomPointInArea()
