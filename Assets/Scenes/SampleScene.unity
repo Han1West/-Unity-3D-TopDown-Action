@@ -597,7 +597,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0.5, y: 0, z: 0, w: 0.8660254}
-  m_LocalPosition: {x: 7.597813, y: 13.505108, z: -21.408905}
+  m_LocalPosition: {x: 7.59767, y: 13.505108, z: -21.408905}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3348,7 +3348,7 @@ Transform:
   m_GameObject: {fileID: 1640317514}
   serializedVersion: 2
   m_LocalRotation: {x: 0.5, y: 0, z: 0, w: 0.8660254}
-  m_LocalPosition: {x: 7.597813, y: 13.505108, z: -21.408905}
+  m_LocalPosition: {x: 7.59767, y: 13.505108, z: -21.408905}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4282,6 +4282,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7751573032622961755, guid: b91fee3c0636da64eb8e706c5847e74d, type: 3}
+      propertyPath: m_SlopeLimit
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7751573032622961755, guid: b91fee3c0636da64eb8e706c5847e74d, type: 3}
+      propertyPath: m_StepOffset
+      value: 0.000001
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4434,7 +4442,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5785425019112001708, guid: ab787e031cbfd2f43b9bee580a46a99e, type: 3}
       propertyPath: maxHealth
-      value: 200
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 6413916331318770044, guid: ab787e031cbfd2f43b9bee580a46a99e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4488,6 +4496,14 @@ PrefabInstance:
       propertyPath: rageEffect
       value: 
       objectReference: {fileID: 1604315825}
+    - target: {fileID: 7608475146861517234, guid: ab787e031cbfd2f43b9bee580a46a99e, type: 3}
+      propertyPath: spawnCooldown
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7608475146861517234, guid: ab787e031cbfd2f43b9bee580a46a99e, type: 3}
+      propertyPath: disaapearEffect
+      value: 
+      objectReference: {fileID: 7032708963950579366, guid: 88b7667783006d24ea645b0f30b2d627, type: 3}
     - target: {fileID: 7608475146861517234, guid: ab787e031cbfd2f43b9bee580a46a99e, type: 3}
       propertyPath: rageEventEffect
       value: 

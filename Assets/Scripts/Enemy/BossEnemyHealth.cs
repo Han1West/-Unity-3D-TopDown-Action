@@ -32,6 +32,6 @@ public class BossEnemyHelath : EnemyHealth
 
     protected override void ProcessDead()
     {
-        
+        boss.RequestDead();
     }
 }

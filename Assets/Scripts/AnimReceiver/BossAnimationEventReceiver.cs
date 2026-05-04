@@ -69,4 +69,9 @@ public class BossAnimationEventReceiver : MonoBehaviour
     {
         boss.EndLand();
     }
+
+    public void EndDie()
+    {
+        boss.EndDie();
+    }
 }
