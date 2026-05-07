@@ -19,6 +19,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Material afterImageMaterials;
 
     [SerializeField] AudioClip[] footstepSFX;
+    [SerializeField] AudioClip dashSFX;
 
     SkinnedMeshRenderer[] skinnedRenderers;
     MeshRenderer[] meshRenderers;
@@ -48,6 +49,7 @@ public class PlayerMovement : MonoBehaviour
     public void StartDash()
     {
         isDashing = true;
+        audioSource.PlayOneShot(dashSFX, 0.5f);
         dashTimer = dashTime;
         dashDirection = transform.forward;
         dashDirection.Normalize();

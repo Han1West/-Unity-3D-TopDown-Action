@@ -34,7 +34,7 @@ public class PlayerHealth : MonoBehaviour
     Dictionary<Collider, float> lastHitTime;
     
 
-    public event Action<int, int> OnHealthChanged;
+    public event Action<int, int> OnHealthChanged;    
 
     void Awake()
     {
@@ -243,7 +243,7 @@ public class PlayerHealth : MonoBehaviour
         StartCoroutine(HitFlash());
                 
         // 이벤트 발생
-        OnHealthChanged(currentHealth, maxHealth);
+        OnHealthChanged?.Invoke(currentHealth, maxHealth);
 
         // 피가 0 이하면 사망처리
         if (currentHealth <= 0)

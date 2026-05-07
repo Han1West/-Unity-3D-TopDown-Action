@@ -14,6 +14,7 @@ public class NavMonsterBase : MonoBehaviour
     protected AudioSource audioSource;
     protected Animator animator;
 
+    GameManager gameManager;
     PlayerController player;
     NavMeshAgent agent;
     protected bool isStunned = false;
@@ -29,6 +30,7 @@ public class NavMonsterBase : MonoBehaviour
 
     void Start()
     {
+        gameManager = FindFirstObjectByType<GameManager>();
         player = FindFirstObjectByType<PlayerController>();
 
         var health = GetComponent<EnemyHealth>();
@@ -37,6 +39,7 @@ public class NavMonsterBase : MonoBehaviour
 
     void Update()
     {
+        if (!gameManager.IsPlay) return;
         // 스턴 상태라면 모든 로직 막음
         if (isStunned) return;
         

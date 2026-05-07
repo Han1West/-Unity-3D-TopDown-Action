@@ -7,8 +7,23 @@ public class SpreadSkillLogic : MonoBehaviour
     [SerializeField] float speed = 30f;
     [SerializeField] float lifeTime = 3f;
     [SerializeField] float maxRadius = 13f;
+    [SerializeField] AudioClip chargeSFX;
+    [SerializeField] AudioClip emissionSFX;
+
+    AudioSource audioSoruce;
 
     float lifeTimer = 0f;
+    bool isEmissioned = false;
+
+    void Awake()
+    {
+        audioSoruce = GetComponent<AudioSource>();
+    }
+
+    void Start()
+    {
+        audioSoruce.PlayOneShot(chargeSFX, 0.5f);
+    }
 
     void Update()
     {
@@ -16,7 +31,14 @@ public class SpreadSkillLogic : MonoBehaviour
 
         if(lifeTimer > 1f)
         {
-            if(!skillHitboxes.enabled)
+            if(!isEmissioned)
+            {
+                audioSoruce.PlayOneShot(emissionSFX, 0.5f);
+                isEmissioned = true;
+            }
+            
+
+            if (!skillHitboxes.enabled)
             {
                 skillHitboxes.enabled = true;
             }

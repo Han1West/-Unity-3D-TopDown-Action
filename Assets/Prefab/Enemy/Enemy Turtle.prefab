@@ -289,15 +289,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2111882621109480999, guid: 0ac691b700e643c4998cd48a05cde5cc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.1362586
+      value: -17.118938
       objectReference: {fileID: 0}
     - target: {fileID: 2111882621109480999, guid: 0ac691b700e643c4998cd48a05cde5cc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.50000083
+      value: 0.49999997
       objectReference: {fileID: 0}
     - target: {fileID: 2111882621109480999, guid: 0ac691b700e643c4998cd48a05cde5cc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -18.247244
+      value: -15.409909
       objectReference: {fileID: 0}
     - target: {fileID: 2111882621109480999, guid: 0ac691b700e643c4998cd48a05cde5cc, type: 3}
       propertyPath: m_LocalRotation.w
@@ -331,6 +331,10 @@ PrefabInstance:
       propertyPath: m_Center.y
       value: 0.45
       objectReference: {fileID: 0}
+    - target: {fileID: 4617981447752528034, guid: 0ac691b700e643c4998cd48a05cde5cc, type: 3}
+      propertyPath: blockSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 3fada8ebc3492b943adf6e5b7fb5a388, type: 3}
     - target: {fileID: 5806416421777526401, guid: 0ac691b700e643c4998cd48a05cde5cc, type: 3}
       propertyPath: m_Layer
       value: 6

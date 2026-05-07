@@ -4898,6 +4898,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FallingRock
   speed: 15
   hitEffect: {fileID: 8326485432728896822, guid: c466f320feeea434eb96b23f344d2abb, type: 3}
+  hitSFX:
+  - {fileID: 8300000, guid: 6f77ee0092173c74ca770f7bd060c5ae, type: 3}
+  - {fileID: 8300000, guid: eb4bf6c2a0ad5aa49a2fba1650d56532, type: 3}
+  - {fileID: 8300000, guid: 72d98c82268420740849f44a9352a5ab, type: 3}
+  - {fileID: 8300000, guid: 2f1b178a3b1fbeb42a8280568d3fe3ef, type: 3}
+  - {fileID: 8300000, guid: 4ccbe8cf9aab72c48b3065a9981a49a6, type: 3}
+  - {fileID: 8300000, guid: 45d32448ab82c2c40a9b0546c8ece9a7, type: 3}
+  - {fileID: 8300000, guid: 791a3467514b7fa498d0e086805b4fc6, type: 3}
+  - {fileID: 8300000, guid: 220542dffe5db6043955833ffecf595c, type: 3}
+  - {fileID: 8300000, guid: 1579a9d19d98cba43ae6fe77576d2c7f, type: 3}
 --- !u!54 &6421707176285073333
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -1,3 +1,4 @@
+using System;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -25,6 +26,8 @@ public class PlayerDead : MonoBehaviour
     float raiseTimer = 0f;
     bool isDeadSequencePlaying = false;
     bool isSequenceVFXPlay = false;
+   
+    public event Action OnPlayerDead;
 
     void Awake()
     {
@@ -113,5 +116,8 @@ public class PlayerDead : MonoBehaviour
         }
         isDeadSequencePlaying = false;
         cameraController.isDeadSequencePlaying = false;
+
+        // 이벤트 전달
+        OnPlayerDead?.Invoke();
     }
 }

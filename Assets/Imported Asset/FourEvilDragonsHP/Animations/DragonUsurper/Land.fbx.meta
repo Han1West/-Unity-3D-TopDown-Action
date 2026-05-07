@@ -800,6 +800,34 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
+      - time: 0.01010101
+        functionName: StartWingFlip
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: d85d354015c46b04a9ae9eb8bf48d52b, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.1923601
+        functionName: StartWingFlip
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: d85d354015c46b04a9ae9eb8bf48d52b, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.46127945
+        functionName: StartWingFlip
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: d85d354015c46b04a9ae9eb8bf48d52b, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.7070707
+        functionName: StartWingFlip
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: d85d354015c46b04a9ae9eb8bf48d52b, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       - time: 0.95897406
         functionName: EndLand
         data: 

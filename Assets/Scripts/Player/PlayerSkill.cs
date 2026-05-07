@@ -5,8 +5,6 @@ public class PlayerSkill : MonoBehaviour
 {
     [SerializeField] GameObject skillObject;
     [SerializeField] float skillDelayTime = 1f;
-    [SerializeField] AudioClip chargeSFX;
-    [SerializeField] AudioClip fireSFX;
     [SerializeField] AudioClip skillVoiceSFX;
 
     AudioSource audioSource;
@@ -26,8 +24,7 @@ public class PlayerSkill : MonoBehaviour
 
     public void StartSkill()
     {
-        Instantiate(skillObject, transform.position, Quaternion.identity);
-        audioSource.PlayOneShot(chargeSFX, 0.5f);
+        Instantiate(skillObject, transform.position, Quaternion.identity);        
         audioSource.PlayOneShot(skillVoiceSFX);
     }
 
@@ -42,8 +39,7 @@ public class PlayerSkill : MonoBehaviour
         delayTimer += Time.deltaTime;
         if (delayTimer > skillDelayTime && !playAnimation)
         {
-            animator.SetTrigger("UseSKill");
-            audioSource.PlayOneShot(fireSFX, 0.5f);            
+            animator.SetTrigger("UseSKill");            
             playAnimation = true;
         }
     }

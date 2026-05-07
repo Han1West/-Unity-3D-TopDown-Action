@@ -4,47 +4,61 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class HealthBarUI : MonoBehaviour
-{
-    [SerializeField] Image fillImage;
-    [SerializeField] TMP_Text heathText;
-    [SerializeField] TMP_Text nameText;
+{    
+    [Header("Player")]
+    [SerializeField] TMP_Text playerHealthText;
+    [SerializeField] Image playerFillImage;
     [SerializeField] PlayerHealth playerHealth;
+
+
+
+    [Header("Boss")]
+    [SerializeField] TMP_Text bossHealthText;
+    [SerializeField] Image bossFillImage;
+    [SerializeField] TMP_Text bossNameText;
     [SerializeField] EnemyHealth bossHealth;
 
     void Start()
-    {
-        if(playerHealth != null)
+    {      
+        if (playerHealth != null)
         {
-            playerHealth.OnHealthChanged += UpdateHealthBar;
-            UpdateHealthBar(playerHealth.maxHealth, playerHealth.maxHealth);
+            playerHealth.OnHealthChanged += UpdatePlayerHealthBar;
+            UpdatePlayerHealthBar(playerHealth.maxHealth, playerHealth.maxHealth);
         }
-        else if (bossHealth != null)
+        if (bossHealth != null)
         {
-            bossHealth.OnHealthChanged += UpdateHealthBar;
-            UpdateHealthBar(bossHealth.maxHealth, bossHealth.maxHealth);
-            UpdateName(bossHealth.enemyUIName);
+            bossHealth.OnHealthChanged += UpdateBossHealthBar;            
+
+            UpdateBossHealthBar(bossHealth.maxHealth, bossHealth.maxHealth);
+            UpdateBossName(bossHealth.enemyUIName);
         }
-        
     }
 
     void OnDestroy()
     {
         if (playerHealth)
-            playerHealth.OnHealthChanged -= UpdateHealthBar;
+            playerHealth.OnHealthChanged -= UpdatePlayerHealthBar;
         else if (bossHealth)
-            bossHealth.OnHealthChanged -= UpdateHealthBar;
+            bossHealth.OnHealthChanged -= UpdateBossHealthBar;
 
     }
 
-    public void UpdateHealthBar(int current, int max)
+    public void UpdatePlayerHealthBar(int current, int max)
     {
-        fillImage.fillAmount = (float)current / max;
+        playerFillImage.fillAmount = (float)current / max;
         string newHealthText = max.ToString() + '/' + current.ToString();
-        heathText.text = newHealthText; 
+        playerHealthText.text = newHealthText; 
     }
 
-    public void UpdateName(string name)
+    public void UpdateBossHealthBar(int current, int max)
     {
-        nameText.text = name;
+        bossFillImage.fillAmount = (float)current / max;
+        string newHealthText = max.ToString() + '/' + current.ToString();
+        bossHealthText.text = newHealthText;
+    }
+
+    public void UpdateBossName(string name)
+    {        
+        bossNameText.text = name;
     }
 }
