@@ -52,6 +52,7 @@ GameObject:
   - component: {fileID: 8711503112827140583}
   - component: {fileID: 726551430199088317}
   - component: {fileID: 1566533349006227388}
+  - component: {fileID: 4534426166086553936}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -146,8 +147,8 @@ CharacterController:
   serializedVersion: 3
   m_Height: 2
   m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.1
+  m_SlopeLimit: 10
+  m_StepOffset: 0.000001
   m_SkinWidth: 0.0001
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.85, z: 0}
@@ -182,6 +183,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 3b203d10e6574934d89e6b5f01c877ba, type: 3}
   - {fileID: 8300000, guid: 865698dab80f12f4589acc33cb27730e, type: 3}
   - {fileID: 8300000, guid: 3666f3c12b66caa4a9a547dbc26e6959, type: 3}
+  dashSFX: {fileID: 8300000, guid: ef5aa98c18297a4489661b3979975263, type: 3}
 --- !u!114 &2326318843992807703
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -304,8 +306,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSkill
   skillObject: {fileID: 2408965650304038288, guid: 0387060a3fb5d894db3055873bfed017, type: 3}
   skillDelayTime: 1
-  chargeSFX: {fileID: 8300000, guid: 8652d0f90b8e44b41abb2a8dcc94bd96, type: 3}
-  fireSFX: {fileID: 8300000, guid: abb2ccc91e952784a9626e7b0a8802de, type: 3}
   skillVoiceSFX: {fileID: 8300000, guid: b25720ab6214cc84488f2cc49dca2791, type: 3}
   needSkillPoint: 2
 --- !u!82 &1566533349006227388
@@ -405,6 +405,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &4534426166086553936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1216229342499675051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 083eeb9e6a0c88a4ea24190318aebf72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerUnderCC
+  knockbackSpeed: 2
 --- !u!1 &5773833194540537617
 GameObject:
   m_ObjectHideFlags: 0

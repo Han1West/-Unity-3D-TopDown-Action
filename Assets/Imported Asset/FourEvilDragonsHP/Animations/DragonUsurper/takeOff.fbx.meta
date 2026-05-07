@@ -799,7 +799,35 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.09090909
+        functionName: StartWingFlip
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: d85d354015c46b04a9ae9eb8bf48d52b, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.31329376
+        functionName: StartWingFlip
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: d85d354015c46b04a9ae9eb8bf48d52b, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.53872055
+        functionName: StartWingFlip
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: d85d354015c46b04a9ae9eb8bf48d52b, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.8105098
+        functionName: StartWingFlip
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: d85d354015c46b04a9ae9eb8bf48d52b, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask:
       - path: 
         weight: 1

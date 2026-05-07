@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class PillarofFireLogic : MonoBehaviour
 {
@@ -9,9 +10,16 @@ public class PillarofFireLogic : MonoBehaviour
     [SerializeField] ParticleSystem effect;
     [SerializeField] float alertTime = 2.0f;
     [SerializeField] float lifeTime = 8.0f;
-    
+    [SerializeField] AudioClip firePillarSFX;
+
+    AudioSource audioSource;
     float accTime;
     bool attacked = false;
+
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
 
     void Start()
     {
@@ -28,6 +36,7 @@ public class PillarofFireLogic : MonoBehaviour
             attacked = true;
 
             warningBox.SetActive(false);
+            audioSource.PlayOneShot(firePillarSFX, 0.5f);
             attackHitbox.enabled = true;
             effect.Play();
         }

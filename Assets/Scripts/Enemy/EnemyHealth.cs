@@ -12,6 +12,7 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] Material hitMaterial;
     [SerializeField] GameObject damageTextPrefab;    
     [SerializeField] AudioClip hitSFX;
+    [SerializeField] AudioClip blockSFX;
     public string enemyUIName;
 
     SkinnedMeshRenderer[] renderers;
@@ -20,10 +21,13 @@ public class EnemyHealth : MonoBehaviour
     Material[][] originMaterials2;
 
     AudioSource audioSource;
-    int currentHealth = 0;
-    public Action OnDamaged;
 
+
+    int currentHealth = 0;
+    public Action OnDamaged;    
     public event Action<int, int> OnHealthChanged;
+
+    public static Action<EnemyHealth> OnEnemyDead;
 
     protected virtual void Awake()
     {
@@ -61,22 +65,25 @@ public class EnemyHealth : MonoBehaviour
         currentHealth -= amount;
 
         // 피격 이펙트
-        StartCoroutine(HitFlash());        
-        audioSource.PlayOneShot(hitSFX);
+        StartCoroutine(HitFlash());
+        if (amount == 0)
+            audioSource.PlayOneShot(blockSFX, 0.5f);
+        else
+            audioSource.PlayOneShot(hitSFX);
 
         // 피격 데미지 출력
         GameObject damageText = Instantiate(damageTextPrefab, transform.position, Quaternion.identity);
         damageText.GetComponent<DamageText>().damageText.color = Color.black;
-        damageText.GetComponent<DamageText>().damageText.text = amount.ToString();
-        Debug.Log("Current Health :" + currentHealth);
+        damageText.GetComponent<DamageText>().damageText.text = amount.ToString();        
 
         OnDamaged?.Invoke();
         // 이벤트 발생
-        OnHealthChanged(currentHealth, maxHealth);
+        OnHealthChanged?.Invoke(currentHealth, maxHealth);
 
         // 사망 처리 
         if (currentHealth <= 0)
         {
+            OnEnemyDead?.Invoke(this);
             ProcessDead(); 
         }
     }

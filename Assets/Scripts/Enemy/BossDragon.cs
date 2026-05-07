@@ -49,8 +49,9 @@ public class BossDragon : BossMonsterBase
     [SerializeField] BoxCollider spawnArea;
     [SerializeField] float spawnCooldown = 4f;
     [SerializeField] float minDistance = 2f;
-    [SerializeField] int maxTryCount = 30;
-    
+    [SerializeField] int maxTryCount = 30;    
+
+
     PatternType currentPattern = PatternType.None;
     EventType currentEvent = EventType.None;
 
@@ -349,7 +350,7 @@ public class BossDragon : BossMonsterBase
     #region Hitbox Event
 
     public void ActivateNormalAttack()
-    {
+    {        
         normalAttackHitbox.enabled = true;
     }
 
@@ -359,7 +360,7 @@ public class BossDragon : BossMonsterBase
     }
 
     public void ActivateClawAttack()
-    {
+    {        
         clawAttackHitbox.enabled = true;
     }
 
@@ -369,7 +370,7 @@ public class BossDragon : BossMonsterBase
     }
 
     public void ActivateFireBreath()
-    {
+    {        
         fireBreathEffect.Play();
         fireBreathHitbox.enabled = true;
     }
@@ -447,7 +448,7 @@ public class BossDragon : BossMonsterBase
             Debug.Log("Spawn Pillar");
 
             // 플레이어 위치에 일정 시간 마다 불기둥 소환
-            Vector3 spawnPoint = player.transform.position;
+            Vector3 spawnPoint = player.transform.position;            
 
             Instantiate(pillarOfFireObject, spawnPoint, Quaternion.identity);
     
