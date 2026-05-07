@@ -32,9 +32,8 @@ public class PlayerMovement : MonoBehaviour
     
     bool isDashing = false;
     bool wasRunning = false;
+    Vector3 move;
     Vector3 dashDirection;
-
-
 
     void Awake()
     {
@@ -51,7 +50,9 @@ public class PlayerMovement : MonoBehaviour
         isDashing = true;
         audioSource.PlayOneShot(dashSFX, 0.5f);
         dashTimer = dashTime;
-        dashDirection = transform.forward;
+        dashDirection = move;
+        if (move == Vector3.zero)
+            dashDirection = transform.forward;
         dashDirection.Normalize();
         StartCoroutine(SpawnAfterImages());
     }
@@ -167,9 +168,9 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("IsRunning", isRunning);
             wasRunning = isRunning;
         }
-        
 
-        Vector3 move = new Vector3(movement.x, 0f, movement.y);
+
+        move = new Vector3(movement.x, 0f, movement.y);
         float speed = isRunning ? runSpeed : moveSpeed;
 
         // 해당 방향으로 움직인다
