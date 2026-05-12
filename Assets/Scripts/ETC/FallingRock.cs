@@ -3,7 +3,7 @@ using UnityEngine;
 public class FallingRock : MonoBehaviour
 {
     [SerializeField] float speed = 30f;
-    [SerializeField] GameObject hitEffect;
+    [SerializeField] GameObject hitEffect;    
     [SerializeField] AudioClip[] hitSFX;
     
     Rigidbody rb;
@@ -21,8 +21,8 @@ public class FallingRock : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         int i = Random.Range(0, hitSFX.Length);
-        
-        AudioSource.PlayClipAtPoint(hitSFX[i], transform.position);
+
+        AudioManager.Instance.PlaySFX(hitSFX[i], 0.5f);        
         Instantiate(hitEffect, transform.position, Quaternion.identity);
         Destroy(this.gameObject);
     }

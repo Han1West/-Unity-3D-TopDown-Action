@@ -221,6 +221,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2879809836180819487, guid: 0ac691b700e643c4998cd48a05cde5cc, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -6644651826124993299, guid: 1165746cec60a6e4fa7717492de26733, type: 2}
     - target: {fileID: 3751933907536863409, guid: 0ac691b700e643c4998cd48a05cde5cc, type: 3}
       propertyPath: m_Center.y
       value: 0.54
@@ -326,6 +330,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyDeathSound
   deathSFX: {fileID: 8300000, guid: d753541d7e893e343bdea4168424341b, type: 3}
+  audioManager: {fileID: 5073439086226894467, guid: aa386c0c87c91ee4cad5917f38f19bea, type: 3}
 --- !u!4 &5036975839595617103 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2111882621109480999, guid: 0ac691b700e643c4998cd48a05cde5cc, type: 3}

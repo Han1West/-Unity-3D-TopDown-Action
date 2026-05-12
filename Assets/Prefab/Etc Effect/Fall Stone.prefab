@@ -4898,6 +4898,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FallingRock
   speed: 15
   hitEffect: {fileID: 8326485432728896822, guid: c466f320feeea434eb96b23f344d2abb, type: 3}
+  audioManager: {fileID: 5073439086226894467, guid: aa386c0c87c91ee4cad5917f38f19bea, type: 3}
   hitSFX:
   - {fileID: 8300000, guid: 6f77ee0092173c74ca770f7bd060c5ae, type: 3}
   - {fileID: 8300000, guid: eb4bf6c2a0ad5aa49a2fba1650d56532, type: 3}

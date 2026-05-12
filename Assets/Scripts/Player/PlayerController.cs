@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] float dashCoolDown = 1f;
 
-    PlayerInput input;
+    PlayerInputHandler input;
     PlayerMovement movement;    
     PlayerAttack attack;
     PlayerGuard guard;
@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
-        input = GetComponent<PlayerInput>();
+        input = GetComponent<PlayerInputHandler>();
         movement = GetComponent<PlayerMovement>();        
         attack = GetComponent<PlayerAttack>();
         guard = GetComponent<PlayerGuard>();

@@ -4,15 +4,30 @@ public class GameManager : MonoBehaviour
 {    
     PlayerDead playerDead;
 
-    public bool IsPlay { get; private set; }
+    bool isPlaying = false;
 
     float playTime = 0;
     int killCount = 0;
 
+    public static GameManager Instance;
+
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     void Start()
     {
         playerDead = FindFirstObjectByType<PlayerDead>();
-        IsPlay = true;
+        isPlaying = true;
         EnemyHealth.OnEnemyDead += HandleEnemyDead;
         playerDead.OnPlayerDead += HandlePlayerDead;
     }
@@ -25,7 +40,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if(IsPlay)        
+        if(isPlaying)        
             playTime += Time.deltaTime;       
     }
 
@@ -37,7 +52,7 @@ public class GameManager : MonoBehaviour
 
     void HandlePlayerDead()
     {
-        IsPlay = false;
+        PauseGame();
     }
 
     public float GetPlayTime()
@@ -48,5 +63,25 @@ public class GameManager : MonoBehaviour
     public int GetKillCount()
     {
         return killCount;
+    }
+
+    public void PauseGame()
+    {
+        isPlaying = false;
+
+        // 마우스 커서 변경
+
+        // 게임 중지
+        Time.timeScale = 0f;
+    }
+
+    public void ResumeGame()
+    {
+        isPlaying = true;
+
+        // 마우스 커서 변경
+
+        // 게임 재개
+        Time.timeScale = 1f;
     }
 }

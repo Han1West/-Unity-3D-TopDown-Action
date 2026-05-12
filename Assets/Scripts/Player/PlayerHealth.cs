@@ -68,7 +68,7 @@ public class PlayerHealth : MonoBehaviour
     }
 
     void OnTriggerEnter(Collider other)
-    {        
+    {                
         // µ¥¹ÌÁö
         if (other.CompareTag("EnemyAttack"))
         {            

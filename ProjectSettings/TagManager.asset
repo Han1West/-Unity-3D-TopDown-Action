@@ -12,6 +12,7 @@ TagManager:
   - EnemySpecialAttack
   - EnemyDoTAttack
   - EnemyCCAttack
+  - EventTrigger
   layers:
   - Default
   - TransparentFX

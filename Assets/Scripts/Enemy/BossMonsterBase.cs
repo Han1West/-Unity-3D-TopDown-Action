@@ -47,9 +47,7 @@ public class BossMonsterBase : MonoBehaviour
     protected PlayerController player;
     protected BossState currentState = BossState.Idle;
 
-    EnemyHealth health;
-    GameManager gameManager;
-
+    EnemyHealth health;    
     public bool isBusy = false;
     protected bool isRage = false;
     protected bool pendingRage = false;
@@ -71,8 +69,7 @@ public class BossMonsterBase : MonoBehaviour
     }
 
     void Start()
-    {
-        gameManager = FindFirstObjectByType<GameManager>();
+    {        
         player = FindFirstObjectByType<PlayerController>();
         currentPatternChance = basePatternChance;
         ChangeState(BossState.Idle);
@@ -80,9 +77,6 @@ public class BossMonsterBase : MonoBehaviour
 
     void Update()
     {
-        // 게임 중지 or 종료
-        if (!gameManager.IsPlay) return;
-
         // 스턴 상태라면 모든 로직 막음
         if (player == null || isStunned || currentState == BossState.Dead) return;
         
