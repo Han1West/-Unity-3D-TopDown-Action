@@ -13,13 +13,10 @@ public class GameOverUI : MonoBehaviour
     [SerializeField] PlayerDead playerDead;
 
     bool isActivate = false;
-
-    GameManager gameManager;
+        
 
     void Start()
-    {
-        gameManager = FindFirstObjectByType<GameManager>();
-
+    {        
         if(playerDead != null)
         {
             playerDead.OnPlayerDead += UpdateDeadInfomation;            
@@ -44,18 +41,20 @@ public class GameOverUI : MonoBehaviour
     
     public void UpdateDeadInfomation()
     {        
-        float totalTime = gameManager.GetPlayTime();
+        float totalTime = GameManager.Instance.GetPlayTime();
         int minute = (int)totalTime / 60;
         int second = (int)totalTime % 60;
 
         timeText.text = minute.ToString() + ":" + second.ToString();
-        killText.text = gameManager.GetKillCount().ToString();
+        killText.text = GameManager.Instance.GetKillCount().ToString();
 
         gameObject.SetActive(true);
     }
 
     void OnClickRetry()
     {
+        GameManager.Instance.ResumeGame();
+        InputManager.Instance.ResumeGame();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 

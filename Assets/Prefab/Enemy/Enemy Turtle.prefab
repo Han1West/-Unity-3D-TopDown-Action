@@ -289,15 +289,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2111882621109480999, guid: 0ac691b700e643c4998cd48a05cde5cc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -17.118938
+      value: -12.872818
       objectReference: {fileID: 0}
     - target: {fileID: 2111882621109480999, guid: 0ac691b700e643c4998cd48a05cde5cc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.49999997
+      value: 0.5000025
       objectReference: {fileID: 0}
     - target: {fileID: 2111882621109480999, guid: 0ac691b700e643c4998cd48a05cde5cc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -15.409909
+      value: -17.454008
       objectReference: {fileID: 0}
     - target: {fileID: 2111882621109480999, guid: 0ac691b700e643c4998cd48a05cde5cc, type: 3}
       propertyPath: m_LocalRotation.w
@@ -327,6 +327,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2879809836180819487, guid: 0ac691b700e643c4998cd48a05cde5cc, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -6644651826124993299, guid: 1165746cec60a6e4fa7717492de26733, type: 2}
     - target: {fileID: 3751933907536863409, guid: 0ac691b700e643c4998cd48a05cde5cc, type: 3}
       propertyPath: m_Center.y
       value: 0.45
@@ -435,3 +439,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyDeathSound
   deathSFX: {fileID: 8300000, guid: 257409bf7bef89e48824a0c6ed11716f, type: 3}
+  audioManager: {fileID: 5073439086226894467, guid: aa386c0c87c91ee4cad5917f38f19bea, type: 3}

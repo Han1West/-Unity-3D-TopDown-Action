@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerInput : MonoBehaviour
+public class PlayerInputHandler : MonoBehaviour
 {    
     public Vector2 move;
     public Vector2 mousePosition;
@@ -34,7 +34,7 @@ public class PlayerInput : MonoBehaviour
     }
 
     public void OnAttack(InputValue value)
-    {
+    {        
         attack = value.isPressed;
     }
 
