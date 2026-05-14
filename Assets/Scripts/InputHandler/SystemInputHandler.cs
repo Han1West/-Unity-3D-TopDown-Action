@@ -5,27 +5,36 @@ public class SystemInputHandler : MonoBehaviour
 {
     [SerializeField] GameObject pauseUI;
     [SerializeField] GameObject optionUI;
-    
-    bool isPaused = false;    
+    [SerializeField] IntroEvent intro;
+
+    bool isPaused = false;
 
 
     public void OnPause(InputValue value)
     {
         // 옵션 켜져있으면 옵션 끄기
-        if(optionUI.activeInHierarchy)
+        if (optionUI.activeInHierarchy)
         {
             DeactivateOptionMenu();
             return;
         }
-        
 
-        if(value.isPressed)        
-            isPaused = !isPaused;
+        if (pauseUI != null)
+        {
+            if (value.isPressed)
+                isPaused = !isPaused;
 
-        if (isPaused)
-            ActivatePauseMenu();
-        else
-            DeactivatePauseMenu();
+            if (isPaused)
+                ActivatePauseMenu();
+            else
+                DeactivatePauseMenu();
+        }
+    }
+
+    public void OnSkip(InputValue value)
+    {
+        if (value.isPressed)
+            intro.SkipDialog();
     }
 
     void ActivatePauseMenu()
@@ -36,7 +45,7 @@ public class SystemInputHandler : MonoBehaviour
         GameManager.Instance.PauseGame();
 
         // UI 활성화
-        pauseUI.SetActive(true);           
+        pauseUI.SetActive(true);
     }
 
     void DeactivatePauseMenu()

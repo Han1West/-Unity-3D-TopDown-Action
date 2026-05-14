@@ -24,7 +24,8 @@ public class EnemySpawnPortal : MonoBehaviour
 
         if (spawnTimer > spawnCooldown)
         {
-            Instantiate(spawnEnemy, spawnPoint.position, Quaternion.identity);
+            GameObject newEnemy = Instantiate(spawnEnemy, spawnPoint.position, Quaternion.identity);
+            GameManager.Instance.AddNewEnemy(newEnemy);
             spawnTimer = 0f;
         }
 

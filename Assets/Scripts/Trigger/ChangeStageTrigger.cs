@@ -14,6 +14,10 @@ public class ChangeStageTrigger : MonoBehaviour
 
     void ChangeStage()
     {
+
+        if (!GameManager.Instance.CanChangeStage())
+            return;
+
         int currentScene = SceneManager.GetActiveScene().buildIndex;
         int nextScene = currentScene + 1;
 
