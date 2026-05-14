@@ -27,7 +27,7 @@ public class PlayerHealth : MonoBehaviour
     PlayerController playerController;
     PlayerGuard guard;
     Animator animator;
-    int currentHealth = 0;
+    public int currentHealth { get; private set; } = 0;
     int upperLayerIndex;
 
     Dictionary<Collider, AttackHitbox> hitboxCache;
@@ -65,6 +65,8 @@ public class PlayerHealth : MonoBehaviour
     {
         currentHealth = maxHealth;
         upperLayerIndex = animator.GetLayerIndex("Upper Layer");
+
+        Debug.Log("Player Health Start End");
     }
 
     void OnTriggerEnter(Collider other)
@@ -270,7 +272,7 @@ public class PlayerHealth : MonoBehaviour
         animator.SetLayerWeight(upperLayerIndex, 0f);
     }
 
-    private IEnumerator HitFlash()
+    IEnumerator HitFlash()
     {
         // Skin mesh renderers
         foreach(var renderer in renderers)
@@ -318,6 +320,13 @@ public class PlayerHealth : MonoBehaviour
         Debug.Log("Current Health :" + currentHealth);
 
         // 이벤트 발생
-        OnHealthChanged(currentHealth, maxHealth);
+        OnHealthChanged?.Invoke(currentHealth, maxHealth);
+    }
+
+    public void SetCurrentHealth(int Health)
+    {
+        currentHealth = Health;
+        
+        OnHealthChanged?.Invoke(currentHealth, maxHealth);
     }
 }

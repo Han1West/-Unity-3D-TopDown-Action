@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -6,24 +7,38 @@ using UnityEngine.UI;
 
 public class TitleMenu : MonoBehaviour
 {
+    [Header("Title UI")]
     [SerializeField] TMP_Text titleText1;
     [SerializeField] TMP_Text titleText2;
 
     [SerializeField] Button newGameButton;
-    [SerializeField] Button contiunueButton;
+    [SerializeField] Button continueButton;
     [SerializeField] Button optionButton;
     [SerializeField] Button exitButton;
 
+    [Header("Option UI")]
     [SerializeField] GameObject optionUI;
 
+    [Header("Warning UI")]
+    [SerializeField] GameObject warningUI;
+
+    [SerializeField] Button warningConfirmButton;
+    [SerializeField] Button warningCancelButton;
+
+    [Header("ETC")]
     [SerializeField] float speed = 1f;
 
     void Start()
     {
         newGameButton.onClick.AddListener(OnClickNewGame);
-        contiunueButton.onClick.AddListener(OnClickContinue);
+        continueButton.onClick.AddListener(OnClickContinue);
         optionButton.onClick.AddListener(OnClickOption);
         exitButton.onClick.AddListener(OnClickExit);
+
+        warningConfirmButton.onClick.AddListener(OnClickWarningConfirm);
+        warningCancelButton.onClick.AddListener(OnClickWarningCancel);
+
+        continueButton.interactable = PlayerPrefs.HasKey("SaveData");
     }
 
     void Update()
@@ -39,12 +54,26 @@ public class TitleMenu : MonoBehaviour
         int currentScene = SceneManager.GetActiveScene().buildIndex;
         int nextScene = currentScene + 1;
 
-        SceneManager.LoadScene(nextScene);
+        SaveManager.Instance.IsContinueLoading = false;
+
+        SaveData data = SaveManager.Instance.LoadGame();
+
+        // 저장된 세이브파일이 있다
+        if(data != null)
+        {
+            warningUI.SetActive(true);
+        }
+        else
+            SceneManager.LoadScene(nextScene);
     }
 
     void OnClickContinue()
-    {
+    {        
+        SaveData data = SaveManager.Instance.LoadGame();
+        SaveManager.Instance.IsContinueLoading = true;
 
+        if (data != null)
+            SceneManager.LoadScene(data.sceneName);
     }
 
     void OnClickOption()
@@ -59,5 +88,18 @@ public class TitleMenu : MonoBehaviour
 #else
     Application.Quit();
 #endif
+    }
+
+    void OnClickWarningConfirm()
+    {
+        int currentScene = SceneManager.GetActiveScene().buildIndex;
+        int nextScene = currentScene + 1;
+
+        SceneManager.LoadScene(nextScene);
+    }
+
+    void OnClickWarningCancel()
+    {
+        warningUI.SetActive(false);
     }
 }

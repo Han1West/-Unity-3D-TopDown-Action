@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5392865952944453597}
     m_Modifications:
+    - target: {fileID: 3288734912414284343, guid: 45e0f06c750176947862c10346226439, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 5516487406859467972, guid: 45e0f06c750176947862c10346226439, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -55,6 +59,18 @@ PrefabInstance:
     - target: {fileID: 5607819269926399345, guid: 45e0f06c750176947862c10346226439, type: 3}
       propertyPath: m_Name
       value: Portal blue
+      objectReference: {fileID: 0}
+    - target: {fileID: 5607819269926399345, guid: 45e0f06c750176947862c10346226439, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5995944143312657410, guid: 45e0f06c750176947862c10346226439, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8817328400084507686, guid: 45e0f06c750176947862c10346226439, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -119,6 +135,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 736197625419490760, guid: 30d7a6bfc62732349b5449c249422f67, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 1281832650720232818, guid: 30d7a6bfc62732349b5449c249422f67, type: 3}
       propertyPath: lifeTime
       value: 30
@@ -134,6 +154,14 @@ PrefabInstance:
     - target: {fileID: 1422830212741466523, guid: 30d7a6bfc62732349b5449c249422f67, type: 3}
       propertyPath: m_Name
       value: Turtle Spawn Portal Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 1422830212741466523, guid: 30d7a6bfc62732349b5449c249422f67, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2386646388944682364, guid: 30d7a6bfc62732349b5449c249422f67, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4031845065692330208, guid: 30d7a6bfc62732349b5449c249422f67, type: 3}
       propertyPath: m_LocalPosition.y

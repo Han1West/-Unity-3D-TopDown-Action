@@ -79,7 +79,7 @@ public class PlayerGuard : MonoBehaviour
         if (currentParryPoint >= maxParryPoint)
             currentParryPoint = maxParryPoint;
 
-        OnParryEnergyChanged(currentParryPoint, maxParryPoint);
+        OnParryEnergyChanged?.Invoke(currentParryPoint, maxParryPoint);
 
         // 플레이어의 방향을 공격받은 방향으로 회전
         hitDirection.y = 0;
@@ -99,9 +99,15 @@ public class PlayerGuard : MonoBehaviour
         if (currentParryPoint <= 0)
             currentParryPoint = 0;
 
-        OnParryEnergyChanged(currentParryPoint, maxParryPoint);
+        OnParryEnergyChanged?.Invoke(currentParryPoint, maxParryPoint);
     }
 
+    public void SetParryPoint(int point)
+    {
+        currentParryPoint = point;
+
+        OnParryEnergyChanged?.Invoke(currentParryPoint, maxParryPoint);
+    }
 
     IEnumerator SlowMotion()
     {
