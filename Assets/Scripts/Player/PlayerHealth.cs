@@ -66,7 +66,7 @@ public class PlayerHealth : MonoBehaviour
         currentHealth = maxHealth;
         upperLayerIndex = animator.GetLayerIndex("Upper Layer");
 
-        Debug.Log("Player Health Start End");
+        
     }
 
     void OnTriggerEnter(Collider other)

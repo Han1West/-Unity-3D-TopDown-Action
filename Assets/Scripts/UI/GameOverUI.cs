@@ -12,9 +12,6 @@ public class GameOverUI : MonoBehaviour
     [SerializeField] Button exitButton;
     [SerializeField] PlayerDead playerDead;
 
-    bool isActivate = false;
-        
-
     void Start()
     {        
         if(playerDead != null)
@@ -28,17 +25,13 @@ public class GameOverUI : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+
     void OnDestroy()
     {
         if(playerDead != null)        
             playerDead.OnPlayerDead -= UpdateDeadInfomation;        
     }
 
-    void Update()
-    {
-        
-    }
-    
     public void UpdateDeadInfomation()
     {        
         float totalTime = GameManager.Instance.GetPlayTime();
@@ -48,6 +41,7 @@ public class GameOverUI : MonoBehaviour
         timeText.text = minute.ToString() + ":" + second.ToString();
         killText.text = GameManager.Instance.GetKillCount().ToString();
 
+        Debug.Log("Player Dead Overay");
         gameObject.SetActive(true);
     }
 
@@ -55,10 +49,14 @@ public class GameOverUI : MonoBehaviour
     {
         GameManager.Instance.ResumeGame();
         InputManager.Instance.ResumeGame();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneManager.LoadScene(2);
     }
 
     void OnClickExit()
-    {        
+    {
+        GameManager.Instance.ResumeGame();
+        InputManager.Instance.ResumeGame();
+
+        EventManager.Instance.LoadTitle();
     }
 }

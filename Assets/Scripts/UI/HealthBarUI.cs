@@ -10,9 +10,8 @@ public class HealthBarUI : MonoBehaviour
     [SerializeField] Image playerFillImage;
     [SerializeField] PlayerHealth playerHealth;
 
-
-
     [Header("Boss")]
+    [SerializeField] GameObject bossHealthUI;
     [SerializeField] TMP_Text bossHealthText;
     [SerializeField] Image bossFillImage;
     [SerializeField] TMP_Text bossNameText;
@@ -32,6 +31,10 @@ public class HealthBarUI : MonoBehaviour
             UpdateBossHealthBar(bossHealth.maxHealth, bossHealth.maxHealth);
             UpdateBossName(bossHealth.enemyUIName);
         }
+        else
+        {
+            bossHealthUI.SetActive(false);
+        }       
     }
 
     void OnDestroy()

@@ -33,24 +33,18 @@ public class SaveManager : MonoBehaviour
         }        
     }
 
-    void Start()
-    {        
-    }
-
     public void SaveGame()
     {
         playerHealth = FindFirstObjectByType<PlayerHealth>();
         playerGuard = FindFirstObjectByType<PlayerGuard>();
 
         SaveData data = new SaveData();
-
-        Debug.Log(playerHealth.gameObject.name);
-        data.playerHp = playerHealth.currentHealth;
-
         
-        Debug.Log(data.playerHp);
-
-        data.playerParryPoint = playerGuard.currentParryPoint;
+        if(playerHealth && playerGuard)
+        {
+            data.playerHp = playerHealth.currentHealth;
+            data.playerParryPoint = playerGuard.currentParryPoint;
+        }
         data.playTime = GameManager.Instance.GetPlayTime();
         data.totalKill = GameManager.Instance.GetKillCount();        
         data.sceneName = SceneManager.GetActiveScene().name;
@@ -68,5 +62,14 @@ public class SaveManager : MonoBehaviour
 
         string json = PlayerPrefs.GetString("SaveData");
         return JsonUtility.FromJson<SaveData>(json);
+    }
+
+    public void DeleteSave()
+    {
+        if(PlayerPrefs.HasKey("SaveData"))
+        {
+            PlayerPrefs.DeleteKey("SaveData");
+            PlayerPrefs.Save();
+        }
     }
 }
