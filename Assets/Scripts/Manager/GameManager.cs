@@ -10,13 +10,17 @@ public class GameManager : MonoBehaviour
     PlayerDead playerDead;
     PlayerGuard playerGuard;
 
-    bool isPlaying = false;
+    public bool isInPlaying { get; private set; } = false;
+
+    int tempPlayerHealth = 0;
+    int tempPlayerParryPoint = 0;
 
     float playTime = 0;
     int killCount = 0;
     List<GameObject> enemies = new List<GameObject>();
 
     public static GameManager Instance;
+    
 
     void Awake()
     {
@@ -29,38 +33,31 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }
 
-    void OnEnable()
-    {
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
-
-    // 새로운 씬 로드
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        StartCoroutine(InitializeScene());
-    }
-
-    void Start()
+    void OnEnable()
     {
         
     }
 
     void OnDestroy()
     {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
         EnemyHealth.OnEnemyDead -= HandleEnemyDead;
         playerDead.OnPlayerDead -= HandlePlayerDead;
     }
 
+    // 새로운 씬 로드
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {        
+        StartCoroutine(InitializeScene());
+    }
+
     void Update()
     {
-        if(isPlaying)        
+        if(isInPlaying)        
             playTime += Time.deltaTime;       
     }
 
@@ -70,9 +67,9 @@ public class GameManager : MonoBehaviour
 
         enemies.Remove(enemy.gameObject);
 
-        // 씬 내에 모든 적 제거 -> Save
-        if(enemies.Count == 0 )
-            SaveManager.Instance.SaveGame();
+        //// 씬 내에 모든 적 제거 -> Save
+        //if(enemies.Count == 0 )
+        //    SaveManager.Instance.SaveGame();
     }
 
     void HandlePlayerDead()
@@ -84,7 +81,7 @@ public class GameManager : MonoBehaviour
     {
         return playTime;
     }
-
+    
     public int GetKillCount()
     {
         return killCount;
@@ -92,7 +89,7 @@ public class GameManager : MonoBehaviour
 
     public void PauseGame()
     {
-        isPlaying = false;
+        isInPlaying = false;
 
         // 마우스 커서 변경
 
@@ -102,7 +99,7 @@ public class GameManager : MonoBehaviour
 
     public void ResumeGame()
     {
-        isPlaying = true;
+        isInPlaying = true;
 
         // 마우스 커서 변경
 
@@ -110,7 +107,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
     }
 
-    public void ApplySaveData(SaveData data)
+    void ApplySaveData(SaveData data)
     {
         playTime = data.playTime;
         killCount = data.totalKill;
@@ -119,9 +116,17 @@ public class GameManager : MonoBehaviour
         playerGuard.SetParryPoint(data.playerParryPoint);        
     }
 
+    void ApplyPlayerInfo()
+    {        
+        playerHealth.SetCurrentHealth(tempPlayerHealth);
+        playerGuard.SetParryPoint(tempPlayerParryPoint);
+
+        tempPlayerHealth = 0;
+        tempPlayerParryPoint = 0;
+    }
+
     public bool CanChangeStage()
-    {
-        Debug.Log(enemies.Count);
+    {                
         if (enemies.Count <= 0)
             return true;
 
@@ -134,17 +139,27 @@ public class GameManager : MonoBehaviour
     }    
 
     IEnumerator InitializeScene()
-    {
+    {        
         yield return null;
 
         playerDead = FindFirstObjectByType<PlayerDead>();
         playerHealth = FindFirstObjectByType<PlayerHealth>();
         playerGuard = FindFirstObjectByType<PlayerGuard>();
 
-        isPlaying = true;
+        SceneInfo sceneInfo = FindFirstObjectByType<SceneInfo>();
+
+        if (sceneInfo.sceneType == SceneType.InGamePlay)
+            isInPlaying = true;
+        else
+        {
+            isInPlaying = false;
+            yield break;
+        }
+            
 
         EnemyHealth.OnEnemyDead += HandleEnemyDead;
-        playerDead.OnPlayerDead += HandlePlayerDead;
+        if(playerDead)
+            playerDead.OnPlayerDead += HandlePlayerDead;
 
         enemies.Clear();
 
@@ -170,8 +185,21 @@ public class GameManager : MonoBehaviour
         // 현재 상태 세이브
         else
         {
-            Debug.Log("Start Save !");
-            SaveManager.Instance.SaveGame();
+            // 저장되있는 플레이어 정보 적용
+            if(EventManager.Instance.IsTransPlayerInfo)
+            {
+                Debug.Log($"Before Apply: {tempPlayerHealth}");
+                ApplyPlayerInfo();
+            }
+                
+            // 현재 레벨 저장
+            SaveManager.Instance.SaveGame();            
         }        
+    }
+
+    public void SaveTempPlayerInfo(PlayerInfo playerInfo)
+    {        
+        tempPlayerHealth = playerInfo.currentHealth;
+        tempPlayerParryPoint = playerInfo.currentParryPoint;        
     }
 }

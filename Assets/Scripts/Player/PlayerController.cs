@@ -37,6 +37,11 @@ public class PlayerController : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
     }
 
+    void Start()
+    {
+        dashTimer = dashCoolDown;
+    }
+
     void Update()
     {
 

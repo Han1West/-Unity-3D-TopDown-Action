@@ -25,25 +25,33 @@ public class InputManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        playerMap = playerInput.actions.FindActionMap("Player");
-        systemMap = playerInput.actions.FindActionMap("System");
-        uiMap = playerInput.actions.FindActionMap("UI");
+        if(playerInput)
+        {
+            playerMap = playerInput.actions.FindActionMap("Player");
+            systemMap = playerInput.actions.FindActionMap("System");
+            uiMap = playerInput.actions.FindActionMap("UI");
+        }
     }    
 
     void Start()
     {
         playerDead = FindFirstObjectByType<PlayerDead>();
 
-        playerMap.Enable();
-        systemMap.Enable();
-        uiMap.Disable();
+        if (playerInput)
+        {
+            playerMap.Enable();
+            systemMap.Enable();
+            uiMap.Disable();
+        }
 
-        playerDead.OnPlayerDead += HandlePlayerDead;
+        if(playerDead)
+            playerDead.OnPlayerDead += HandlePlayerDead;
     }
 
     void OnDestroy()
-    {        
-        playerDead.OnPlayerDead -= HandlePlayerDead;
+    {       
+        if(playerDead)
+            playerDead.OnPlayerDead -= HandlePlayerDead;
     }
 
     void HandlePlayerDead()

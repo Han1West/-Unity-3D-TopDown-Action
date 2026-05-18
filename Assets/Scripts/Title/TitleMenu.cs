@@ -51,20 +51,17 @@ public class TitleMenu : MonoBehaviour
 
     void OnClickNewGame()
     {
-        int currentScene = SceneManager.GetActiveScene().buildIndex;
-        int nextScene = currentScene + 1;
-
         SaveManager.Instance.IsContinueLoading = false;
 
         SaveData data = SaveManager.Instance.LoadGame();
 
         // 저장된 세이브파일이 있다
-        if(data != null)
+        if (data != null)
         {
             warningUI.SetActive(true);
         }
         else
-            SceneManager.LoadScene(nextScene);
+            EventManager.Instance.LoadNextScene();            
     }
 
     void OnClickContinue()
@@ -92,10 +89,7 @@ public class TitleMenu : MonoBehaviour
 
     void OnClickWarningConfirm()
     {
-        int currentScene = SceneManager.GetActiveScene().buildIndex;
-        int nextScene = currentScene + 1;
-
-        SceneManager.LoadScene(nextScene);
+        EventManager.Instance.LoadNextScene();
     }
 
     void OnClickWarningCancel()

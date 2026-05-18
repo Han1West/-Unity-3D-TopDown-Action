@@ -5,7 +5,8 @@ public class SystemInputHandler : MonoBehaviour
 {
     [SerializeField] GameObject pauseUI;
     [SerializeField] GameObject optionUI;
-    [SerializeField] IntroEvent intro;
+    [SerializeField] GameObject warningUI;
+    [SerializeField] TypingTrigger typing;
 
     bool isPaused = false;
 
@@ -16,6 +17,12 @@ public class SystemInputHandler : MonoBehaviour
         if (optionUI.activeInHierarchy)
         {
             DeactivateOptionMenu();
+            return;
+        }
+
+        if(warningUI.activeInHierarchy)
+        {
+            DeactivateWarningUI();
             return;
         }
 
@@ -33,8 +40,8 @@ public class SystemInputHandler : MonoBehaviour
 
     public void OnSkip(InputValue value)
     {
-        if (value.isPressed)
-            intro.SkipDialog();
+        if (value.isPressed && typing)
+            typing.SkipDialog();
     }
 
     void ActivatePauseMenu()
@@ -60,6 +67,11 @@ public class SystemInputHandler : MonoBehaviour
     {
         pauseUI.SetActive(true);
         optionUI.SetActive(false);
+    }
+
+    void DeactivateWarningUI()
+    {
+        warningUI.SetActive(false);
     }
 
     public void ResumeGame()

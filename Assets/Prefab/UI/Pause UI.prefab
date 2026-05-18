@@ -315,6 +315,10 @@ MonoBehaviour:
   optionButton: {fileID: 6470737795623340757}
   toTitleButton: {fileID: 4106892559926979636}
   exitButton: {fileID: 323516466160203204}
+  optionUI: {fileID: 0}
+  warningUI: {fileID: 0}
+  warningConfirmButton: {fileID: 0}
+  warningCancelButton: {fileID: 0}
 --- !u!1 &2137490786189293397
 GameObject:
   m_ObjectHideFlags: 0
