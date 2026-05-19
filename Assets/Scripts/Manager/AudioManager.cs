@@ -21,12 +21,7 @@ public class AudioManager : MonoBehaviour
     }
 
     public void PlaySFX(AudioClip clip, float volume = 1f)
-    {
-        Debug.Log($"Clip: {clip.name}");
-        Debug.Log($"Source Active: {sfxSource.gameObject.activeInHierarchy}");
-        Debug.Log($"Source Enabled: {sfxSource.enabled}");
-        Debug.Log($"Volume: {volume}");
-        
+    {      
         sfxSource.PlayOneShot(clip, volume);
     }
 

@@ -38,7 +38,10 @@ public class TitleMenu : MonoBehaviour
         warningConfirmButton.onClick.AddListener(OnClickWarningConfirm);
         warningCancelButton.onClick.AddListener(OnClickWarningCancel);
 
-        continueButton.interactable = PlayerPrefs.HasKey("SaveData");
+        if (PlayerPrefs.HasKey("SaveData") || PlayerPrefs.HasKey("Start SaveData"))
+            continueButton.interactable = true;
+        else
+            continueButton.interactable = false;
     }
 
     void Update()
@@ -53,10 +56,11 @@ public class TitleMenu : MonoBehaviour
     {
         SaveManager.Instance.IsContinueLoading = false;
 
-        SaveData data = SaveManager.Instance.LoadGame();
+        SaveData continuedData = SaveManager.Instance.LoadGame();
+        SaveData startData = SaveManager.Instance.LoadSavedStartGame();
 
         // 저장된 세이브파일이 있다
-        if (data != null)
+        if (continuedData != null || startData != null )
         {
             warningUI.SetActive(true);
         }
@@ -66,11 +70,19 @@ public class TitleMenu : MonoBehaviour
 
     void OnClickContinue()
     {        
-        SaveData data = SaveManager.Instance.LoadGame();
-        SaveManager.Instance.IsContinueLoading = true;
-
-        if (data != null)
-            SceneManager.LoadScene(data.sceneName);
+        SaveData continuedData = SaveManager.Instance.LoadGame();
+        SaveData startData = SaveManager.Instance.LoadSavedStartGame();
+        
+        if (continuedData != null)
+        {
+            SaveManager.Instance.IsContinueLoading = true;
+            SceneManager.LoadScene(continuedData.sceneName);
+        }
+        else if (startData != null)
+        {
+            SaveManager.Instance.IsRetryLoading = true;
+            SceneManager.LoadScene(startData.sceneName);
+        }            
     }
 
     void OnClickOption()

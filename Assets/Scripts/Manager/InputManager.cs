@@ -1,10 +1,12 @@
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class InputManager : MonoBehaviour
 {
-    [SerializeField] PlayerInput playerInput;
+    PlayerInput playerInput;
     PlayerDead playerDead;    
 
     InputActionMap playerMap;
@@ -12,6 +14,8 @@ public class InputManager : MonoBehaviour
     InputActionMap uiMap;
 
     public static InputManager Instance;
+
+    bool isPlaying = false;
 
     void Awake()
     {
@@ -25,33 +29,20 @@ public class InputManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        if(playerInput)
-        {
-            playerMap = playerInput.actions.FindActionMap("Player");
-            systemMap = playerInput.actions.FindActionMap("System");
-            uiMap = playerInput.actions.FindActionMap("UI");
-        }
-    }    
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
 
-    void Start()
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        playerDead = FindFirstObjectByType<PlayerDead>();
-
-        if (playerInput)
-        {
-            playerMap.Enable();
-            systemMap.Enable();
-            uiMap.Disable();
-        }
-
-        if(playerDead)
-            playerDead.OnPlayerDead += HandlePlayerDead;
+        StartCoroutine(InitializeScene());
     }
 
     void OnDestroy()
     {       
         if(playerDead)
             playerDead.OnPlayerDead -= HandlePlayerDead;
+
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     void HandlePlayerDead()
@@ -62,15 +53,55 @@ public class InputManager : MonoBehaviour
     }
 
     public void PauseGame()
-    {        
+    {
+        isPlaying = false;
         playerMap.Disable();
         uiMap.Enable();
     }
 
     public void ResumeGame()
-    {        
+    {
+        isPlaying = true;
         playerMap.Enable();
         uiMap.Disable();
         systemMap.Enable();
+    }
+
+    IEnumerator InitializeScene()
+    {
+        yield return null;
+
+        // 이전 플레이어 이벤트 해제
+        if(playerDead)
+            playerDead.OnPlayerDead -= HandlePlayerDead;
+
+        PlayerController player = FindFirstObjectByType<PlayerController>();
+        if(player)
+            playerInput = player.GetComponent<PlayerInput>();
+        playerDead = FindFirstObjectByType<PlayerDead>();
+
+        if (playerInput)
+        {
+            playerMap = playerInput.actions.FindActionMap("Player");
+            systemMap = playerInput.actions.FindActionMap("System");
+            uiMap = playerInput.actions.FindActionMap("UI");
+
+            if(isPlaying)
+            {
+                playerMap.Enable();
+                systemMap.Enable();
+                uiMap.Disable();
+            }
+            else
+            {
+                playerMap.Disable();
+                uiMap.Disable();
+                systemMap.Enable();
+            }            
+        }        
+        
+
+        if (playerDead)                   
+            playerDead.OnPlayerDead += HandlePlayerDead;                    
     }
 }

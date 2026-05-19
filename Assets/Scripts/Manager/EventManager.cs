@@ -61,4 +61,13 @@ public class EventManager : MonoBehaviour
     {
         SceneManager.LoadScene(0);
     }
+
+    public void LoadSavedStartScene()
+    {
+        SaveData data = SaveManager.Instance.LoadSavedStartGame();
+
+        SaveManager.Instance.IsRetryLoading = true;             
+        if(data != null)
+            SceneManager.LoadScene(data.sceneName);
+    }
 }

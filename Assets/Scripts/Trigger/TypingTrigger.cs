@@ -10,7 +10,7 @@ public class TypingTrigger : MonoBehaviour
 
     void Start()
     {
-        currentTypeWriter = text.GetComponentInParent<TypeWriter>();
+        currentTypeWriter = text.GetComponentInChildren<TypeWriter>();
     }
 
 

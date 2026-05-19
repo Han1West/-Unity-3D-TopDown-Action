@@ -5,12 +5,16 @@ using UnityEngine.UI;
 
 public class GameClearUI : MonoBehaviour
 {
+    [SerializeField] TMP_Text tryText;
     [SerializeField] TMP_Text timeText;
     [SerializeField] TMP_Text killText;
+    [SerializeField] Button retryButton;
     [SerializeField] Button toTitleButton;    
+    
 
     void Start()
     {
+        retryButton.onClick.AddListener(OnClickRetryButton);
         toTitleButton.onClick.AddListener(OnClickToTitle);                
     }
 
@@ -20,8 +24,17 @@ public class GameClearUI : MonoBehaviour
         int minute = (int)totalTime / 60;
         int second = (int)totalTime % 60;
 
+        tryText.text = GameManager.Instance.GetTryCount().ToString();
         timeText.text = minute.ToString() + ":" + second.ToString();
         killText.text = GameManager.Instance.GetKillCount().ToString();
+    }
+
+    void OnClickRetryButton()
+    {
+        GameManager.Instance.ResumeGame();
+        InputManager.Instance.ResumeGame();
+
+        EventManager.Instance.LoadSavedStartScene();
     }
 
     void OnClickToTitle()

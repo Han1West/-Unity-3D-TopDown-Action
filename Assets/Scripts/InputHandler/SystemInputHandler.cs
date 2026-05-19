@@ -14,13 +14,13 @@ public class SystemInputHandler : MonoBehaviour
     public void OnPause(InputValue value)
     {
         // 옵션 켜져있으면 옵션 끄기
-        if (optionUI.activeInHierarchy)
+        if (optionUI && optionUI.activeInHierarchy)
         {
             DeactivateOptionMenu();
             return;
         }
 
-        if(warningUI.activeInHierarchy)
+        if(warningUI && warningUI.activeInHierarchy)
         {
             DeactivateWarningUI();
             return;
