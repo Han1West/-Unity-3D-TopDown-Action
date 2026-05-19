@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class GameOverUI : MonoBehaviour
 {
+    [SerializeField] TMP_Text tryText;
     [SerializeField] TMP_Text timeText;
     [SerializeField] TMP_Text killText;
     [SerializeField] Button retryButton;
@@ -38,10 +39,10 @@ public class GameOverUI : MonoBehaviour
         int minute = (int)totalTime / 60;
         int second = (int)totalTime % 60;
 
+        tryText.text = GameManager.Instance.GetTryCount().ToString();
         timeText.text = minute.ToString() + ":" + second.ToString();
         killText.text = GameManager.Instance.GetKillCount().ToString();
-
-        Debug.Log("Player Dead Overay");
+        
         gameObject.SetActive(true);
     }
 
@@ -49,7 +50,8 @@ public class GameOverUI : MonoBehaviour
     {
         GameManager.Instance.ResumeGame();
         InputManager.Instance.ResumeGame();
-        SceneManager.LoadScene(2);
+
+        EventManager.Instance.LoadSavedStartScene();        
     }
 
     void OnClickExit()
@@ -57,6 +59,8 @@ public class GameOverUI : MonoBehaviour
         GameManager.Instance.ResumeGame();
         InputManager.Instance.ResumeGame();
 
+
+        SaveManager.Instance.DeleteSave();
         EventManager.Instance.LoadTitle();
     }
 }

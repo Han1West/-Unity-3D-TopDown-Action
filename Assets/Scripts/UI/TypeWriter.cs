@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -5,16 +6,18 @@ using UnityEngine;
 public class TypeWriter : MonoBehaviour
 {
     [SerializeField] GameObject parentUI;
+    [SerializeField] GameObject inputFieldUI;
     [SerializeField] TMP_Text textUI;
     [SerializeField] float typingSpeed = 0.05f;
 
     [TextArea]
     [SerializeField] string[] fullTexts;
-    [SerializeField] GameObject skipManualUI;
+    [SerializeField] GameObject skipManualUI;    
 
     int currentIndex = 0;
 
     public bool IsFulled { get; private set; } = false;
+    public event Action OnTypingEnd;
 
     void Start()
     {
@@ -59,12 +62,22 @@ public class TypeWriter : MonoBehaviour
             {
                 SceneInfo sceneInfo = FindFirstObjectByType<SceneInfo>();
 
-                // ÇöÀç ¾ÀÀÌ Intro -> ´ÙÀ½ ¾ÀÀ¸·Î
+                // ÇöÀç ¾ÀÀÌ Intro -> ÀÌ¸§ ÀÔ·ÂÃ¢
                 if (sceneInfo.sceneType == SceneType.CutScene)
-                    EventManager.Instance.LoadNextScene();
+                {
+                    gameObject.SetActive(false);
+                    skipManualUI.SetActive(false);
+                    inputFieldUI.SetActive(true);
+                    //EventManager.Instance.LoadNextScene();
+                }
+                    
                 // ÇöÀç ¾ÀÀÌ Stage -> UI ²ô±â
                 else if (sceneInfo.sceneType == SceneType.InGamePlay)
+                {
                     parentUI.SetActive(false);
+                    OnTypingEnd?.Invoke();
+                }
+                    
             }
             else
             {
