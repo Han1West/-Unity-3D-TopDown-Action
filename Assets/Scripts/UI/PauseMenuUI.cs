@@ -70,6 +70,9 @@ public class PauseMenuUI : MonoBehaviour
 
     void OnClickWarningConfirm()
     {
+        InputManager.Instance.ResumeGame();
+        GameManager.Instance.ResumeGame();
+
         if (isToTitle)
         {
             isToTitle = false;

@@ -82,7 +82,7 @@ public class EnemyHealth : MonoBehaviour
 
         // »ç¸Á Ã³¸® 
         if (currentHealth <= 0)
-        {
+        {            
             OnEnemyDead?.Invoke(this);
             ProcessDead(); 
         }

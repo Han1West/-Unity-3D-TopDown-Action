@@ -67,8 +67,7 @@ public class TypeWriter : MonoBehaviour
                 {
                     gameObject.SetActive(false);
                     skipManualUI.SetActive(false);
-                    inputFieldUI.SetActive(true);
-                    //EventManager.Instance.LoadNextScene();
+                    inputFieldUI.SetActive(true);                    
                 }
 
                 // ÇöÀç ¾ÀÀÌ Stage -> UI ²ô±â

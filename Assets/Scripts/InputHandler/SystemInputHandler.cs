@@ -7,8 +7,8 @@ public class SystemInputHandler : MonoBehaviour
     [SerializeField] GameObject optionUI;
     [SerializeField] GameObject warningUI;
     [SerializeField] TypingTrigger typing;
-    [SerializeField] SkippableEvent skippableEvent;
-
+    [SerializeField] SkippableEvent skippableEvent;    
+ 
     bool isPaused = false;
 
 

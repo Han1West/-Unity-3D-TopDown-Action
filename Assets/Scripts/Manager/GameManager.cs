@@ -61,8 +61,8 @@ public class GameManager : MonoBehaviour
     }
 
     void HandleEnemyDead(EnemyHealth enemy)
-    {
-        killCount++;
+    {        
+        killCount++;        
 
         enemies.Remove(enemy.gameObject);
     }
@@ -123,17 +123,13 @@ public class GameManager : MonoBehaviour
     void ApplyPlayerInfo()
     {        
         if (playerHealth &&  playerGuard)
-        {
-            Debug.Log("Load HP : " + tempPlayerHealth);
-
+        {            
             playerHealth.SetCurrentHealth(tempPlayerHealth);
             playerGuard.SetParryPoint(tempPlayerParryPoint);
 
             tempPlayerHealth = 0;
             tempPlayerParryPoint = 0;
-        }
-        else
-            Debug.Log("Cant Load" + tempPlayerHealth);
+        }        
     }
 
     public bool CanChangeStage()
@@ -156,6 +152,8 @@ public class GameManager : MonoBehaviour
         // 이전 플레이어 Dead 해제
         if (playerDead)
             playerDead.OnPlayerDead -= HandlePlayerDead;
+
+        EnemyHealth.OnEnemyDead -= HandleEnemyDead;
 
         playerDead = FindFirstObjectByType<PlayerDead>();
         playerHealth = FindFirstObjectByType<PlayerHealth>();
@@ -228,8 +226,6 @@ public class GameManager : MonoBehaviour
 
     public void SaveTempPlayerInfo(PlayerInfo playerInfo)
     {
-        Debug.Log("Save = " + playerInfo.currentHealth);
-
         tempPlayerHealth = playerInfo.currentHealth;
         tempPlayerParryPoint = playerInfo.currentParryPoint;
     }
