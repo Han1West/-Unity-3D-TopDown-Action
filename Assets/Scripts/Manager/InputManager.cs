@@ -15,7 +15,7 @@ public class InputManager : MonoBehaviour
 
     public static InputManager Instance;
 
-    bool isPlaying = false;
+    bool isPlaying = true;
 
     void Awake()
     {

@@ -47,9 +47,8 @@ public class EventManager : MonoBehaviour
             IsTransPlayerInfo = true;
 
             GameManager.Instance.SaveTempPlayerInfo(curInfo);
-        }
-        else
-            IsTransPlayerInfo = false;
+        }        
+            
 
         int currentScene = SceneManager.GetActiveScene().buildIndex;
         int nextScene = currentScene + 1;
@@ -59,15 +58,18 @@ public class EventManager : MonoBehaviour
     
     public void LoadTitle()
     {
+        IsTransPlayerInfo = false;
         SceneManager.LoadScene(0);
     }
 
     public void LoadSavedStartScene()
     {
+        IsTransPlayerInfo = false;
+        
         SaveData data = SaveManager.Instance.LoadSavedStartGame();
 
-        SaveManager.Instance.IsRetryLoading = true;             
-        if(data != null)
+        SaveManager.Instance.IsRetryLoading = true;        
+        if (data != null)
             SceneManager.LoadScene(data.sceneName);
     }
 }

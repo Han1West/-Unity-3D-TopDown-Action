@@ -121,12 +121,19 @@ public class GameManager : MonoBehaviour
     }
 
     void ApplyPlayerInfo()
-    {
-        playerHealth.SetCurrentHealth(tempPlayerHealth);
-        playerGuard.SetParryPoint(tempPlayerParryPoint);
+    {        
+        if (playerHealth &&  playerGuard)
+        {
+            Debug.Log("Load HP : " + tempPlayerHealth);
 
-        tempPlayerHealth = 0;
-        tempPlayerParryPoint = 0;
+            playerHealth.SetCurrentHealth(tempPlayerHealth);
+            playerGuard.SetParryPoint(tempPlayerParryPoint);
+
+            tempPlayerHealth = 0;
+            tempPlayerParryPoint = 0;
+        }
+        else
+            Debug.Log("Cant Load" + tempPlayerHealth);
     }
 
     public bool CanChangeStage()
@@ -221,6 +228,8 @@ public class GameManager : MonoBehaviour
 
     public void SaveTempPlayerInfo(PlayerInfo playerInfo)
     {
+        Debug.Log("Save = " + playerInfo.currentHealth);
+
         tempPlayerHealth = playerInfo.currentHealth;
         tempPlayerParryPoint = playerInfo.currentParryPoint;
     }
