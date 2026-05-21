@@ -63,6 +63,8 @@ public class SaveManager : MonoBehaviour
 
         if(SceneManager.GetActiveScene().name == "Stage 1")
         {
+            // 다른 모든 세이브 삭제
+            DeleteSave();
             PlayerPrefs.SetString("Start SaveData", json);
             PlayerPrefs.Save();
         }

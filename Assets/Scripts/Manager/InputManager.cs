@@ -98,8 +98,9 @@ public class InputManager : MonoBehaviour
                 uiMap.Disable();
                 systemMap.Enable();
             }            
-        }        
-        
+        }
+
+        isPlaying = true;
 
         if (playerDead)                   
             playerDead.OnPlayerDead += HandlePlayerDead;                    
