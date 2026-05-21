@@ -47,8 +47,7 @@ public class Stage1Start : MonoBehaviour
 
             int tryCount = GameManager.Instance.GetTryCount();
 
-        typeWriter = dialogueEvent.GetComponentInChildren<TypeWriter>();
-        Debug.Log(tryCount);
+        typeWriter = dialogueEvent.GetComponentInChildren<TypeWriter>();        
 
         if (tryCount <= 2)
         {
