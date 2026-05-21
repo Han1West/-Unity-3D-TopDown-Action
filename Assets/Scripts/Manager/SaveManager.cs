@@ -11,7 +11,8 @@ public class SaveData
     public float playTime;
     public int totalKill;
     public int tryCount;
-    public string sceneName;    
+    public string sceneName;
+    public bool isSucceed = false;
 }
 
 public class SaveManager : MonoBehaviour
@@ -54,7 +55,9 @@ public class SaveManager : MonoBehaviour
         data.playTime = GameManager.Instance.GetPlayTime();
         data.totalKill = GameManager.Instance.GetKillCount();
         data.tryCount = GameManager.Instance.GetTryCount();
+        data.isSucceed = GameManager.Instance.IsSucceed;
         data.sceneName = SceneManager.GetActiveScene().name;        
+        
 
         string json = JsonUtility.ToJson(data);
 
@@ -69,6 +72,20 @@ public class SaveManager : MonoBehaviour
             PlayerPrefs.Save();
         }
             
+    }
+
+    public void SaveSucceedData()
+    {
+        string json = PlayerPrefs.GetString("Start SaveData");
+        SaveData data = JsonUtility.FromJson<SaveData>(json);
+
+        data.isSucceed = true;
+        data.tryCount = 0;
+
+        json = JsonUtility.ToJson(data);
+
+        PlayerPrefs.SetString("Start SaveData", json);
+        PlayerPrefs.Save();
     }
 
     public SaveData LoadGame()

@@ -1,25 +1,62 @@
 using System.Collections;
 using UnityEngine;
 
+[System.Serializable]
+public class TextRow
+{ 
+    public string[] texts;
+}
+
+
 public class Stage1Start : MonoBehaviour
 {
     [SerializeField] GameObject dialogueEvent;
+    [SerializeField] TextRow[] commonRetryTexts;
+    [SerializeField] TextRow[] succeedRetryTexts;
 
     TypeWriter typeWriter;
 
     void Start()
     {
-        typeWriter = dialogueEvent.GetComponentInChildren<TypeWriter>();
-
-        typeWriter.OnTypingEnd += OnTypingEventEnd;
-
-
-        StartCoroutine(DialogueEventRoutine());
+        GameManager.Instance.OnPlayerDataLoaded += StartDialogueEvent;        
     }
 
     void OnDestroy()
     {
-        typeWriter.OnTypingEnd -= OnTypingEventEnd;    
+        typeWriter.OnTypingEnd -= OnTypingEventEnd;
+        GameManager.Instance.OnPlayerDataLoaded -= StartDialogueEvent;
+    }
+
+    void StartDialogueEvent()
+    {
+        ApplyDialogueTexts();
+
+        typeWriter.OnTypingEnd += OnTypingEventEnd;
+
+        StartCoroutine(DialogueEventRoutine());
+    }
+
+    void ApplyDialogueTexts()
+    {
+        TextRow[] appliedTexts = new TextRow[0];
+
+        if (GameManager.Instance.IsSucceed)
+            appliedTexts = succeedRetryTexts;
+        else
+            appliedTexts = commonRetryTexts;
+
+            int tryCount = GameManager.Instance.GetTryCount();
+
+        typeWriter = dialogueEvent.GetComponentInChildren<TypeWriter>();
+        Debug.Log(tryCount);
+
+        if (tryCount <= 2)
+        {
+            typeWriter.SetTexts(appliedTexts[tryCount - 1].texts);
+        }
+        else
+            typeWriter.SetTexts(appliedTexts[2].texts);
+
     }
 
     void OnTypingEventEnd()

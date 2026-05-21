@@ -12,7 +12,7 @@ public class TypeWriter : MonoBehaviour
 
     [TextArea]
     [SerializeField] string[] fullTexts;
-    [SerializeField] GameObject skipManualUI;    
+    [SerializeField] GameObject skipManualUI;
 
     int currentIndex = 0;
 
@@ -26,7 +26,7 @@ public class TypeWriter : MonoBehaviour
 
     private void Update()
     {
-        if (skipManualUI && 
+        if (skipManualUI &&
             IsFulled && !skipManualUI.activeInHierarchy)
             skipManualUI.SetActive(true);
     }
@@ -34,7 +34,7 @@ public class TypeWriter : MonoBehaviour
     public void SkipTyping()
     {
         StopAllCoroutines();
-        
+
         textUI.text = fullTexts[currentIndex];
         IsFulled = true;
     }
@@ -42,8 +42,8 @@ public class TypeWriter : MonoBehaviour
     IEnumerator TypeTextRoutine()
     {
         textUI.text = "";
-            
-        foreach(char c in fullTexts[currentIndex])
+
+        foreach (char c in fullTexts[currentIndex])
         {
             textUI.text += c;
             if (textUI.text == fullTexts[currentIndex])
@@ -70,19 +70,19 @@ public class TypeWriter : MonoBehaviour
                     inputFieldUI.SetActive(true);
                     //EventManager.Instance.LoadNextScene();
                 }
-                    
+
                 // ÇöÀç ¾ÀÀÌ Stage -> UI ²ô±â
                 else if (sceneInfo.sceneType == SceneType.InGamePlay)
                 {
                     parentUI.SetActive(false);
                     OnTypingEnd?.Invoke();
                 }
-                    
+
             }
             else
             {
-                if(skipManualUI)
-                    skipManualUI.SetActive(false);                
+                if (skipManualUI)
+                    skipManualUI.SetActive(false);
                 currentIndex++;
                 IsFulled = false;
                 StartCoroutine(TypeTextRoutine());
@@ -93,5 +93,10 @@ public class TypeWriter : MonoBehaviour
         {
             SkipTyping();
         }
+    }
+
+    public void SetTexts(string[] texts)
+    {
+        fullTexts = texts;
     }
 }

@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     PlayerDead playerDead;
     PlayerGuard playerGuard;
 
-    bool isInPlaying = false;
+    bool isInPlaying = false;    
 
     int tempPlayerHealth = 0;
     int tempPlayerParryPoint = 0;
@@ -18,9 +18,11 @@ public class GameManager : MonoBehaviour
     float playTime = 0;
     int killCount = 0;
     int tryCount = 1;
+    public bool IsSucceed { get; private set; } = false;
     List<GameObject> enemies = new List<GameObject>();
 
     public static GameManager Instance;
+    public event Action OnPlayerDataLoaded;
 
     public string PlayerInGameName { get; private set; }
 
@@ -106,15 +108,16 @@ public class GameManager : MonoBehaviour
     }
 
     void ApplySaveData(SaveData data)
-    {
+    {        
         PlayerInGameName = data.playerName;
 
         playTime = data.playTime;
         killCount = data.totalKill;
         tryCount = data.tryCount;
+        IsSucceed = data.isSucceed;
 
         playerHealth.SetCurrentHealth(data.playerHp);
-        playerGuard.SetParryPoint(data.playerParryPoint);
+        playerGuard.SetParryPoint(data.playerParryPoint);        
     }
 
     void ApplyPlayerInfo()
@@ -200,7 +203,7 @@ public class GameManager : MonoBehaviour
             SaveManager.Instance.IsRetryLoading = false;
             SaveManager.Instance.SaveGame();
         }
-        // 현재 상태 세이브
+        // 레벨 진행
         else
         {
             // 저장되있는 플레이어 정보 적용
@@ -212,6 +215,8 @@ public class GameManager : MonoBehaviour
             // 현재 레벨 저장
             SaveManager.Instance.SaveGame();
         }
+
+        OnPlayerDataLoaded?.Invoke();
     }
 
     public void SaveTempPlayerInfo(PlayerInfo playerInfo)
