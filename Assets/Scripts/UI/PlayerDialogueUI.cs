@@ -8,6 +8,18 @@ public class PlayerDialogueUI : MonoBehaviour
 
     void Start()
     {
+        UpdateName();
+        GameManager.Instance.OnPlayerDataLoaded += UpdateName;                
+    }
+
+    void OnDestroy()
+    {
+        if (GameManager.Instance != null)
+            GameManager.Instance.OnPlayerDataLoaded -= UpdateName;
+    }
+
+    void UpdateName()
+    {
         speakerName.text = GameManager.Instance.PlayerInGameName;
     }
 

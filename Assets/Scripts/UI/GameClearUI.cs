@@ -34,6 +34,7 @@ public class GameClearUI : MonoBehaviour
         GameManager.Instance.ResumeGame();
         InputManager.Instance.ResumeGame();
 
+        SaveManager.Instance.SaveSucceedData();
         EventManager.Instance.LoadSavedStartScene();
     }
 
@@ -44,6 +45,7 @@ public class GameClearUI : MonoBehaviour
 
         // 게임오버 -> 세이브파일 제거 (초기화)
         SaveManager.Instance.DeleteSave();
+        SaveManager.Instance.SaveSucceedData();
         EventManager.Instance.LoadTitle();   
     }
 }

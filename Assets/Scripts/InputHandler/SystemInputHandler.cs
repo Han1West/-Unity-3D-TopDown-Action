@@ -7,6 +7,7 @@ public class SystemInputHandler : MonoBehaviour
     [SerializeField] GameObject optionUI;
     [SerializeField] GameObject warningUI;
     [SerializeField] TypingTrigger typing;
+    [SerializeField] SkippableEvent skippableEvent;
 
     bool isPaused = false;
 
@@ -40,6 +41,9 @@ public class SystemInputHandler : MonoBehaviour
 
     public void OnSkip(InputValue value)
     {
+        if (value.isPressed && skippableEvent)
+            skippableEvent.SkipEvent();
+
         if (value.isPressed && typing)
             typing.SkipDialog();
     }
