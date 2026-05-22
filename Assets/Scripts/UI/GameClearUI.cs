@@ -27,6 +27,13 @@ public class GameClearUI : MonoBehaviour
         tryText.text = GameManager.Instance.GetTryCount().ToString();
         timeText.text = minute.ToString() + ":" + second.ToString();
         killText.text = GameManager.Instance.GetKillCount().ToString();
+
+        // 커서 활성화
+        GameManager.Instance.ActivateBaseCursor();
+        GameManager.Instance.DeactivateInGameCrosshair();
+
+        // 효과음
+        AudioManager.Instance.PlayOpenPaperUI();
     }
 
     void OnClickRetryButton()

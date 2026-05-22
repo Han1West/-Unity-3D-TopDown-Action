@@ -149,6 +149,7 @@ GameObject:
   - component: {fileID: 1117224280729309468}
   - component: {fileID: 9041162768393554665}
   - component: {fileID: 4106892559926979636}
+  - component: {fileID: 6019442342207386188}
   m_Layer: 5
   m_Name: ToTitle Button
   m_TagString: Untagged
@@ -258,6 +259,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &6019442342207386188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 874667891186685875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3172baa554712a4ea25260d938fc93c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BaseButtonUI
+  buttonType: 6
 --- !u!1 &914034072478906675
 GameObject:
   m_ObjectHideFlags: 0
@@ -468,6 +482,7 @@ GameObject:
   - component: {fileID: 8997177255203283955}
   - component: {fileID: 5240483986384783047}
   - component: {fileID: 323516466160203204}
+  - component: {fileID: 483202365665011194}
   m_Layer: 5
   m_Name: Exit Button
   m_TagString: Untagged
@@ -577,6 +592,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &483202365665011194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2851997965492621666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3172baa554712a4ea25260d938fc93c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BaseButtonUI
+  buttonType: 6
 --- !u!1 &2874298646826553358
 GameObject:
   m_ObjectHideFlags: 0
@@ -801,6 +829,7 @@ GameObject:
   - component: {fileID: 4709883114698364324}
   - component: {fileID: 5473136235400275710}
   - component: {fileID: 6470737795623340757}
+  - component: {fileID: 3808185647678279164}
   m_Layer: 5
   m_Name: Option Button
   m_TagString: Untagged
@@ -910,6 +939,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &3808185647678279164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6677665599160436906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3172baa554712a4ea25260d938fc93c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BaseButtonUI
+  buttonType: 5
 --- !u!1 &7039622109936250336
 GameObject:
   m_ObjectHideFlags: 0
@@ -922,6 +964,7 @@ GameObject:
   - component: {fileID: 7707083804513053745}
   - component: {fileID: 3793077727257590996}
   - component: {fileID: 7524103742813277797}
+  - component: {fileID: 106493485194100449}
   m_Layer: 5
   m_Name: Resume Button
   m_TagString: Untagged
@@ -1031,6 +1074,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &106493485194100449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7039622109936250336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3172baa554712a4ea25260d938fc93c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BaseButtonUI
+  buttonType: 5
 --- !u!1 &8239509753481730100
 GameObject:
   m_ObjectHideFlags: 0

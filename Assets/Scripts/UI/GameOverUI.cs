@@ -13,6 +13,9 @@ public class GameOverUI : MonoBehaviour
     [SerializeField] Button exitButton;
     [SerializeField] PlayerDead playerDead;
 
+    [Header("BGM")]
+    [SerializeField] AudioClip failBGM;
+
     void Start()
     {        
         if(playerDead != null)
@@ -44,6 +47,14 @@ public class GameOverUI : MonoBehaviour
         killText.text = GameManager.Instance.GetKillCount().ToString();
         
         gameObject.SetActive(true);
+
+        // 커서 활성화
+        GameManager.Instance.ActivateBaseCursor();
+        GameManager.Instance.DeactivateInGameCrosshair();
+
+        // 효과음
+        AudioManager.Instance.PlayOpenPaperUI();
+        AudioManager.Instance.PlayBGM(failBGM);
     }
 
     void OnClickRetry()
@@ -58,7 +69,6 @@ public class GameOverUI : MonoBehaviour
     {
         GameManager.Instance.ResumeGame();
         InputManager.Instance.ResumeGame();
-
 
         SaveManager.Instance.DeleteSave();
         EventManager.Instance.LoadTitle();

@@ -177,6 +177,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
   sfxSource: {fileID: 6732956359092191360}
   bgmSource: {fileID: 3756604519001096355}
+  uiHoverSFX: {fileID: 8300000, guid: 29e728410fa10d040bbea9592576f4a1, type: 3}
+  uiConfirmSFX: {fileID: 8300000, guid: e6833b50b540a9a41b5b267a010ae7df, type: 3}
+  uiCancelSFX: {fileID: 8300000, guid: 9d6838ece2f1d3b419a061c34978581b, type: 3}
+  uiStartGameSFX: {fileID: 8300000, guid: d3b1edea00161d1448056514f6447514, type: 3}
 --- !u!1 &7772129772670554048
 GameObject:
   m_ObjectHideFlags: 0

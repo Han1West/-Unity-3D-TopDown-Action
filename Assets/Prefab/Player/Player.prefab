@@ -148,7 +148,7 @@ CharacterController:
   m_Height: 2
   m_Radius: 0.5
   m_SlopeLimit: 10
-  m_StepOffset: 0.000001
+  m_StepOffset: 0.2
   m_SkinWidth: 0.0001
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.85, z: 0}
@@ -233,6 +233,11 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 6625f49c0c168c849a3fc0da4f1a55e1, type: 3}
   - {fileID: 8300000, guid: 8c09ffdd9bac6b34187e7b4e276f192e, type: 3}
   - {fileID: 8300000, guid: 58142413a922c8e46a891c984fca74e6, type: 3}
+  attackMoveDistance:
+  - 0.8
+  - 0.5
+  - 1.2
+  attackMoveSpeed: 15
 --- !u!114 &8487504048312291616
 MonoBehaviour:
   m_ObjectHideFlags: 0

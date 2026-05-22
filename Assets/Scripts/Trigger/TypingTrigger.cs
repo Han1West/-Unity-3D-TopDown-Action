@@ -13,7 +13,6 @@ public class TypingTrigger : MonoBehaviour
         currentTypeWriter = text.GetComponentInChildren<TypeWriter>();
     }
 
-
     public void SkipDialog()
     {        
         currentTypeWriter.SkipDialog();

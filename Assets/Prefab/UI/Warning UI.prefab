@@ -149,6 +149,7 @@ GameObject:
   - component: {fileID: 4342573029444974073}
   - component: {fileID: 8387592343154784554}
   - component: {fileID: 6178761050143200387}
+  - component: {fileID: 5164931126593372653}
   m_Layer: 5
   m_Name: Warning Cancel Button
   m_TagString: Untagged
@@ -258,6 +259,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &5164931126593372653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 944119023781131123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3172baa554712a4ea25260d938fc93c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BaseButtonUI
+  buttonType: 2
 --- !u!1 &2112877227004487208
 GameObject:
   m_ObjectHideFlags: 0
@@ -270,6 +284,7 @@ GameObject:
   - component: {fileID: 4311922806446721926}
   - component: {fileID: 7918887850154101053}
   - component: {fileID: 3455662566211330312}
+  - component: {fileID: 1031228543845867359}
   m_Layer: 5
   m_Name: Warning Confirm Button
   m_TagString: Untagged
@@ -379,6 +394,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1031228543845867359
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2112877227004487208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3172baa554712a4ea25260d938fc93c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BaseButtonUI
+  buttonType: 1
 --- !u!1 &2156212260222454334
 GameObject:
   m_ObjectHideFlags: 0

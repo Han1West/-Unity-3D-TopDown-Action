@@ -11,6 +11,8 @@ public class InputPlayerNameUI : MonoBehaviour
     [SerializeField] Button cancelButton;
     [SerializeField] TMP_Text displayNameText;
 
+    [SerializeField] AudioClip enterSFX;
+
     void Start()
     {
         confirmManualUI.SetActive(true);
@@ -23,6 +25,9 @@ public class InputPlayerNameUI : MonoBehaviour
         // 포커스 바로 가져오기
         inputName.Select();
         inputName.ActivateInputField();
+
+        // 커서 활성화
+        GameManager.Instance.ActivateBaseCursor();
     }
 
 
@@ -43,6 +48,9 @@ public class InputPlayerNameUI : MonoBehaviour
     void OnEnterInput()
     {        
         warningUI.SetActive(true);
+
+        AudioManager.Instance.PlaySFX(enterSFX);
+
         displayNameText.text = inputName.text;
     }
 
