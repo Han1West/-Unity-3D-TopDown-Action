@@ -9,8 +9,10 @@ public class GameManager : MonoBehaviour
     PlayerHealth playerHealth;
     PlayerDead playerDead;
     PlayerGuard playerGuard;
+    InGameCrosshair inGameCrosshair;
+    CursorUI baseCursor;
 
-    bool isInPlaying = false;    
+    public bool isInPlaying = false;    
 
     int tempPlayerHealth = 0;
     int tempPlayerParryPoint = 0;
@@ -40,6 +42,8 @@ public class GameManager : MonoBehaviour
         }
 
         SceneManager.sceneLoaded += OnSceneLoaded;
+
+        Cursor.visible = false;
     }
 
     void OnDestroy()
@@ -92,6 +96,7 @@ public class GameManager : MonoBehaviour
         isInPlaying = false;
 
         // 마우스 커서 변경
+        DeactivateInGameCrosshair();
 
         // 게임 중지
         Time.timeScale = 0f;
@@ -102,6 +107,7 @@ public class GameManager : MonoBehaviour
         isInPlaying = true;
 
         // 마우스 커서 변경
+        ActivateInGameCrosshair();
 
         // 게임 재개
         Time.timeScale = 1f;
@@ -158,14 +164,21 @@ public class GameManager : MonoBehaviour
         playerDead = FindFirstObjectByType<PlayerDead>();
         playerHealth = FindFirstObjectByType<PlayerHealth>();
         playerGuard = FindFirstObjectByType<PlayerGuard>();
+        inGameCrosshair = FindFirstObjectByType<InGameCrosshair>();
+        baseCursor = FindFirstObjectByType<CursorUI>();
 
+        
         SceneInfo sceneInfo = FindFirstObjectByType<SceneInfo>();
 
         if (sceneInfo.sceneType == SceneType.InGamePlay)
+        {
             isInPlaying = true;
+            DeactivateBaseCursor();
+        }            
         else
         {
             isInPlaying = false;
+            ActivateBaseCursor();
             yield break;
         }
 
@@ -183,7 +196,7 @@ public class GameManager : MonoBehaviour
         {
             if (obj.layer == LayerMask.NameToLayer("Enemy") && obj.transform.parent == null)
                 enemies.Add(obj);
-        }
+        }        
 
         // 저장된 게임 시작
         if (SaveManager.Instance.IsContinueLoading)
@@ -220,7 +233,7 @@ public class GameManager : MonoBehaviour
             // 현재 레벨 저장
             SaveManager.Instance.SaveGame();
         }
-
+               
         OnPlayerDataLoaded?.Invoke();
     }
 
@@ -233,5 +246,29 @@ public class GameManager : MonoBehaviour
     public void SetPlayerInGameName(string name)
     {
         PlayerInGameName = name;
+    }
+
+    public void ActivateInGameCrosshair()
+    {
+        if(inGameCrosshair)
+            inGameCrosshair.gameObject.SetActive(true);       
+    }
+
+    public void ActivateBaseCursor()
+    {
+        if (baseCursor)
+            baseCursor.gameObject.SetActive(true);
+    }
+
+    public void DeactivateInGameCrosshair()
+    {
+        if (inGameCrosshair)
+            inGameCrosshair.gameObject.SetActive(false);        
+    }
+
+    public void DeactivateBaseCursor()
+    {        
+        if(baseCursor)
+            baseCursor.gameObject.SetActive(false);        
     }
 }

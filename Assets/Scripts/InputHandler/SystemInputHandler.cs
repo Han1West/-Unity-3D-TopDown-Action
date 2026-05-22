@@ -5,7 +5,7 @@ public class SystemInputHandler : MonoBehaviour
 {
     [SerializeField] GameObject pauseUI;
     [SerializeField] GameObject optionUI;
-    [SerializeField] GameObject warningUI;
+    [SerializeField] GameObject warningUI;    
     [SerializeField] TypingTrigger typing;
     [SerializeField] SkippableEvent skippableEvent;    
  
@@ -54,17 +54,27 @@ public class SystemInputHandler : MonoBehaviour
         InputManager.Instance.PauseGame();
         // 게임 상태 변경
         GameManager.Instance.PauseGame();
-
+        GameManager.Instance.ActivateBaseCursor();
+        
         // UI 활성화
         pauseUI.SetActive(true);
+
+        // 효과음
+        AudioManager.Instance.PlayPause();
+        AudioManager.Instance.TurnDownVolumeBGM();
     }
 
     void DeactivatePauseMenu()
     {
         InputManager.Instance.ResumeGame();
         GameManager.Instance.ResumeGame();
+        GameManager.Instance.DeactivateBaseCursor();
 
         pauseUI.SetActive(false);
+
+        // 효과음
+        AudioManager.Instance.PlayResume();
+        AudioManager.Instance.ResetVolumeBGM();
     }
 
     void DeactivateOptionMenu()
@@ -81,5 +91,9 @@ public class SystemInputHandler : MonoBehaviour
     public void ResumeGame()
     {
         isPaused = false;
+        GameManager.Instance.DeactivateBaseCursor();
+
+        AudioManager.Instance.PlayResume();
+        AudioManager.Instance.ResetVolumeBGM();
     }
 }

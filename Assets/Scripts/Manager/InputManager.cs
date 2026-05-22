@@ -54,6 +54,7 @@ public class InputManager : MonoBehaviour
 
     public void PauseGame()
     {
+        GameManager.Instance.isInPlaying = false;
         isPlaying = false;
         playerMap.Disable();
         uiMap.Enable();
@@ -61,6 +62,7 @@ public class InputManager : MonoBehaviour
 
     public void ResumeGame()
     {
+        GameManager.Instance.isInPlaying = true;
         isPlaying = true;
         playerMap.Enable();
         uiMap.Disable();

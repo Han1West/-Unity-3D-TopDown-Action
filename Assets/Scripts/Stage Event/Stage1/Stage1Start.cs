@@ -62,6 +62,7 @@ public class Stage1Start : MonoBehaviour
     {
         // 대화문 종료        
         InputManager.Instance.ResumeGame();
+        GameManager.Instance.ActivateInGameCrosshair();        
     }
 
     IEnumerator DialogueEventRoutine()
@@ -73,5 +74,6 @@ public class Stage1Start : MonoBehaviour
 
         // 게임 정지        
         InputManager.Instance.PauseGame();
+        GameManager.Instance.DeactivateInGameCrosshair();
     }
 }

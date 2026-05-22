@@ -14,6 +14,8 @@ public class TypeWriter : MonoBehaviour
     [SerializeField] string[] fullTexts;
     [SerializeField] GameObject skipManualUI;
 
+
+
     int currentIndex = 0;
 
     public bool IsFulled { get; private set; } = false;
@@ -24,7 +26,7 @@ public class TypeWriter : MonoBehaviour
         StartCoroutine(TypeTextRoutine());
     }
 
-    private void Update()
+    void Update()
     {
         if (skipManualUI &&
             IsFulled && !skipManualUI.activeInHierarchy)
@@ -35,7 +37,11 @@ public class TypeWriter : MonoBehaviour
     {
         StopAllCoroutines();
 
-        textUI.text = fullTexts[currentIndex];
+        if(currentIndex < fullTexts.Length)
+        {
+            textUI.text = fullTexts[currentIndex];
+        }
+        
         IsFulled = true;
     }
 
@@ -46,6 +52,9 @@ public class TypeWriter : MonoBehaviour
         foreach (char c in fullTexts[currentIndex])
         {
             textUI.text += c;
+
+            AudioManager.Instance.PlayTextBlip();
+
             if (textUI.text == fullTexts[currentIndex])
                 IsFulled = true;
             yield return new WaitForSeconds(typingSpeed);

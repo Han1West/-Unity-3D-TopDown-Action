@@ -26,6 +26,9 @@ public class BossIntro : SkippableEvent
     [SerializeField] Vector2 endPos;
     [SerializeField] float imageDuration = 2f;
 
+    [Header("SFX")]
+    [SerializeField] AudioClip growlingSFX;
+ 
     Vector2[] originPos;
 
     private void Start()
@@ -95,11 +98,14 @@ public class BossIntro : SkippableEvent
             yield return null;
         }
 
+        AudioManager.Instance.PlayTextSlam();
         rect.anchoredPosition = endPos;
     }
     IEnumerator PlayCutScene()
     {
         float time = 0f;
+
+        AudioManager.Instance.PlaySFX(growlingSFX, 0.5f);
 
         while(time < imageDuration)
         {

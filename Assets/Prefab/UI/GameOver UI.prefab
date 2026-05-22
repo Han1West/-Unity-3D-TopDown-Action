@@ -289,8 +289,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4279112652
-  m_fontColor: {r: 0.8000001, g: 0.07450981, b: 0.054901965, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -638,6 +638,7 @@ GameObject:
   - component: {fileID: 6812307085168889949}
   - component: {fileID: 3503754851129990472}
   - component: {fileID: 4488907929982709462}
+  - component: {fileID: 3103357477161390668}
   m_Layer: 5
   m_Name: Exit Button
   m_TagString: Untagged
@@ -747,6 +748,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &3103357477161390668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2234843575538142251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3172baa554712a4ea25260d938fc93c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BaseButtonUI
+  buttonType: 6
 --- !u!1 &2840442439845921795
 GameObject:
   m_ObjectHideFlags: 0
@@ -802,6 +816,7 @@ MonoBehaviour:
   retryButton: {fileID: 2467488895705855751}
   exitButton: {fileID: 4488907929982709462}
   playerDead: {fileID: 0}
+  failBGM: {fileID: 8300000, guid: 337a2c3c6a4d690409167c76826ad9ba, type: 3}
 --- !u!1 &3222099917797533757
 GameObject:
   m_ObjectHideFlags: 0
@@ -1272,6 +1287,7 @@ GameObject:
   - component: {fileID: 3930995379227996347}
   - component: {fileID: 4197050865551614518}
   - component: {fileID: 2467488895705855751}
+  - component: {fileID: 5252315324054461454}
   m_Layer: 5
   m_Name: Restart Button
   m_TagString: Untagged
@@ -1381,6 +1397,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &5252315324054461454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6228215393890263266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3172baa554712a4ea25260d938fc93c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BaseButtonUI
+  buttonType: 5
 --- !u!1 &7401943293616126495
 GameObject:
   m_ObjectHideFlags: 0

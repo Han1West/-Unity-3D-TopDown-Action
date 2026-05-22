@@ -1280,6 +1280,7 @@ MonoBehaviour:
   startPos: {x: 0, y: -100}
   endPos: {x: 0, y: 0}
   imageDuration: 4
+  growlingSFX: {fileID: 8300000, guid: 483d9059b4b0f4b44b2beb9cc1177603, type: 3}
 --- !u!1 &1620072871
 GameObject:
   m_ObjectHideFlags: 0
