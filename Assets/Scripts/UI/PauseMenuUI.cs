@@ -44,6 +44,8 @@ public class PauseMenuUI : MonoBehaviour
 
     void OnClickResume()
     {
+        Debug.Log("On Click Resume");
+
         InputManager.Instance.ResumeGame();
         GameManager.Instance.ResumeGame();
         systemInputHandler.ResumeGame();
@@ -59,17 +61,29 @@ public class PauseMenuUI : MonoBehaviour
 
     void OnClickToTitle()
     {
-        isToTitle = true;
-        warningUI.SetActive(true);        
+        //isToTitle = true;
+        //warningUI.SetActive(true);
+        StartCoroutine(OpenWarningRoutine(true));
     }
 
     void OnClickExit()
     {
+        StartCoroutine(OpenWarningRoutine(false));
+        //warningUI.SetActive(true);
+    }
+
+    IEnumerator OpenWarningRoutine(bool toTitle)
+    {
+        yield return null;
+
+        isToTitle = toTitle;
         warningUI.SetActive(true);
     }
 
     void OnClickWarningConfirm()
     {
+        Debug.Log("On Click Warning Confirm");
+
         InputManager.Instance.ResumeGame();
         GameManager.Instance.ResumeGame();
 
@@ -91,6 +105,15 @@ public class PauseMenuUI : MonoBehaviour
 
     void OnClickWarningCancel()
     {
+        StartCoroutine(WarningCancelRoutine());
+        //isToTitle = false;
+        //warningUI.SetActive(false);
+    }
+
+    IEnumerator WarningCancelRoutine()
+    {
+        yield return null;
+
         isToTitle = false;
         warningUI.SetActive(false);
     }

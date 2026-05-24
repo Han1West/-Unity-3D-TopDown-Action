@@ -61,6 +61,8 @@ public class Stage1Start : MonoBehaviour
     void OnTypingEventEnd()
     {
         // 대화문 종료        
+        Debug.Log("On Typing Event End");
+
         InputManager.Instance.ResumeGame();
         GameManager.Instance.ActivateInGameCrosshair();        
     }

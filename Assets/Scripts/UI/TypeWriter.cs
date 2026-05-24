@@ -63,6 +63,9 @@ public class TypeWriter : MonoBehaviour
 
     public void SkipDialog()
     {
+        if (!gameObject.activeInHierarchy)
+            return;
+
         // 현재 대화문이 다출력 됐으면 다음으로
         if (IsFulled)
         {
@@ -82,7 +85,7 @@ public class TypeWriter : MonoBehaviour
                 // 현재 씬이 Stage -> UI 끄기
                 else if (sceneInfo.sceneType == SceneType.InGamePlay)
                 {
-                    parentUI.SetActive(false);
+                    parentUI.SetActive(false);                    
                     OnTypingEnd?.Invoke();
                 }
 

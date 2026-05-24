@@ -25,9 +25,11 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance;
     public event Action OnPlayerDataLoaded;
+    public event Action OnStageCleared;
 
     public string PlayerInGameName { get; private set; }
 
+    bool isAlertClearInfo = false;
 
     void Awake()
     {
@@ -62,6 +64,13 @@ public class GameManager : MonoBehaviour
     {
         if (isInPlaying)
             playTime += Time.deltaTime;
+
+        if (enemies.Count <= 0 && !isAlertClearInfo)
+        {
+            Debug.Log("NO ENEMY");
+            OnStageCleared?.Invoke();
+            isAlertClearInfo = true;
+        }            
     }
 
     void HandleEnemyDead(EnemyHealth enemy)
@@ -104,7 +113,7 @@ public class GameManager : MonoBehaviour
 
     public void ResumeGame()
     {
-        isInPlaying = true;
+        isInPlaying = true;        
 
         // 마우스 커서 변경
         ActivateInGameCrosshair();
@@ -138,13 +147,14 @@ public class GameManager : MonoBehaviour
         }        
     }
 
-    public bool CanChangeStage()
-    {
-        if (enemies.Count <= 0)
-            return true;
-
-        return false;
-    }
+    //public bool CanChangeStage()
+    //{
+    //    if (enemies.Count <= 0)                    
+    //        return true;
+        
+            
+    //    return false;
+    //}
 
     public void AddNewEnemy(GameObject enemy)
     {
@@ -204,7 +214,7 @@ public class GameManager : MonoBehaviour
             SaveData data = SaveManager.Instance.LoadGame();
 
             if (data != null)
-                ApplySaveData(data);
+                ApplySaveData(data);            
 
             SaveManager.Instance.IsContinueLoading = false;
         }
@@ -233,7 +243,8 @@ public class GameManager : MonoBehaviour
             // 현재 레벨 저장
             SaveManager.Instance.SaveGame();
         }
-               
+
+        isAlertClearInfo = false;
         OnPlayerDataLoaded?.Invoke();
     }
 

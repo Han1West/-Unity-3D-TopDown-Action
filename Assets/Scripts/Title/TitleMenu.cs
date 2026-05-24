@@ -80,7 +80,7 @@ public class TitleMenu : MonoBehaviour
         }
         else if (startData != null)
         {
-            SaveManager.Instance.IsRetryLoading = true;
+            SaveManager.Instance.IsContinueLoading = true;
             SceneManager.LoadScene(startData.sceneName);
         }            
     }

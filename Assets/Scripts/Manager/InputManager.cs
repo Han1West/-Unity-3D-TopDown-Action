@@ -10,8 +10,7 @@ public class InputManager : MonoBehaviour
     PlayerDead playerDead;    
 
     InputActionMap playerMap;
-    InputActionMap systemMap;
-    InputActionMap uiMap;
+    InputActionMap systemMap;    
 
     public static InputManager Instance;
 
@@ -47,8 +46,7 @@ public class InputManager : MonoBehaviour
 
     void HandlePlayerDead()
     {
-        playerMap.Disable();
-        uiMap.Disable();
+        playerMap.Disable();        
         systemMap.Disable();        
     }
 
@@ -57,15 +55,19 @@ public class InputManager : MonoBehaviour
         GameManager.Instance.isInPlaying = false;
         isPlaying = false;
         playerMap.Disable();
-        uiMap.Enable();
+
+        PlayerInputHandler handler = FindFirstObjectByType<PlayerInputHandler>();
+
+        if (handler)
+            handler.ResetInput();
     }
 
     public void ResumeGame()
     {
         GameManager.Instance.isInPlaying = true;
+        
         isPlaying = true;
-        playerMap.Enable();
-        uiMap.Disable();
+        playerMap.Enable();        
         systemMap.Enable();
     }
 
@@ -85,19 +87,16 @@ public class InputManager : MonoBehaviour
         if (playerInput)
         {
             playerMap = playerInput.actions.FindActionMap("Player");
-            systemMap = playerInput.actions.FindActionMap("System");
-            uiMap = playerInput.actions.FindActionMap("UI");
+            systemMap = playerInput.actions.FindActionMap("System");            
 
             if(isPlaying)
             {
                 playerMap.Enable();
-                systemMap.Enable();
-                uiMap.Disable();
+                systemMap.Enable();                
             }
             else
             {
-                playerMap.Disable();
-                uiMap.Disable();
+                playerMap.Disable();                
                 systemMap.Enable();
             }            
         }
