@@ -4,6 +4,20 @@ using UnityEngine.XR;
 
 public class ChangeStageTrigger : MonoBehaviour
 {
+    [SerializeField] GameObject portalVFX;
+
+    bool canChange = false;
+
+    void Start()
+    {
+        GameManager.Instance.OnStageCleared += ActivateClearPortal;
+    }
+
+    void OnDestroy()
+    {
+        GameManager.Instance.OnStageCleared -= ActivateClearPortal;
+    }
+
     void OnTriggerEnter(Collider other)
     {        
         if (other.CompareTag("Player"))
@@ -14,10 +28,17 @@ public class ChangeStageTrigger : MonoBehaviour
 
     void ChangeStage()
     {
-
-        if (!GameManager.Instance.CanChangeStage())
+        if (!canChange)
             return;
 
         EventManager.Instance.LoadNextScene();        
+    }
+
+    void ActivateClearPortal()
+    {
+        Debug.Log("can Clear");
+
+        canChange = true;
+        portalVFX.SetActive(true);
     }
 }
