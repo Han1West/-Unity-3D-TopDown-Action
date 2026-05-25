@@ -276,7 +276,7 @@ public class BossMonsterBase : MonoBehaviour
                 currentPatternChance += failBonus;
         }
         
-        currentPatternChance = Mathf.Clamp(currentPatternChance, minChance, maxChance);
+        currentPatternChance = Mathf.Clamp(currentPatternChance, minChance, maxChance);        
     }
 
     void UpdatePattern()

@@ -133,7 +133,9 @@ public class GameManager : MonoBehaviour
     }
 
     void ApplySaveData(SaveData data)
-    {        
+    {
+        Debug.Log("Name In data : " + data.playerName);
+
         PlayerInGameName = data.playerName;
 
         playTime = data.playTime;
@@ -148,6 +150,8 @@ public class GameManager : MonoBehaviour
     void ResetPlayerInfo(SaveData data)
     {
         PlayerInGameName = data.playerName;
+
+        Debug.Log("Name In data : " + data.playerName);
 
         playTime = 0f;
         killCount = 0;        
@@ -168,15 +172,6 @@ public class GameManager : MonoBehaviour
             tempPlayerParryPoint = 0;
         }        
     }
-
-    //public bool CanChangeStage()
-    //{
-    //    if (enemies.Count <= 0)                    
-    //        return true;
-        
-            
-    //    return false;
-    //}
 
     public void AddNewEnemy(GameObject enemy)
     {
@@ -239,13 +234,16 @@ public class GameManager : MonoBehaviour
 
         // 저장된 게임 시작
         if (SaveManager.Instance.IsContinueLoading)
-        {
+        {            
             SaveData data = SaveManager.Instance.LoadGame();
+            SaveData startData = SaveManager.Instance.LoadSavedStartGame();
 
             if (data != null)
-                ApplySaveData(data);            
+                ApplySaveData(data);
+            else if (startData != null)
+                ApplySaveData(startData);
 
-            SaveManager.Instance.IsContinueLoading = false;
+                SaveManager.Instance.IsContinueLoading = false;
         }
         // 리트라이 게임 시작
         else if (SaveManager.Instance.IsRetryLoading)
