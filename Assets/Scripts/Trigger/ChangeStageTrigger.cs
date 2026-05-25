@@ -36,8 +36,6 @@ public class ChangeStageTrigger : MonoBehaviour
 
     void ActivateClearPortal()
     {
-        Debug.Log("can Clear");
-
         canChange = true;
         portalVFX.SetActive(true);
     }

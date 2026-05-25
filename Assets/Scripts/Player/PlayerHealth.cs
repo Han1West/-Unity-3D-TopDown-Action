@@ -250,6 +250,7 @@ public class PlayerHealth : MonoBehaviour
         // 피가 0 이하면 사망처리
         if (currentHealth <= 0)
         {
+            currentHealth = 0;
             playerController.ChangeState(PlayerState.Dead);
             return;
         }

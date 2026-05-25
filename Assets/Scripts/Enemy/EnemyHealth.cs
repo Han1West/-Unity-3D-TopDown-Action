@@ -47,7 +47,7 @@ public class EnemyHealth : MonoBehaviour
             originMaterials2[i] = renderers2[i].materials;
         }
     }
-    void Start()
+    protected virtual void Start()
     {
         currentHealth = maxHealth;
     }

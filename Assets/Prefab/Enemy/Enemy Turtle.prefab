@@ -339,6 +339,14 @@ PrefabInstance:
       propertyPath: blockSFX
       value: 
       objectReference: {fileID: 8300000, guid: 3fada8ebc3492b943adf6e5b7fb5a388, type: 3}
+    - target: {fileID: 4617981447752528034, guid: 0ac691b700e643c4998cd48a05cde5cc, type: 3}
+      propertyPath: knockbackForce
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4617981447752528034, guid: 0ac691b700e643c4998cd48a05cde5cc, type: 3}
+      propertyPath: knockbackDuration
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 5806416421777526401, guid: 0ac691b700e643c4998cd48a05cde5cc, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -424,8 +432,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0.45, z: 0}
+  m_Size: {x: 1, y: 10.24, z: 1}
+  m_Center: {x: 0, y: 5.08, z: 0}
 --- !u!114 &8396958226404681812
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -439,4 +447,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyDeathSound
   deathSFX: {fileID: 8300000, guid: 257409bf7bef89e48824a0c6ed11716f, type: 3}
-  audioManager: {fileID: 5073439086226894467, guid: aa386c0c87c91ee4cad5917f38f19bea, type: 3}

@@ -2852,10 +2852,11 @@ MonoBehaviour:
   textUI: {fileID: 1014954392}
   typingSpeed: 0.2
   fullTexts:
-  - "\uB098\uC138\uC694...\t"
   - "\uC77C\uC5B4 \uB098\uC138\uC694.."
   - "\uC6A9\uC0AC\uC5EC.. \uC77C\uC5B4 \uB098\uC138\uC694 .."
-  - "\uB2F9\uC2E0\uC740.. "
+  - "\uB2F9\uC2E0\uC758 \uD798\uC744 \uC774\uC6A9\uD558\uC5EC .."
+  - "\uC774 \uC138\uC0C1\uC744 \uAD6C\uC6D0\uD574\uC8FC\uC138\uC694 .."
+  - "\uB2F9\uC2E0\uC740 .."
   skipManualUI: {fileID: 1321826158}
 --- !u!1 &1733570010
 GameObject:

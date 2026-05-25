@@ -63,14 +63,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         if (isInPlaying)
-            playTime += Time.deltaTime;
-
-        if (enemies.Count <= 0 && !isAlertClearInfo)
-        {
-            Debug.Log("NO ENEMY");
-            OnStageCleared?.Invoke();
-            isAlertClearInfo = true;
-        }            
+            playTime += Time.deltaTime; 
     }
 
     void HandleEnemyDead(EnemyHealth enemy)
@@ -78,6 +71,23 @@ public class GameManager : MonoBehaviour
         killCount++;        
 
         enemies.Remove(enemy.gameObject);
+
+        if (enemies.Count <= 0 && !isAlertClearInfo)
+        {            
+            OnStageCleared?.Invoke();
+            isAlertClearInfo = true;
+        }
+    }
+
+    public void HandlePortalDisappear(GameObject portal)
+    {
+        enemies.Remove(portal);
+
+        if (enemies.Count <= 0 && !isAlertClearInfo)
+        {
+            OnStageCleared?.Invoke();
+            isAlertClearInfo = true;
+        }
     }
 
     void HandlePlayerDead()
@@ -133,6 +143,18 @@ public class GameManager : MonoBehaviour
 
         playerHealth.SetCurrentHealth(data.playerHp);
         playerGuard.SetParryPoint(data.playerParryPoint);        
+    }
+
+    void ResetPlayerInfo(SaveData data)
+    {
+        PlayerInGameName = data.playerName;
+
+        playTime = 0f;
+        killCount = 0;        
+        IsSucceed = data.isSucceed;
+
+        playerHealth.SetCurrentHealth(100);
+        playerGuard.SetParryPoint(0);
     }
 
     void ApplyPlayerInfo()
@@ -197,7 +219,7 @@ public class GameManager : MonoBehaviour
         if (playerDead)
             playerDead.OnPlayerDead += HandlePlayerDead;
 
-        enemies.Clear();
+        enemies.Clear();                
 
         // 스테이지 내 몬스터들을 전부 넣는다.
         GameObject[] allObject = FindObjectsByType<GameObject>(FindObjectsSortMode.None);
@@ -207,6 +229,13 @@ public class GameManager : MonoBehaviour
             if (obj.layer == LayerMask.NameToLayer("Enemy") && obj.transform.parent == null)
                 enemies.Add(obj);
         }        
+
+        // 스테이지에 몬스터가 없다면
+        if (enemies.Count == 0 && !isAlertClearInfo)
+        {            
+            OnStageCleared?.Invoke();
+            isAlertClearInfo = true;
+        }
 
         // 저장된 게임 시작
         if (SaveManager.Instance.IsContinueLoading)
@@ -224,7 +253,7 @@ public class GameManager : MonoBehaviour
             SaveData data = SaveManager.Instance.LoadSavedStartGame();
 
             if (data != null)
-                ApplySaveData(data);
+                ResetPlayerInfo(data);
 
             tryCount++;
 

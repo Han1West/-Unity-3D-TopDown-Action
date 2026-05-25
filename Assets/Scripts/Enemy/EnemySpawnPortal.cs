@@ -37,6 +37,8 @@ public class EnemySpawnPortal : MonoBehaviour
 
     public void EndClose()
     {
+        GameManager.Instance.HandlePortalDisappear(gameObject);
+
         Destroy(gameObject);
     }
 
