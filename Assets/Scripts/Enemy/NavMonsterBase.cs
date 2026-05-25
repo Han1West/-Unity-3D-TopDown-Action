@@ -112,7 +112,10 @@ public class NavMonsterBase : MonoBehaviour
     {
         isStunned = true;
         currentState = MonsterState.Stunned;
-        agent.ResetPath();
+
+        if(agent && agent.enabled && agent.isOnNavMesh)
+            agent.ResetPath();
+
         animator.SetTrigger("Hit");
         StartCoroutine(RecoverFromStun());
     }

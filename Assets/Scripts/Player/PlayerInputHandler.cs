@@ -51,8 +51,7 @@ public class PlayerInputHandler : MonoBehaviour
             return;
         
           
-        attack = value.isPressed;
-        Debug.Log(value);
+        attack = value.isPressed;        
     }
 
     public void OnGuard(InputValue value)

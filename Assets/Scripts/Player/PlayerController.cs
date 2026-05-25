@@ -142,7 +142,8 @@ public class PlayerController : MonoBehaviour
         if (newState == PlayerState.None) return;
         if (CurrentState == newState) return;
         if (!CanChangeState(newState)) return;
-
+        
+        
 
         // 현재 상태 탈출
         OnStateExit(CurrentState);
@@ -156,6 +157,14 @@ public class PlayerController : MonoBehaviour
 
     bool CanChangeState(PlayerState newState)
     {
+        if (CurrentState == PlayerState.Dead)
+            return false;
+
+        // 죽음 상태는 무조건 전이 가능
+        if (newState == PlayerState.Dead)
+            return true;
+
+
         // 현재 상태가 대쉬면 상태 전이를 막는다 (대쉬중에는 다른 동작 불가능)
         if(CurrentState == PlayerState.Dash)
         {
@@ -219,6 +228,11 @@ public class PlayerController : MonoBehaviour
                 guard.StartGuard();
                 break;
             case PlayerState.Dead:
+                input.attack = false;
+                input.skill = false;
+                input.guard = false;
+                input.dash = false;
+
                 dead.StartDead();
                 break;
 
@@ -257,6 +271,9 @@ public class PlayerController : MonoBehaviour
 
     public void OnAttackFinished()
     {
+        if (CurrentState == PlayerState.Dead)
+            return;
+
         // 공격 중에 공격 요청이 한번 더 들어온경우 다음 공격 바로 실행
         if (attack.ConsumeNextAttackQueued())
         {
