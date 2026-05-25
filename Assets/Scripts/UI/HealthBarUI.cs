@@ -58,6 +58,9 @@ public class HealthBarUI : MonoBehaviour
         bossFillImage.fillAmount = (float)current / max;
         string newHealthText = max.ToString() + '/' + current.ToString();
         bossHealthText.text = newHealthText;
+
+        if (current < 0)
+            bossHealthUI.SetActive(false);
     }
 
     public void UpdateBossName(string name)

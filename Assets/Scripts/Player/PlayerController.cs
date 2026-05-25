@@ -144,7 +144,6 @@ public class PlayerController : MonoBehaviour
         if (!CanChangeState(newState)) return;
         
         
-
         // 현재 상태 탈출
         OnStateExit(CurrentState);
 

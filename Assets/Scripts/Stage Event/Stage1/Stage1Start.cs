@@ -55,7 +55,6 @@ public class Stage1Start : MonoBehaviour
         }
         else
             typeWriter.SetTexts(appliedTexts[2].texts);
-
     }
 
     void OnTypingEventEnd()

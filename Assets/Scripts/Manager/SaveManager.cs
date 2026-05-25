@@ -46,6 +46,8 @@ public class SaveManager : MonoBehaviour
 
         data.playerName = GameManager.Instance.PlayerInGameName;
 
+        Debug.Log(data.playerName);
+
         if (playerHealth && playerGuard)
         {
             data.playerHp = playerHealth.currentHealth;

@@ -13,6 +13,10 @@ public class OptionUI : MonoBehaviour
 
     [SerializeField] GameObject pauseUI;
 
+    const string MASTER_KEY = "MasterVolume";
+    const string SFX_KEY = "SFXVolume";
+    const string BGM_KEY = "BGMVolume";
+
     void Start()
     {
         BackButton.onClick.AddListener(OnClickBack);        
@@ -21,10 +25,7 @@ public class OptionUI : MonoBehaviour
         effectVolumeSlider.onValueChanged.AddListener(SetEffectVolume);
         BGMVolumeSlider.onValueChanged.AddListener(SetBGMVolume);
 
-        // 임시 기본 값
-        SetMasterVolume(1);
-        SetEffectVolume(1);
-        SetBGMVolume(1);
+        LoadVolume();
     }
 
     public void SetMasterVolume(float value)
@@ -33,6 +34,8 @@ public class OptionUI : MonoBehaviour
             audioMixer.SetFloat("MasterVolume", -80f);
         else
             audioMixer.SetFloat("MasterVolume", Mathf.Log10(value) * 20);
+
+        PlayerPrefs.SetFloat(MASTER_KEY, value);
     }
 
     public void SetEffectVolume(float value)
@@ -41,6 +44,8 @@ public class OptionUI : MonoBehaviour
             audioMixer.SetFloat("SFXVolume", -80f);
         else
             audioMixer.SetFloat("SFXVolume", Mathf.Log10(value) * 20);
+
+        PlayerPrefs.SetFloat(SFX_KEY, value);
     }
 
     public void SetBGMVolume(float value)
@@ -49,6 +54,8 @@ public class OptionUI : MonoBehaviour
             audioMixer.SetFloat("BGMVolume", -80f);
         else
             audioMixer.SetFloat("BGMVolume", Mathf.Log10(value) * 20);
+
+        PlayerPrefs.SetFloat(BGM_KEY, value);
     }
 
     void OnClickBack()
@@ -56,6 +63,21 @@ public class OptionUI : MonoBehaviour
         gameObject.SetActive(false);
         if(pauseUI != null)
             pauseUI.SetActive(true);
+    }
+
+    void LoadVolume()
+    {
+        float master = PlayerPrefs.GetFloat(MASTER_KEY, 1f);
+        float sfx = PlayerPrefs.GetFloat(SFX_KEY, 1f);
+        float bgm = PlayerPrefs.GetFloat(BGM_KEY, 1f);
+
+        masterVolumeSlider.value = master;
+        effectVolumeSlider.value = sfx;
+        BGMVolumeSlider.value = bgm;
+
+        SetMasterVolume(master);
+        SetEffectVolume(sfx);
+        SetBGMVolume(bgm);        
     }
 }
 

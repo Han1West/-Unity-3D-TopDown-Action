@@ -81,9 +81,7 @@ public class PauseMenuUI : MonoBehaviour
     }
 
     void OnClickWarningConfirm()
-    {
-        Debug.Log("On Click Warning Confirm");
-
+    {        
         InputManager.Instance.ResumeGame();
         GameManager.Instance.ResumeGame();
 
